@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -7,7 +8,6 @@ namespace Match_3
 {
     public class BoardGame : MonoBehaviour
     {
-        
         [InfoBox("List tilemap must be same with list floor transform")]
         public List<Tilemap> listTileMap;
 
@@ -18,7 +18,7 @@ namespace Match_3
         public List<Transform> listFloorTransform;
 
         public GameObject gridObject;
-        
+
         public Tile tilePrefab;
         public Transform slotTransform;
 
@@ -37,23 +37,27 @@ namespace Match_3
 
         private void InitDirections()
         {
-            List<TileDirection> directionCached = new List<TileDirection>();
-            //shuffle list
-            directionCached.Add(TileDirection.TOP);
-            directionCached.Add(TileDirection.BOTTOM);
-            directionCached.Add(TileDirection.RIGHT);
-            directionCached.Add(TileDirection.LEFT);
+            GameManager.Current.ListDirections.Clear();
+            List<TileDirection> directionCached = new List<TileDirection>
+            {
+                //shuffle list
+                TileDirection.TOP,
+                TileDirection.BOTTOM,
+                TileDirection.RIGHT,
+                TileDirection.LEFT
+            };
 
             List<TileDirection> tileDirections = new List<TileDirection>();
-            for (int i = 0; i < directionCached.Count; i++)
+            for (int i = 0; i < 4; i++)
             {
                 TileDirection direction = directionCached[Random.Range(0, directionCached.Count)];
                 tileDirections.Add(direction);
                 directionCached.Remove(direction);
             }
 
-            for (int i = 0; i < tileDirections.Count; i++)
+            for (int i = 0; i < listFloorTransform.Count; i++)
             {
+                Debug.Log(tileDirections[i % 4]);
                 GameManager.Current.ListDirections.Add(tileDirections[i % 4]);
             }
         }
@@ -66,9 +70,13 @@ namespace Match_3
             int indexOnMap = 0;
             for (int i = 0; i < listTileMap.Count; i++) // Loop qua toan bo tile map
             {
-                for (int y = listTileMap[i].cellBounds.yMin; y < listTileMap[i].cellBounds.yMax; y++) // loop qua toan bo y
+                for (int y = listTileMap[i].cellBounds.yMin;
+                     y < listTileMap[i].cellBounds.yMax;
+                     y++) // loop qua toan bo y
                 {
-                    for (int x = listTileMap[i].cellBounds.xMin; x < listTileMap[i].cellBounds.yMax; x++) // loop qua toan bo x
+                    for (int x = listTileMap[i].cellBounds.xMin;
+                         x < listTileMap[i].cellBounds.yMax;
+                         x++) // loop qua toan bo x
                     {
                         Debug.Log("i: " + i + " y: " + y + " x: " + x);
 
@@ -144,5 +152,71 @@ namespace Match_3
                 itemTile.name = "" + i;
             }
         }
+
+        public void OnMoveComplete()
+        {
+            StartCoroutine(IECheckWin());
+        }
+        
+        
+        private IEnumerator IECheckWin()
+        {
+            if (CheckWin())
+            {
+                yield return new WaitForSeconds(0.5f);
+                GameManager.Current.LoadNextLevel();
+            }
+        }
+
+        public bool CheckWin()
+        {
+            for (int i = 0; i < listFloorTransform.Count; i++)
+            {
+                if (listFloorTransform[i].transform.childCount > 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+#if UNITY_EDITOR
+        public bool CheckValid()
+        {
+            List<TileData> listTileMapCached = new List<TileData>();
+
+            int indexOnMap = 0;
+            for (int i = 0; i < listTileMap.Count; i++) // Loop qua toan bo tile map
+            {
+                for (int y = listTileMap[i].cellBounds.yMin;
+                     y < listTileMap[i].cellBounds.yMax;
+                     y++) // loop qua toan bo y
+                {
+                    for (int x = listTileMap[i].cellBounds.xMin;
+                         x < listTileMap[i].cellBounds.yMax;
+                         x++) // loop qua toan bo x
+                    {
+                        Debug.Log("i: " + i + " y: " + y + " x: " + x);
+
+                        if (listTileMap[i].HasTile(new Vector3Int(x, y, 0)))
+                        {
+                            // Neu co tile thi add vao list
+                            indexOnMap++;
+                            TileData tileData = new TileData(i, indexOnMap, new Vector2Int(x, y));
+                            listTileMapCached.Add(tileData);
+                        }
+                    }
+                }
+            }
+
+            if (listTileMapCached.Count % 3 != 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+#endif
     }
 }

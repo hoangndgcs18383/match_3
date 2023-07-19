@@ -15,6 +15,7 @@ namespace Match_3
         TILE_1,
         TILE_2,
         TILE_3,
+        TILE_4,
     }
 
     public enum TileState

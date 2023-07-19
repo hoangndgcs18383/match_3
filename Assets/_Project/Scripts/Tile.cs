@@ -90,7 +90,7 @@ namespace Match_3
 
         private void SetLayerFloor()
         {
-            string sortingLayerName = "FLOOR_" + (data.FloorIndex + 1);
+            string sortingLayerName = "FLOOR_" + (data.FloorIndex);
             bg.sortingLayerName = sortingLayerName;
             icon.sortingLayerName = sortingLayerName;
             shadow.sortingLayerName = sortingLayerName;
@@ -111,6 +111,7 @@ namespace Match_3
             tileState = TileState.START_TO_FLOOR;
 
             List<TileDirection> listDirections = GameManager.Current.ListDirections;
+            
             switch (listDirections[data.FloorIndex])
             {
                 case TileDirection.TOP:
@@ -171,6 +172,11 @@ namespace Match_3
             shadow.gameObject.SetActive(b);
         }
 
+        public void ResetPosSlot(int indexSlot)
+        {
+            SetLayersToMoveSlot(indexSlot);
+        }
+
         private void SetPos()
         {
             //Match
@@ -182,6 +188,7 @@ namespace Match_3
         {
             return value - indexOnMap;
         }
+        
 
         private void SetLayersToMoveSlot(int indexSlot)
         {
