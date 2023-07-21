@@ -25,6 +25,8 @@ namespace Match_3
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
 
         public List<Transform> ListFloorTransform { get; } = new List<Transform>();
+        
+        public GameState GameState { get; set; }
 
         private void Awake()
         {
@@ -38,6 +40,8 @@ namespace Match_3
 
         public void LoadLevel()
         {
+            GameState = GameState.START;
+            
             if (PlayerPrefs.HasKey("~~level~~"))
             {
                 _currentLevel = PlayerPrefs.GetInt("~~level~~");
@@ -46,7 +50,6 @@ namespace Match_3
             _levelObject = Instantiate(Resources.Load<BoardGame>("Levels/Level" + _currentLevel));
             if (_levelObject != null)
             {
-                Debug.Log(_levelObject);
                 UIManager.Current.SetLevelText(_currentLevel);
             }
 
@@ -118,20 +121,6 @@ namespace Match_3
             return index;
         }
 
-        private void SaveLevel()
-        {
-            PlayerPrefs.SetInt("~~level~~", _currentLevel);
-            PlayerPrefs.Save();
-        }
-
-        public void LoadNextLevel()
-        {
-            _currentLevel++;
-            SaveLevel();
-            SceneManager.LoadScene("Main");
-        }
-
-
         private List<TileSlot> FindMatchThreeOfSlots(Tile tile, out bool isMatch)
         {
             List<TileSlot> listMatch = new List<TileSlot>();
@@ -151,5 +140,37 @@ namespace Match_3
             isMatch = false;
             return listMatch;
         }
+
+        #region Level
+
+        private void SaveLevel()
+        {
+            PlayerPrefs.SetInt("~~level~~", _currentLevel);
+            PlayerPrefs.Save();
+        }
+
+        public void LoadNextLevel()
+        {
+            _currentLevel++;
+            SaveLevel();
+            SceneManager.LoadScene("Main");
+            GCCollectAndClear();
+        }
+
+
+        public void RestartLevel()
+        {
+            SceneManager.LoadScene("Main");
+            GCCollectAndClear();
+        }
+
+        private void GCCollectAndClear()
+        {
+            System.GC.Collect();
+            System.GC.WaitForPendingFinalizers();
+            Resources.UnloadUnusedAssets();
+        }
+
+        #endregion
     }
 }

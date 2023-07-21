@@ -80,7 +80,7 @@ namespace Match_3
 
             _z = GetZ(800, this.data.IndexOnMap);
             //load sprite
-            icon.sprite = GameManager.Current.spriteTiles[(int)data.ItemData.tileType];
+            icon.sprite = Resources.Load<Sprite>($"Sprites/{(int)data.ItemData.tileType}");
             //set local position
             SetPos();
             SetOrderLayerFloor();
@@ -90,7 +90,7 @@ namespace Match_3
 
         private void SetLayerFloor()
         {
-            string sortingLayerName = "FLOOR_" + (data.FloorIndex);
+            string sortingLayerName = "FLOOR_" + (data.FloorIndex + 1);
             bg.sortingLayerName = sortingLayerName;
             icon.sortingLayerName = sortingLayerName;
             shadow.sortingLayerName = sortingLayerName;
@@ -106,12 +106,21 @@ namespace Match_3
             shadow.sortingOrder = sortingOrder;
         }
 
+        private void SetLayerDefault()
+        {
+            bg.sortingLayerName = "MOVE";
+            icon.sortingLayerName = "MOVE";
+            shadow.sortingLayerName = "MOVE";
+            
+            tileCollider.gameObject.transform.localPosition = new Vector3(0f, 0f, 0.5f);
+        }
+
         private void ShowTile()
         {
             tileState = TileState.START_TO_FLOOR;
 
             List<TileDirection> listDirections = GameManager.Current.ListDirections;
-            
+
             switch (listDirections[data.FloorIndex])
             {
                 case TileDirection.TOP:
@@ -141,7 +150,7 @@ namespace Match_3
             if (tileState == TileState.FLOOR)
             {
                 // move to slot
-                Debug.Log("OnTouchTile");
+                //Debug.Log("OnTouchTile");
                 tileState = TileState.MOVE_TO_SLOT;
                 SetTouchAvailable(false);
                 SetShadowAvailable(false);
@@ -159,6 +168,7 @@ namespace Match_3
             yield return new WaitForSeconds(0.1f);
             SetTouchAvailable(true);
             SetShadowAvailable(false);
+            //Debug.Log("SetTouchEnable");
         }
 
         public void SetTouchAvailable(bool isAvailable)
@@ -188,7 +198,7 @@ namespace Match_3
         {
             return value - indexOnMap;
         }
-        
+
 
         private void SetLayersToMoveSlot(int indexSlot)
         {
@@ -205,6 +215,8 @@ namespace Match_3
             DOTween.Kill(gameObject.transform);
 
             SetLayersToMoveSlot(indexSlot);
+            SetLayerDefault();
+            
             _moveToSlotSequence = DOTween.Sequence();
             _moveToSlotSequence.Insert(0f,
                 tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad));

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Match_3
@@ -7,7 +8,7 @@ namespace Match_3
     {
         public Tile tileParent;
 
-        private int _countCollision;
+        public int _countCollision;
 
         private void Start()
         {
@@ -19,13 +20,13 @@ namespace Match_3
             transform.localPosition = new Vector3(0f, 0f, 0.5f);
         }
 
-        private void OnTriggerEnter2D(Collider2D collider)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collider.CompareTag("CheckCollider"))
+            if (collision.CompareTag("CheckCollider"))
             {
                 if (tileParent.tileState == TileState.FLOOR)
                 {
-                    if (collider.GetComponent<TileCollider>().tileParent.data.FloorIndex > tileParent.data.FloorIndex)
+                    if (collision.GetComponent<TileCollider>().tileParent.data.FloorIndex > tileParent.data.FloorIndex)
                     {
                         _countCollision++;
                         tileParent.SetTouchAvailable(false);
@@ -35,20 +36,20 @@ namespace Match_3
             }
         }
 
-        private void OnTriggerExit2D(Collider2D collider)
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("CheckCollider"))
             {
-                if (collider.CompareTag("CheckCollider"))
+                if (tileParent.tileState == TileState.FLOOR)
                 {
-                    if (tileParent.tileState == TileState.FLOOR)
+                    if (collision.GetComponent<TileCollider>().tileParent.data.FloorIndex > tileParent.data.FloorIndex)
                     {
-                        if (collider.GetComponent<TileCollider>().tileParent.data.FloorIndex > tileParent.data.FloorIndex)
-                        {
-                            _countCollision--;
-                        }
-
-                        if (_countCollision <= 0) tileParent.SetTouchEnable();
+                        _countCollision--;
                     }
+
+                    if (_countCollision <= 0) tileParent.SetTouchEnable();
                 }
             }
         }
     }
+}

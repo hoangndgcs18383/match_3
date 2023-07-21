@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 namespace Match_3
 {
@@ -23,6 +25,7 @@ namespace Match_3
         public Transform slotTransform;
 
         private List<TileData> _listTileData = new List<TileData>();
+
 
         public void Initialized()
         {
@@ -57,7 +60,6 @@ namespace Match_3
 
             for (int i = 0; i < listFloorTransform.Count; i++)
             {
-                Debug.Log(tileDirections[i % 4]);
                 GameManager.Current.ListDirections.Add(tileDirections[i % 4]);
             }
         }
@@ -78,7 +80,7 @@ namespace Match_3
                          x < listTileMap[i].cellBounds.yMax;
                          x++) // loop qua toan bo x
                     {
-                        Debug.Log("i: " + i + " y: " + y + " x: " + x);
+                        //Debug.Log("i: " + i + " y: " + y + " x: " + x);
 
                         if (listTileMap[i].HasTile(new Vector3Int(x, y, 0)))
                         {
@@ -99,7 +101,7 @@ namespace Match_3
         private void GenerateItem()
         {
             // Generate item
-            Debug.Log($"GenerateItem {_listTileData.Count}");
+            //Debug.Log($"GenerateItem {_listTileData.Count}");
 
             List<ItemData> listItemGenerate = new List<ItemData>();
 
@@ -149,22 +151,30 @@ namespace Match_3
             {
                 Tile itemTile = Instantiate(tilePrefab, listFloorTransform[_listTileData[i].FloorIndex]);
                 itemTile.Initialized(_listTileData[i]);
-                itemTile.name = "" + i;
+                itemTile.name = $"{_listTileData[i].FloorIndex} floor | {_listTileData[i].IndexOnMap} index _ " + i;
             }
+
+            GameManager.Current.GameState = GameState.PLAYING;
         }
 
         public void OnMoveComplete()
         {
             StartCoroutine(IECheckWin());
         }
-        
-        
+
+
         private IEnumerator IECheckWin()
         {
+            if (GameManager.Current.GameState == GameState.WIN)
+                yield break;
             if (CheckWin())
             {
+                GameManager.Current.GameState = GameState.WIN;
+
                 yield return new WaitForSeconds(0.5f);
-                GameManager.Current.LoadNextLevel();
+
+                UIManager.Current.ShowPopup("You Win", "Next Level", () => { GameManager.Current.LoadNextLevel(); },
+                    () => { GameManager.Current.RestartLevel(); });
             }
         }
 

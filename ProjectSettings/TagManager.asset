@@ -63,3 +63,6 @@ TagManager:
   - name: FLOOR_5
     uniqueID: 2465886461
     locked: 0
+  - name: MOVE
+    uniqueID: 3057055491
+    locked: 0
