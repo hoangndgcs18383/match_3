@@ -13,6 +13,7 @@ namespace Match_3
         [InfoBox("List tilemap must be same with list floor transform")]
         public List<Tilemap> listTileMap;
 
+        [TabGroup("Design Items")]
         [InfoBox("List item data must be more than 3")]
         public List<ItemData> listItemData;
 
@@ -192,6 +193,78 @@ namespace Match_3
         }
 
 #if UNITY_EDITOR
+        
+        [Title("Design Map")]
+        [PropertySpace(50)]
+        [ReadOnly]
+        [SerializeField] private int floor1;
+        [ReadOnly]
+        [SerializeField] private int floor2;
+        [ReadOnly]
+        [SerializeField] private int floor3;
+        [ReadOnly]
+        [SerializeField] private int floor4;
+        [ReadOnly]
+        [SerializeField] private int floor5;
+        
+        [OnInspectorInit]
+        public void ShowInfoTileMap()
+        {
+            for (int i = 0; i < listTileMap.Count; i++)
+            {
+                for (int y = listTileMap[i].cellBounds.yMin;
+                     y < listTileMap[i].cellBounds.yMax;
+                     y++)
+                {
+                    for (int x = listTileMap[i].cellBounds.xMin;
+                         x < listTileMap[i].cellBounds.yMax;
+                         x++)
+                    {
+                        
+                        if (listTileMap[i].HasTile(new Vector3Int(x, y, 0)))
+                        {
+                            switch (i)
+                            {
+                                case 0:
+                                    floor1++;
+                                    break;
+                                case 1:
+                                    floor2++;
+                                    break;
+                                case 2:
+                                    floor3++;
+                                    break;
+                                case 3:
+                                    floor4++;
+                                    break;
+                                case 4:
+                                    floor5++;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        [PropertySpace(10)]
+        [TabGroup("Design Map", true, 1)]
+        [GUIColor(1,1,1,0.75f)]
+        [Button(ButtonSizes.Large)]
+        public void OnScreenCheckValid()
+        {
+            CheckValid();
+        }
+        
+        [PropertySpace(10)] 
+        [TabGroup("Design Map", true, 1)]
+        [GUIColor(1,1,0.75f,0.75f)]
+        [Button(ButtonSizes.Large)] 
+        public void OnScreenClearMap()
+        {
+            ClearTileMap();
+        }
+        
         public bool CheckValid()
         {
             List<TileData> listTileMapCached = new List<TileData>();
@@ -207,7 +280,7 @@ namespace Match_3
                          x < listTileMap[i].cellBounds.yMax;
                          x++) // loop qua toan bo x
                     {
-                        Debug.Log("i: " + i + " y: " + y + " x: " + x);
+                        //Debug.Log("i: " + i + " y: " + y + " x: " + x);
 
                         if (listTileMap[i].HasTile(new Vector3Int(x, y, 0)))
                         {
@@ -226,6 +299,14 @@ namespace Match_3
             }
 
             return true;
+        }
+        
+        public void ClearTileMap()
+        {
+            for (int i = 0; i < listTileMap.Count; i++)
+            {
+                listTileMap[i].ClearAllTiles();
+            }
         }
 #endif
     }
