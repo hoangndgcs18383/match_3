@@ -214,6 +214,7 @@ namespace Match_3
         {
             DOTween.Kill(gameObject.transform);
 
+            tileCollider.gameObject.SetActive(false);
             SetLayersToMoveSlot(indexSlot);
             SetLayerDefault();
             

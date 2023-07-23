@@ -222,7 +222,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 15
-    m_Data: {r: 0.8263164, g: 0.46300632, b: 0.5838166, a: 1}
+    m_Data: {r: 0.7876898, g: 0.530186, b: 0.594752, a: 1}
   - m_RefCount: 0
     m_Data: {r: 6.7044e-41, g: 6.7044e-41, b: 6.7044e-41, a: 6.7044e-41}
   m_TileObjectToInstantiateArray: []
@@ -722,7 +722,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 12
-    m_Data: {r: 0.8095666, g: 0.41274428, b: 0.52446824, a: 1}
+    m_Data: {r: 0.92855483, g: 0.6269111, b: 0.6342176, a: 1}
   - m_RefCount: 0
     m_Data: {r: 6.7075e-41, g: 6.7075e-41, b: 6.7075e-41, a: 6.7075e-41}
   m_TileObjectToInstantiateArray: []
