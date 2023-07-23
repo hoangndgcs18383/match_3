@@ -13,8 +13,7 @@ namespace Match_3
         [InfoBox("List tilemap must be same with list floor transform")]
         public List<Tilemap> listTileMap;
 
-        [TabGroup("Design Items")]
-        [InfoBox("List item data must be more than 3")]
+        [TabGroup("Design Items")] [InfoBox("List item data must be more than 3")]
         public List<ItemData> listItemData;
 
         [InfoBox("List floor transform must be same with list tilemap")]
@@ -193,20 +192,15 @@ namespace Match_3
         }
 
 #if UNITY_EDITOR
-        
-        [Title("Design Map")]
-        [PropertySpace(50)]
-        [ReadOnly]
-        [SerializeField] private int floor1;
-        [ReadOnly]
-        [SerializeField] private int floor2;
-        [ReadOnly]
-        [SerializeField] private int floor3;
-        [ReadOnly]
-        [SerializeField] private int floor4;
-        [ReadOnly]
-        [SerializeField] private int floor5;
-        
+
+        [Title("Design Map")] [PropertySpace(50)] [ReadOnly] [SerializeField]
+        private int floor1;
+
+        [ReadOnly] [SerializeField] private int floor2;
+        [ReadOnly] [SerializeField] private int floor3;
+        [ReadOnly] [SerializeField] private int floor4;
+        [ReadOnly] [SerializeField] private int floor5;
+
         [OnInspectorInit]
         public void ShowInfoTileMap()
         {
@@ -220,7 +214,6 @@ namespace Match_3
                          x < listTileMap[i].cellBounds.yMax;
                          x++)
                     {
-                        
                         if (listTileMap[i].HasTile(new Vector3Int(x, y, 0)))
                         {
                             switch (i)
@@ -246,25 +239,32 @@ namespace Match_3
                 }
             }
         }
-        
+
         [PropertySpace(10)]
         [TabGroup("Design Map", true, 1)]
-        [GUIColor(1,1,1,0.75f)]
+        [GUIColor(1, 1, 1, 0.75f)]
         [Button(ButtonSizes.Large)]
         public void OnScreenCheckValid()
         {
-            CheckValid();
+            if (CheckValid())
+            {
+                Debug.Log($"Valid at {gameObject.name}");
+            }
+            else
+            {
+                Debug.LogError($"Invalid at {gameObject.name}");
+            }
         }
-        
-        [PropertySpace(10)] 
+
+        [PropertySpace(10)]
         [TabGroup("Design Map", true, 1)]
-        [GUIColor(1,1,0.75f,0.75f)]
-        [Button(ButtonSizes.Large)] 
+        [GUIColor(1, 1, 0.75f, 0.75f)]
+        [Button(ButtonSizes.Large)]
         public void OnScreenClearMap()
         {
             ClearTileMap();
         }
-        
+
         public bool CheckValid()
         {
             List<TileData> listTileMapCached = new List<TileData>();
@@ -295,12 +295,13 @@ namespace Match_3
 
             if (listTileMapCached.Count % 3 != 0)
             {
+                Debug.LogWarning($"Invalid: Tile count is not divisible by 3, đang dư {listTileMapCached.Count % 3}");
                 return false;
             }
 
             return true;
         }
-        
+
         public void ClearTileMap()
         {
             for (int i = 0; i < listTileMap.Count; i++)

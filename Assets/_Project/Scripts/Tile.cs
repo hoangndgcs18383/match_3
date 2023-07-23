@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using MEC;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -160,12 +161,13 @@ namespace Match_3
 
         public void SetTouchEnable()
         {
-            StartCoroutine(IESetTouchEnable());
+            SetTouchAvailable(true);
+            SetShadowAvailable(false);
         }
 
-        private IEnumerator IESetTouchEnable()
+        private IEnumerator<float> IESetTouchEnable()
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return Timing.WaitForSeconds(0.1f);
             SetTouchAvailable(true);
             SetShadowAvailable(false);
             //Debug.Log("SetTouchEnable");
@@ -226,7 +228,7 @@ namespace Match_3
             _moveToSlotSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
             _moveToSlotSequence.Insert(0.1f,
                 tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
-            _moveToSlotSequence.Insert(0f, gameObject.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutQuad));
+            _moveToSlotSequence.Insert(0f, transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutQuad));
             _moveToSlotSequence.OnComplete(() =>
             {
                 tileState = TileState.SLOT;

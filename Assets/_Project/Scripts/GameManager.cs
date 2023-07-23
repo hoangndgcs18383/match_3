@@ -25,7 +25,7 @@ namespace Match_3
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
 
         public List<Transform> ListFloorTransform { get; } = new List<Transform>();
-        
+
         public GameState GameState { get; set; }
 
         private void Awake()
@@ -41,21 +41,22 @@ namespace Match_3
         public void LoadLevel()
         {
             GameState = GameState.START;
-            
+
             if (PlayerPrefs.HasKey("~~level~~"))
             {
                 _currentLevel = PlayerPrefs.GetInt("~~level~~");
             }
 
-            _levelObject = Instantiate(Resources.Load<BoardGame>("Levels/Level" + _currentLevel));
-            if (_levelObject != null)
+            BoardGame boardGame = Resources.Load<BoardGame>("Levels/Level" + _currentLevel);
+
+            if (boardGame != null)
             {
+                _levelObject = Instantiate(boardGame);
                 UIManager.Current.SetLevelText(_currentLevel);
             }
-
-            if (_levelObject == null)
+            else
             {
-                _currentLevel = 0;
+                _currentLevel--;
                 _levelObject = Instantiate(Resources.Load<BoardGame>("Levels/Level" + _currentLevel));
             }
         }
@@ -96,6 +97,48 @@ namespace Match_3
                 StartCoroutine(IEResetPosition(0.3f));
                 _levelObject.OnMoveComplete();
             }
+            else
+            {
+                //Check lose
+                StartCoroutine(IECheckLose());
+            }
+        }
+
+        private IEnumerator IECheckLose()
+        {
+            yield return new WaitForSeconds(0.3f);
+            if (CheckLose())
+            {
+                UIManager.Current.ShowPopup("You Lose", "Try again",
+                    RestartLevel, Application.Quit);
+            }
+        }
+
+        private bool CheckLose()
+        {
+            if (ListSlots.Count < maxSlot)
+                return false;
+
+            for (int i = 0; i < ListSlots.Count; i++)
+            {
+                int count = CountItemHasData(ListSlots[i].Tile.data.ItemData);
+                if (count == 3)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private int CountItemHasData(ItemData data)
+        {
+            int count = 0;
+            for (int i = 0; i < ListSlots.Count; i++)
+            {
+                if (ListSlots[i].Tile.data.ItemData.tileType == data.tileType)
+                    count++;
+            }
+
+            return count;
         }
 
         private IEnumerator IEResetPosition(float time)
@@ -142,6 +185,12 @@ namespace Match_3
         }
 
         #region Level
+
+        public void SetLevel(int level)
+        {
+            _currentLevel = level;
+            SaveLevel();
+        }
 
         private void SaveLevel()
         {

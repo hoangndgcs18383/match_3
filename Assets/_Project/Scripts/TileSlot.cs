@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -22,6 +23,11 @@ namespace Match_3
             DOTween.Kill(gameObject.transform);
             sequence = DOTween.Sequence();
             sequence.Insert(0f, gameObject.transform.DOLocalMove(new Vector3(-3 * 1.2f + indexSlot  * 1.2f, 0f, 0f), 0.2f).SetEase(Ease.OutQuad));
+        }
+
+        private void OnDestroy()
+        {
+            DOTween.Kill(gameObject.transform);
         }
     }
 }
