@@ -242,6 +242,13 @@ namespace Match_3
         [OnInspectorInit]
         public void ShowInfoTileMap()
         {
+            floor1 = 0;
+            floor2 = 0;
+            floor3 = 0;
+            floor4 = 0;
+            floor5 = 0;
+            
+            
             for (int i = 0; i < listTileMap.Count; i++)
             {
                 for (int y = listTileMap[i].cellBounds.yMin;
