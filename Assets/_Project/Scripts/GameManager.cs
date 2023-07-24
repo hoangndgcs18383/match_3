@@ -184,6 +184,22 @@ namespace Match_3
             return listMatch;
         }
 
+        #region Gameplay
+
+        #region Shuffle
+
+        public void OnButtonShuffle()
+        {
+            if (GameState == GameState.PLAYING)
+            {
+                _levelObject.Shuffle();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
         #region Level
 
         public void SetLevel(int level)

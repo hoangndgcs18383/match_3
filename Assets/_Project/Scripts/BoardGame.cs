@@ -191,6 +191,44 @@ namespace Match_3
             return true;
         }
 
+        #region Shuffle
+
+        private readonly List<Tile> _listTileShuffle = new List<Tile>();
+
+        public void Shuffle()
+        {
+            _listTileShuffle.Clear();
+
+            for (int i = 0; i < listFloorTransform.Count; i++)
+            {
+                foreach (Transform child in listFloorTransform[i])
+                {
+                    Tile tile = child.GetComponent<Tile>();
+                    if (tile != null)
+                    {
+                        _listTileShuffle.Add(tile);
+                    }
+                }
+            }
+
+            List<Tile> listCached = new List<Tile>(_listTileShuffle);
+            List<ItemData> listShuffle = new List<ItemData>();
+
+            for (int i = 0; i < _listTileShuffle.Count; i++)
+            {
+                int index = Random.Range(0, listCached.Count);
+                listShuffle.Add(listCached[index].data.ItemData);
+                listCached.RemoveAt(index);
+            }
+
+            for (int i = 0; i < _listTileShuffle.Count; i++)
+            {
+                _listTileShuffle[i].SetShuffle(listShuffle[i]);
+            }
+        }
+
+        #endregion
+
 #if UNITY_EDITOR
 
         [Title("Design Map")] [PropertySpace(50)] [ReadOnly] [SerializeField]

@@ -81,12 +81,17 @@ namespace Match_3
 
             _z = GetZ(800, this.data.IndexOnMap);
             //load sprite
-            icon.sprite = Resources.Load<Sprite>($"Sprites/{(int)data.ItemData.tileType}");
+            SetSprite();
             //set local position
             SetPos();
             SetOrderLayerFloor();
             SetLayerFloor();
             ShowTile();
+        }
+        
+        private void SetSprite()
+        {
+            icon.sprite = Resources.Load<Sprite>($"Sprites/{(int)data.ItemData.tileType}");
         }
 
         private void SetLayerFloor()
@@ -235,6 +240,27 @@ namespace Match_3
                 GameManager.Current.OnCompleteMoveToSlot(this);
             });
         }
+        
+        Sequence _shuffleSequence;
+        
+        public void SetShuffle(ItemData itemData)
+        {
+            data.ItemData = itemData;
+            
+            _shuffleSequence = DOTween.Sequence();
+            _shuffleSequence.Insert(0f, tileObject.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutQuad));
+            _shuffleSequence.Insert(0f,
+                tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.1f));
+            _shuffleSequence.InsertCallback(0.1f, SetSprite);
+            _shuffleSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
+            _shuffleSequence.Insert(0.1f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _shuffleSequence.OnComplete(() =>
+            {
+                SetLayerFloor();
+                tileCollider.gameObject.transform.localPosition = new Vector3(0f, 0f, 0.5f);
+            });
+        }
+        
 
         #region WINDOW_WEB
 
