@@ -31,11 +31,11 @@ namespace Match_3
         [InfoBox("Load level at start")]
         public void LoadLevel()
         {
-            if (levelPrefabs.Length <= startLevel)
+            /*if (levelPrefabs.Length <= startLevel)
             {
                 Debug.LogError("Level not found");
                 return;
-            }
+            }*/
 
             GameManager.Current.SetLevel(startLevel);
         }

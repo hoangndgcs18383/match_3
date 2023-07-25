@@ -109,8 +109,11 @@ namespace Match_3
             yield return new WaitForSeconds(0.3f);
             if (CheckLose())
             {
+                if(GameState == GameState.LOSE)
+                    yield break;
+                GameState = GameState.LOSE;
                 UIManager.Current.ShowPopup("You Lose", "Try again",
-                    RestartLevel, Application.Quit);
+                    RestartLevel, RestartLevel);
             }
         }
 

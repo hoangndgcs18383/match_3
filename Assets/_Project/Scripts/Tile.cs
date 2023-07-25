@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using MEC;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Match_3
@@ -51,8 +49,7 @@ namespace Match_3
 
     public class Tile : MonoBehaviour
     {
-        public static float TILE_SIZE = 1.2f;
-
+        
         [SerializeField] private SpriteRenderer bg;
         [SerializeField] private SpriteRenderer icon;
         [SerializeField] private SpriteRenderer shadow;
@@ -130,20 +127,20 @@ namespace Match_3
             switch (listDirections[data.FloorIndex])
             {
                 case TileDirection.TOP:
-                    transform.localPosition = MathExtenstion.TileToTop(TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition = MathExtenstion.TileToTop(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
                 case TileDirection.BOTTOM:
-                    transform.localPosition = MathExtenstion.TileToBottom(TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition = MathExtenstion.TileToBottom(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
                 case TileDirection.LEFT:
-                    transform.localPosition = MathExtenstion.TileToLeft(TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition = MathExtenstion.TileToLeft(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
                 case TileDirection.RIGHT:
-                    transform.localPosition = MathExtenstion.TileToRight(TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition = MathExtenstion.TileToRight(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
             }
 
-            transform.DOLocalMove(new Vector3(TILE_SIZE * data.PosTile.x, TILE_SIZE * data.PosTile.y, _z), 1f)
+            transform.DOLocalMove(new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y, _z), 1f)
                 .SetEase(Ease.InBack).SetDelay(0.04f * data.FloorIndex).OnComplete(() =>
                 {
                     tileState = TileState.FLOOR;
@@ -197,7 +194,7 @@ namespace Match_3
         private void SetPos()
         {
             //Match
-            transform.localPosition = new Vector3(TILE_SIZE * data.PosTile.x, TILE_SIZE * data.PosTile.y,
+            transform.localPosition = new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y,
                 50 - data.FloorIndex * 5);
         }
 
@@ -270,5 +267,12 @@ namespace Match_3
         }
 
         #endregion
+
+        private void OnDestroy()
+        {
+            _shuffleSequence.Kill();
+            _moveToSlotSequence.Kill();
+            tileObject.transform.DOKill();
+        }
     }
 }

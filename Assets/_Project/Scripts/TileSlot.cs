@@ -20,14 +20,14 @@ namespace Match_3
         public void ResetPosSlot(int indexSlot)
         {
             _tile.ResetPosSlot(indexSlot);
-            DOTween.Kill(gameObject.transform);
+            DOTween.Kill(transform);
             sequence = DOTween.Sequence();
-            sequence.Insert(0f, gameObject.transform.DOLocalMove(new Vector3(-3 * 1.2f + indexSlot  * 1.2f, 0f, 0f), 0.2f).SetEase(Ease.OutQuad));
+            sequence.Insert(0f, transform.DOLocalMove(new Vector3(-3 * GameConfig.TILE_SIZE + indexSlot * GameConfig.TILE_SIZE, 0f, 0f), 0.2f).SetEase(Ease.OutQuad));
         }
 
         private void OnDestroy()
         {
-            DOTween.Kill(gameObject.transform);
+            DOTween.Kill(transform);
         }
     }
 }

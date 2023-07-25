@@ -55,5 +55,6 @@ namespace Match_3
 
     public class GameConfig : MonoBehaviour
     {
+        public static float TILE_SIZE = 0.95f;
     }
 }
