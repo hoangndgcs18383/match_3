@@ -1084,6 +1084,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4b18be137a8d5d94d99bd9db4b276637, type: 2}
   - {fileID: 11400000, guid: eba37371641830e4c90ed8a23e2357e3, type: 2}
   - {fileID: 11400000, guid: b0b41178ea3b20a48851a7ffb358df17, type: 2}
+  - {fileID: 11400000, guid: 6560bc8b9d4fb4346be4c879c7b22e29, type: 2}
   listFloorTransform:
   - {fileID: 7721852611454045196}
   - {fileID: 7721852612416401930}
@@ -1093,6 +1094,11 @@ MonoBehaviour:
   gridObject: {fileID: 7721852611652385913}
   tilePrefab: {fileID: 6951233215892222085, guid: b47fb17a9575ed842a42981678cff0d9, type: 3}
   slotTransform: {fileID: 8677579260022245763}
+  floor1: 12
+  floor2: 15
+  floor3: 12
+  floor4: 17
+  floor5: 16
 --- !u!1 &7721852612033814471
 GameObject:
   m_ObjectHideFlags: 0
