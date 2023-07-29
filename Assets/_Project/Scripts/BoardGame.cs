@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -227,6 +229,224 @@ namespace Match_3
 
         #endregion
 
+        #region Suggest
+
+        private List<Tile> _listSuggestTiles = new List<Tile>();
+        private Dictionary<TileType, List<Tile>> _availableDictionary = new Dictionary<TileType, List<Tile>>();
+        private Dictionary<TileType, List<Tile>> _dictAllTile = new Dictionary<TileType, List<Tile>>();
+
+        public void Suggest()
+        {
+            _listSuggestTiles.Clear();
+
+            for (int i = 0; i < listFloorTransform.Count; i++)
+            {
+                foreach (Transform child in listFloorTransform[i])
+                {
+                    Tile tile = child.GetComponent<Tile>();
+                    if (tile != null)
+                    {
+                        _listSuggestTiles.Add(tile);
+                    }
+                }
+            }
+
+            Debug.Log("Suggest: " + _listSuggestTiles.Count);
+            SplitListSuggestTile();
+            List<Tile> listSuggest = GetListSuggest(GameManager.Current.ListSlots);
+            Debug.Log("listSuggest: " + listSuggest.Count);
+
+            if (listSuggest.Count > 0)
+            {
+                Timing.RunCoroutine(IESetSuggest(listSuggest));
+            }
+        }
+        
+        private IEnumerator<float> IESetSuggest(List<Tile> listSuggest)
+        {
+            yield return Timing.WaitForSeconds(0.5f);
+            for (int i = 0; i < listSuggest.Count; i++)
+            {
+                listSuggest[i].SetSuggest();
+                yield return Timing.WaitForSeconds(0.1f);
+            }
+        }
+
+        private void SplitListSuggestTile()
+        {
+            List<Tile> listCached = new List<Tile>(_listSuggestTiles);
+
+            _availableDictionary.Clear();
+            _dictAllTile.Clear();
+
+            for (int i = listCached.Count - 1; i >= 0; i--)
+            {
+                //Check available
+                if (listCached[i].CanTouch())
+                {
+                    if (_availableDictionary.ContainsKey(listCached[i].data.ItemData.tileType))
+                    {
+                        _availableDictionary[listCached[i].data.ItemData.tileType].Add(listCached[i]);
+                    }
+                    else
+                    {
+                        _availableDictionary.Add(listCached[i].data.ItemData.tileType,
+                            new List<Tile> { listCached[i] });
+                    }
+                }
+
+                //Add all
+                if (_dictAllTile.ContainsKey(listCached[i].data.ItemData.tileType))
+                {
+                    _dictAllTile[listCached[i].data.ItemData.tileType].Add(listCached[i]);
+                }
+                else
+                {
+                    _dictAllTile.Add(listCached[i].data.ItemData.tileType, new List<Tile> { listCached[i] });
+                }
+            }
+        }
+
+        public List<Tile> GetListSuggest(List<TileSlot> listSlot)
+        {
+            List<Tile> listSuggest = new List<Tile>();
+
+            if (listSlot.Count > 0)
+            {
+                listSuggest.Clear();
+
+                List<ItemData> listCheckData = new List<ItemData>();
+
+                for (int i = 0; i < listSlot.Count; i++)
+                {
+                    ItemData itemData = listSlot[i].Tile.data.ItemData;
+
+                    if (listCheckData.Contains(itemData))
+                        break;
+
+                    listCheckData.Add(itemData);
+                    int countItemData = CountingTileHaveSlotData(listSlot, itemData);
+
+                    if (countItemData == 1)
+                    {
+                        if (listSlot.Count <= 5)
+                        {
+                            if (_availableDictionary.ContainsKey(itemData.tileType))
+                            {
+                                List<Tile> listCached = _availableDictionary[itemData.tileType];
+                                if (listCached.Count >= 2)
+                                {
+                                    //add 2 item
+                                    listSuggest.Add(_availableDictionary[itemData.tileType][0]);
+                                    listSuggest.Add(_availableDictionary[itemData.tileType][1]);
+                                    return listSuggest;
+                                }
+                            }
+                        }
+                    }
+                    else if (countItemData == 2)
+                    {
+                        if (listSlot.Count <= 6)
+                        {
+                            if (_dictAllTile.ContainsKey(itemData.tileType))
+                            {
+                                List<Tile> listCached = _availableDictionary[itemData.tileType];
+                                if (listCached.Count >= 1)
+                                {
+                                    listSuggest.Add(_availableDictionary[itemData.tileType][0]);
+                                    return listSuggest;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return listSuggest;
+            }
+
+            if (listSlot.Count <= 4)
+            {
+                foreach (var item in _availableDictionary)
+                {
+                    if (item.Value.Count >= 3)
+                    {
+                        listSuggest.Add(item.Value[0]);
+                        listSuggest.Add(item.Value[1]);
+                        listSuggest.Add(item.Value[2]);
+                        return listSuggest;
+                    }
+                }
+            }
+            else
+            {
+                if (listSlot.Count >= 6)
+                {
+                    List<ItemData> listCheckData = new List<ItemData>();
+
+                    for (int i = 0; i < listSlot.Count; i++)
+                    {
+                        ItemData itemData = listSlot[i].Tile.data.ItemData;
+
+                        if (listCheckData.Contains(itemData))
+                            break;
+
+                        listCheckData.Add(itemData);
+                        int countItemData = CountingTileHaveSlotData(listSlot, itemData);
+
+                        if (countItemData == 2)
+                        {
+                            List<Tile> listCached = _dictAllTile[itemData.tileType];
+
+                            if (listCached.Count >= 1)
+                            {
+                                listSuggest.Add(listCached[0]);
+                                return listSuggest;
+                            }
+                        }
+                    }
+
+                    //if slot have 6 items and still not have suggest
+                    return listSuggest;
+                }
+                else
+                {
+                    for (int i = 0; i < listSlot.Count; i++)
+                    {
+                        ItemData itemData = listSlot[i].Tile.data.ItemData;
+
+                        List<Tile> listCached = _dictAllTile[itemData.tileType];
+                        if (listCached.Count >= 2)
+                        {
+                            listSuggest.Add(listCached[^1]);
+                            listSuggest.Add(listCached[^2]);
+                            return listSuggest;
+                        }
+                    }
+
+                    return listSuggest;
+                }
+            }
+
+            return listSuggest;
+        }
+
+        private int CountingTileHaveSlotData(List<TileSlot> tileSlots, ItemData data)
+        {
+            int count = 0;
+
+            for (int i = 0; i < tileSlots.Count; i++)
+            {
+                if (tileSlots[i].Tile.data.ItemData == data)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        #endregion
+
 #if UNITY_EDITOR
 
         [Title("Design Map")] [PropertySpace(50)] [ReadOnly] [SerializeField]
@@ -245,8 +465,8 @@ namespace Match_3
             floor3 = 0;
             floor4 = 0;
             floor5 = 0;
-            
-            
+
+
             for (int i = 0; i < listTileMap.Count; i++)
             {
                 for (int y = listTileMap[i].cellBounds.yMin;

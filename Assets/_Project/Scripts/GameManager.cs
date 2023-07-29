@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 namespace Match_3
 {
@@ -16,7 +18,7 @@ namespace Match_3
         public int maxSlot = 7;
         public int matchTile = 3;
 
-        public Sprite[] spriteTiles;
+        public SpriteAtlas spriteTiles;
 
         private int _currentLevel = 1;
         private BoardGame _levelObject;
@@ -67,14 +69,14 @@ namespace Match_3
             {
                 int indexAdd = FindIndexToAdd(tile);
                 TileSlot tileSlot = Instantiate(itemTileSlotPrefab, _levelObject.slotTransform);
-                tileSlot.transform.localPosition = new Vector3(-3 * 1.2f + indexAdd * 1.2f, 0f, 0f);
+                tileSlot.transform.localPosition = GameConfig.GetMoveTile(indexAdd);
                 tile.transform.SetParent(tileSlot.transform);
 
                 tileSlot.SetTile(tile);
                 tile.TweenPlayMoveToSlot(indexAdd);
                 ListSlots.Insert(indexAdd, tileSlot);
 
-                StartCoroutine(IEResetPosition(0.1f));
+                Timing.RunCoroutine(IEResetPosition(0.1f));
             }
         }
 
@@ -90,11 +92,11 @@ namespace Match_3
                 foreach (var slot in currentSlots)
                 {
                     ListSlots.Remove(slot);
-                    slot.gameObject.SetActive(false);
+                    slot.SetMatchCallback();
                 }
 
                 //Check win
-                StartCoroutine(IEResetPosition(0.3f));
+                Timing.RunCoroutine(IEResetPosition(0.3f));
                 _levelObject.OnMoveComplete();
             }
             else
@@ -109,7 +111,7 @@ namespace Match_3
             yield return new WaitForSeconds(0.3f);
             if (CheckLose())
             {
-                if(GameState == GameState.LOSE)
+                if (GameState == GameState.LOSE)
                     yield break;
                 GameState = GameState.LOSE;
                 UIManager.Current.ShowPopup("You Lose", "Try again",
@@ -144,9 +146,9 @@ namespace Match_3
             return count;
         }
 
-        private IEnumerator IEResetPosition(float time)
+        private IEnumerator<float> IEResetPosition(float time)
         {
-            yield return new WaitForSeconds(time);
+            yield return Timing.WaitForSeconds(time);
             for (int i = 0; i < ListSlots.Count; i++)
             {
                 ListSlots[i].ResetPosSlot(i);
@@ -196,6 +198,18 @@ namespace Match_3
             if (GameState == GameState.PLAYING)
             {
                 _levelObject.Shuffle();
+            }
+        }
+
+        #endregion
+
+        #region Suggest
+
+        public void OnButtonSuggest()
+        {
+            if (GameState == GameState.PLAYING)
+            {
+                _levelObject.Suggest();
             }
         }
 

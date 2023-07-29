@@ -56,5 +56,10 @@ namespace Match_3
     public class GameConfig : MonoBehaviour
     {
         public static float TILE_SIZE = 0.95f;
+
+        public static Vector3 GetMoveTile(int index)
+        {
+            return new Vector3(-3 * TILE_SIZE + index * TILE_SIZE, 0f, 0f);
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Match_3
     public class TileSlot : MonoBehaviour
     {
         private Tile _tile;
-        
+
         public Tile Tile => _tile;
 
         public void SetTile(Tile tile)
@@ -22,12 +22,17 @@ namespace Match_3
             _tile.ResetPosSlot(indexSlot);
             DOTween.Kill(transform);
             sequence = DOTween.Sequence();
-            sequence.Insert(0f, transform.DOLocalMove(new Vector3(-3 * GameConfig.TILE_SIZE + indexSlot * GameConfig.TILE_SIZE, 0f, 0f), 0.2f).SetEase(Ease.OutQuad));
+            sequence.Insert(0f, transform.DOLocalMove(GameConfig.GetMoveTile(indexSlot), 0.2f).SetEase(Ease.OutQuad));
         }
 
-        private void OnDestroy()
+        public void SetMatchCallback()
         {
-            DOTween.Kill(transform);
+            _tile.SetMatch(Hide);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

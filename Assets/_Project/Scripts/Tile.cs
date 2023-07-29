@@ -49,7 +49,6 @@ namespace Match_3
 
     public class Tile : MonoBehaviour
     {
-        
         [SerializeField] private SpriteRenderer bg;
         [SerializeField] private SpriteRenderer icon;
         [SerializeField] private SpriteRenderer shadow;
@@ -85,10 +84,16 @@ namespace Match_3
             SetLayerFloor();
             ShowTile();
         }
-        
+
+        public bool CanTouch()
+        {
+            return tileCollider.enabled;
+        }
+
         private void SetSprite()
         {
-            icon.sprite = Resources.Load<Sprite>($"Sprites/{(int)data.ItemData.tileType}");
+            //icon.sprite = Resources.Load<Sprite>($"Sprites/{(int)data.ItemData.tileType}");
+            icon.sprite = GameManager.Current.spriteTiles.GetSprite(((int)data.ItemData.tileType).ToString());
         }
 
         private void SetLayerFloor()
@@ -114,7 +119,7 @@ namespace Match_3
             bg.sortingLayerName = "MOVE";
             icon.sortingLayerName = "MOVE";
             shadow.sortingLayerName = "MOVE";
-            
+
             tileCollider.gameObject.transform.localPosition = new Vector3(0f, 0f, 0.5f);
         }
 
@@ -127,20 +132,25 @@ namespace Match_3
             switch (listDirections[data.FloorIndex])
             {
                 case TileDirection.TOP:
-                    transform.localPosition = MathExtenstion.TileToTop(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition =
+                        MathExtenstion.TileToTop(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
                 case TileDirection.BOTTOM:
-                    transform.localPosition = MathExtenstion.TileToBottom(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition =
+                        MathExtenstion.TileToBottom(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
                 case TileDirection.LEFT:
-                    transform.localPosition = MathExtenstion.TileToLeft(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition =
+                        MathExtenstion.TileToLeft(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
                 case TileDirection.RIGHT:
-                    transform.localPosition = MathExtenstion.TileToRight(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
+                    transform.localPosition =
+                        MathExtenstion.TileToRight(GameConfig.TILE_SIZE, data.PosTile, data.FloorIndex);
                     break;
             }
 
-            transform.DOLocalMove(new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y, _z), 1f)
+            transform.DOLocalMove(
+                    new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y, _z), 1f)
                 .SetEase(Ease.InBack).SetDelay(0.04f * data.FloorIndex).OnComplete(() =>
                 {
                     tileState = TileState.FLOOR;
@@ -186,6 +196,17 @@ namespace Match_3
             shadow.gameObject.SetActive(b);
         }
 
+        public void SetSuggest()
+        {
+            tileCollider.gameObject.SetActive(false);
+            SetLayerDefault();
+            SetTouchAvailable(false);
+            SetShadowAvailable(false);
+            tileState = TileState.MOVE_TO_SLOT;
+
+            GameManager.Current.AddTileToSlot(this);
+        }
+
         public void ResetPosSlot(int indexSlot)
         {
             SetLayersToMoveSlot(indexSlot);
@@ -194,7 +215,8 @@ namespace Match_3
         private void SetPos()
         {
             //Match
-            transform.localPosition = new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y,
+            transform.localPosition = new Vector3(GameConfig.TILE_SIZE * data.PosTile.x,
+                GameConfig.TILE_SIZE * data.PosTile.y,
                 50 - data.FloorIndex * 5);
         }
 
@@ -212,6 +234,21 @@ namespace Match_3
             shadow.sortingOrder = sortingOrder;
         }
 
+        #region Tweener
+
+        private Sequence _matchSequence;
+
+        public void SetMatch(Action onActionComplete)
+        {
+            _matchSequence = DOTween.Sequence();
+            _matchSequence.Insert(0f, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad));
+            _matchSequence.Insert(0f,
+                tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.1f));
+            _matchSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _matchSequence.Insert(0.1f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _matchSequence.OnComplete(() => { onActionComplete?.Invoke(); });
+        }
+
         private Sequence _moveToSlotSequence;
 
         public void TweenPlayMoveToSlot(int indexSlot)
@@ -221,7 +258,7 @@ namespace Match_3
             tileCollider.gameObject.SetActive(false);
             SetLayersToMoveSlot(indexSlot);
             SetLayerDefault();
-            
+
             _moveToSlotSequence = DOTween.Sequence();
             _moveToSlotSequence.Insert(0f,
                 tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad));
@@ -237,13 +274,13 @@ namespace Match_3
                 GameManager.Current.OnCompleteMoveToSlot(this);
             });
         }
-        
+
         Sequence _shuffleSequence;
-        
+
         public void SetShuffle(ItemData itemData)
         {
             data.ItemData = itemData;
-            
+
             _shuffleSequence = DOTween.Sequence();
             _shuffleSequence.Insert(0f, tileObject.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutQuad));
             _shuffleSequence.Insert(0f,
@@ -259,6 +296,10 @@ namespace Match_3
         }
         
 
+        #endregion
+
+
+
         #region WINDOW_WEB
 
         private void OnMouseDown()
@@ -270,9 +311,9 @@ namespace Match_3
 
         private void OnDestroy()
         {
-            _shuffleSequence.Kill();
+            /*_shuffleSequence.Kill();
             _moveToSlotSequence.Kill();
-            tileObject.transform.DOKill();
+            tileObject.transform.DOKill();*/
         }
     }
 }
