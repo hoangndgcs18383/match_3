@@ -255,7 +255,7 @@ namespace Match_3
         {
             DOTween.Kill(gameObject.transform);
 
-            tileCollider.gameObject.SetActive(false);
+            //tileCollider.gameObject.SetActive(false);
             SetLayersToMoveSlot(indexSlot);
             SetLayerDefault();
 
@@ -267,6 +267,10 @@ namespace Match_3
             _moveToSlotSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
             _moveToSlotSequence.Insert(0.1f,
                 tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _moveToSlotSequence.InsertCallback(0.1f,()=> {
+                // DO SOMETHING
+                SoundManager.Current.PlaySound();
+            });
             _moveToSlotSequence.Insert(0f, transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutQuad));
             _moveToSlotSequence.OnComplete(() =>
             {

@@ -55,6 +55,7 @@ namespace Match_3
 
     public class GameConfig : MonoBehaviour
     {
+        public static string COIN = "COIN";
         public static float TILE_SIZE = 0.95f;
 
         public static Vector3 GetMoveTile(int index)

@@ -25,9 +25,6 @@ namespace Match_3
 
         public List<TileSlot> ListSlots { get; } = new List<TileSlot>();
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
-
-        public List<Transform> ListFloorTransform { get; } = new List<Transform>();
-
         public GameState GameState { get; set; }
 
         private void Awake()
@@ -38,9 +35,33 @@ namespace Match_3
         private void Start()
         {
             LoadLevel();
+            UpdateCoinView();
         }
 
-        public void LoadLevel()
+        #region Stuffs
+        
+        private void UpdateCoinView()
+        {
+            UIManager.Current.SetCoinText(GetCoin());
+        }
+
+        public void AddCoin(int coin)
+        {
+            PlayerPrefs.SetInt(GameConfig.COIN, GetCoin() + coin);
+            PlayerPrefs.Save();
+            UpdateCoinView();
+        }
+
+        public int GetCoin()
+        {
+            return PlayerPrefs.GetInt(GameConfig.COIN);
+        }
+
+        #endregion
+
+        #region Board
+
+        private void LoadLevel()
         {
             GameState = GameState.START;
 
@@ -102,48 +123,8 @@ namespace Match_3
             else
             {
                 //Check lose
-                StartCoroutine(IECheckLose());
+                _levelObject.OnMoveComplete(ListSlots, RestartLevel, RestartLevel);
             }
-        }
-
-        private IEnumerator IECheckLose()
-        {
-            yield return new WaitForSeconds(0.3f);
-            if (CheckLose())
-            {
-                if (GameState == GameState.LOSE)
-                    yield break;
-                GameState = GameState.LOSE;
-                UIManager.Current.ShowPopup("You Lose", "Try again",
-                    RestartLevel, RestartLevel);
-            }
-        }
-
-        private bool CheckLose()
-        {
-            if (ListSlots.Count < maxSlot)
-                return false;
-
-            for (int i = 0; i < ListSlots.Count; i++)
-            {
-                int count = CountItemHasData(ListSlots[i].Tile.data.ItemData);
-                if (count == 3)
-                    return false;
-            }
-
-            return true;
-        }
-
-        private int CountItemHasData(ItemData data)
-        {
-            int count = 0;
-            for (int i = 0; i < ListSlots.Count; i++)
-            {
-                if (ListSlots[i].Tile.data.ItemData.tileType == data.tileType)
-                    count++;
-            }
-
-            return count;
         }
 
         private IEnumerator<float> IEResetPosition(float time)
@@ -188,6 +169,8 @@ namespace Match_3
             isMatch = false;
             return listMatch;
         }
+
+        #endregion
 
         #region Gameplay
 

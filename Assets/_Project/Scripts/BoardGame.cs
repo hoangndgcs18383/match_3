@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +6,7 @@ using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 namespace Match_3
 {
@@ -157,6 +159,8 @@ namespace Match_3
             GameManager.Current.GameState = GameState.PLAYING;
         }
 
+        #region WIN CONDITION
+
         public void OnMoveComplete()
         {
             StartCoroutine(IECheckWin());
@@ -173,6 +177,7 @@ namespace Match_3
 
                 yield return new WaitForSeconds(0.5f);
 
+                GameManager.Current.AddCoin(10);
                 UIManager.Current.ShowPopup("You Win", "Next Level", () => { GameManager.Current.LoadNextLevel(); },
                     () => { GameManager.Current.RestartLevel(); });
             }
@@ -190,6 +195,57 @@ namespace Match_3
 
             return true;
         }
+
+        #endregion
+
+        #region LOSE CONDITION
+
+        public void OnMoveComplete(List<TileSlot> tileSlots, Action onOke, Action onCancel)
+        {
+            Timing.RunCoroutine(IECheckLose(tileSlots, onOke, onCancel));
+        }
+
+        private IEnumerator<float> IECheckLose(List<TileSlot> tileSlots, Action onOke, Action onCancel)
+        {
+            yield return Timing.WaitForSeconds(0.3f);
+            if (CheckLose(tileSlots))
+            {
+                if (GameManager.Current.GameState == GameState.LOSE)
+                    yield break;
+                GameManager.Current.GameState = GameState.LOSE;
+                UIManager.Current.ShowPopup("You Lose", "Try again",
+                    onOke, onCancel);
+            }
+        }
+
+        private bool CheckLose(List<TileSlot> tileSlots)
+        {
+            if (tileSlots.Count < GameManager.Current.maxSlot)
+                return false;
+
+            for (int i = 0; i < tileSlots.Count; i++)
+            {
+                int count = CountItemHasData(tileSlots, tileSlots[i].Tile.data.ItemData);
+                if (count == 3)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private int CountItemHasData(List<TileSlot> tileSlots, ItemData data)
+        {
+            int count = 0;
+            for (int i = 0; i < tileSlots.Count; i++)
+            {
+                if (tileSlots[i].Tile.data.ItemData.tileType == data.tileType)
+                    count++;
+            }
+
+            return count;
+        }
+
+        #endregion
 
         #region Shuffle
 
@@ -261,7 +317,7 @@ namespace Match_3
                 Timing.RunCoroutine(IESetSuggest(listSuggest));
             }
         }
-        
+
         private IEnumerator<float> IESetSuggest(List<Tile> listSuggest)
         {
             yield return Timing.WaitForSeconds(0.5f);

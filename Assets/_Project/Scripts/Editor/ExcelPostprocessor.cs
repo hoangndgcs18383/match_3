@@ -13,7 +13,7 @@ namespace Match_3
     [Serializable]
     public class SheetContainer : SheetContainerBase
     {
-        public ShopSheet Shop { get; private set; }
+        public ShopSheet ShopDesign { get; private set; }
 
         public SheetContainer(ILogger logger) : base(logger)
         {

@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 653660758602404713}
   - component: {fileID: 653660758602404712}
   m_Layer: 5
-  m_Name: previewColor
+  m_Name: PreviewColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
