@@ -512,6 +512,8 @@ namespace Match_3
         [ReadOnly] [SerializeField] private int floor3;
         [ReadOnly] [SerializeField] private int floor4;
         [ReadOnly] [SerializeField] private int floor5;
+        [ReadOnly] [SerializeField] private int totalTile;
+        [ReadOnly] [SerializeField] private bool isValid;
 
         [OnInspectorInit]
         public void ShowInfoTileMap()
@@ -557,6 +559,9 @@ namespace Match_3
                     }
                 }
             }
+
+            totalTile = floor1 + floor2 + floor3 + floor4 + floor5;
+            isValid = CheckValid();
         }
 
         [PropertySpace(10)]
