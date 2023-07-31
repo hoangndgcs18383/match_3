@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f9fdf9f0185402cb014506a779d4ccf, type: 3}
   m_Name: ITEM_7
   m_EditorClassIdentifier: 
-  tileType: 5
+  tileType: 7
