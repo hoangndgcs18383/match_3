@@ -505,28 +505,71 @@ namespace Match_3
 
 #if UNITY_EDITOR
 
-        [Title("Design Map")] [PropertySpace(50)] [ReadOnly] [SerializeField]
-        private int floor1;
+        [Serializable]
+        private class FloorEditor
+        {
+            [HideInInspector] public int FloorIndex;
+            [ReadOnly] public int Count;
+            public Action ClearFloor;
+            public Action UndoFloor;
 
-        [ReadOnly] [SerializeField] private int floor2;
-        [ReadOnly] [SerializeField] private int floor3;
-        [ReadOnly] [SerializeField] private int floor4;
-        [ReadOnly] [SerializeField] private int floor5;
+
+            [Button(ButtonSizes.Large)]
+            public void Clear()
+            {
+                ClearFloor?.Invoke();
+                Count = 0;
+            }
+
+            /*[Button(ButtonSizes.Large)]
+            public void Undo()
+            {
+                UndoFloor?.Invoke();
+            }*/
+        }
+
+        [Title("Design Map")] [PropertySpace(50)] [InlineProperty] [SerializeField]
+        private FloorEditor floor1;
+
+        [InlineProperty] [SerializeField] private FloorEditor floor2;
+        [InlineProperty] [SerializeField] private FloorEditor floor3;
+        [InlineProperty] [SerializeField] private FloorEditor floor4;
+        [InlineProperty] [SerializeField] private FloorEditor floor5;
         [ReadOnly] [SerializeField] private int totalTile;
         [ReadOnly] [SerializeField] private bool isValid;
-        [GUIColor(0,1,0)]
-        [ReadOnly] [SerializeField] private int needItem;
-        [GUIColor(0,1,0.5f)]
-        [ReadOnly] [SerializeField] private int leftOverItem;
+
+        [GUIColor(0, 1, 0)] [ReadOnly] [SerializeField]
+        private int needItem;
+
+        [GUIColor(0, 1, 0.5f)] [ReadOnly] [SerializeField]
+        private int leftOverItem;
 
         [OnInspectorInit]
         public void ShowInfoTileMap()
         {
-            floor1 = 0;
-            floor2 = 0;
-            floor3 = 0;
-            floor4 = 0;
-            floor5 = 0;
+            floor1.FloorIndex = 0;
+            floor2.FloorIndex = 1;
+            floor3.FloorIndex = 2;
+            floor4.FloorIndex = 3;
+            floor5.FloorIndex = 4;
+
+            floor1.Count = 0;
+            floor2.Count = 0;
+            floor3.Count = 0;
+            floor4.Count = 0;
+            floor5.Count = 0;
+
+            floor1.ClearFloor = () => ClearTileMap(0);
+            floor2.ClearFloor = () => ClearTileMap(1);
+            floor3.ClearFloor = () => ClearTileMap(2);
+            floor4.ClearFloor = () => ClearTileMap(3);
+            floor5.ClearFloor = () => ClearTileMap(4);
+            
+            floor1.UndoFloor = UndoTileMap;
+            floor2.UndoFloor = UndoTileMap;
+            floor3.UndoFloor = UndoTileMap;
+            floor4.UndoFloor = UndoTileMap;
+            floor5.UndoFloor = UndoTileMap;
 
 
             for (int i = 0; i < listTileMap.Count; i++)
@@ -544,19 +587,19 @@ namespace Match_3
                             switch (i)
                             {
                                 case 0:
-                                    floor1++;
+                                    floor1.Count++;
                                     break;
                                 case 1:
-                                    floor2++;
+                                    floor2.Count++;
                                     break;
                                 case 2:
-                                    floor3++;
+                                    floor3.Count++;
                                     break;
                                 case 3:
-                                    floor4++;
+                                    floor4.Count++;
                                     break;
                                 case 4:
-                                    floor5++;
+                                    floor5.Count++;
                                     break;
                             }
                         }
@@ -564,8 +607,30 @@ namespace Match_3
                 }
             }
 
-            totalTile = floor1 + floor2 + floor3 + floor4 + floor5;
+            totalTile = floor1.Count + floor2.Count + floor3.Count + floor4.Count + floor5.Count;
             isValid = CheckValid();
+        }
+
+        private void UndoTileMap()
+        {
+            if (_TileMapCached == null)
+                return;
+            for (int y = _TileMapCached.cellBounds.yMin;
+                 y < _TileMapCached.cellBounds.yMax;
+                 y++)
+            {
+                for (int x = _TileMapCached.cellBounds.xMin;
+                     x < _TileMapCached.cellBounds.yMax;
+                     x++)
+                {
+                    if (_TileMapCached.HasTile(new Vector3Int(x, y, 0)))
+                    {
+                        listTileMap[_TileMapIndexCached].SetTile(new Vector3Int(x, y, 0), null);
+                    }
+                }
+            }
+
+            _TileMapCached = null;
         }
 
         [PropertySpace(10)]
@@ -623,11 +688,15 @@ namespace Match_3
 
             if (listTileMapCached.Count % 3 != 0)
             {
-                Debug.LogWarning($"Invalid: Tile count is not divisible by 3, đang dư {listTileMapCached.Count % 3}");
+                Debug.LogWarning(
+                    $"Invalid: Tile count is not divisible by 3, đang dư {listTileMapCached.Count % 3}");
                 needItem = 3 - (listTileMapCached.Count % 3);
                 leftOverItem = listTileMapCached.Count % 3;
                 return false;
             }
+
+            needItem = 0;
+            leftOverItem = 0;
 
             return true;
         }
@@ -639,6 +708,17 @@ namespace Match_3
                 listTileMap[i].ClearAllTiles();
             }
         }
+
+        private Tilemap _TileMapCached = new Tilemap();
+        private int _TileMapIndexCached = 0;
+
+        public void ClearTileMap(int index)
+        {
+            _TileMapCached = listTileMap[index];
+            listTileMap[index].ClearAllTiles();
+            _TileMapIndexCached = index;
+        }
+
 #endif
     }
 }
