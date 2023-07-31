@@ -11,6 +11,7 @@ namespace Match_3
         private void Awake()
         {
             Current = this;
+            //DontDestroyOnLoad(this);
 
             InitializedAdsHandler(new UnityAdsHandler());
         }

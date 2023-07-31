@@ -624,6 +624,8 @@ namespace Match_3
             if (listTileMapCached.Count % 3 != 0)
             {
                 Debug.LogWarning($"Invalid: Tile count is not divisible by 3, đang dư {listTileMapCached.Count % 3}");
+                needItem = 3 - (listTileMapCached.Count % 3);
+                leftOverItem = listTileMapCached.Count % 3;
                 return false;
             }
 

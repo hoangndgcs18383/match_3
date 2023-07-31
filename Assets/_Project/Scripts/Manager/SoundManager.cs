@@ -15,7 +15,7 @@ namespace Match_3
         private void Awake()
         {
             Current = this;
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
             _currentAudioSound = GetComponent<AudioSource>();
         }
         
