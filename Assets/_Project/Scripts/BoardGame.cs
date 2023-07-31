@@ -514,6 +514,10 @@ namespace Match_3
         [ReadOnly] [SerializeField] private int floor5;
         [ReadOnly] [SerializeField] private int totalTile;
         [ReadOnly] [SerializeField] private bool isValid;
+        [GUIColor(0,1,0)]
+        [ReadOnly] [SerializeField] private int needItem;
+        [GUIColor(0,1,0.5f)]
+        [ReadOnly] [SerializeField] private int leftOverItem;
 
         [OnInspectorInit]
         public void ShowInfoTileMap()
