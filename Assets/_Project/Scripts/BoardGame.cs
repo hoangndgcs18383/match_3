@@ -142,7 +142,7 @@ namespace Match_3
 
         private void GenerateFloorItem()
         {
-            Debug.Log($"GenerateFloorItem {_listTileData.Count}");
+            //Debug.Log($"GenerateFloorItem {_listTileData.Count}");
 
             for (int i = 0; i < _listTileData.Count; i++)
             {

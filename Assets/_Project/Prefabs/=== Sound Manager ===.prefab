@@ -176,6 +176,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClips:
   - {fileID: 8300000, guid: cf1add50dd11ae94fb1fee520e19277a, type: 3}
+  volume: 0.3
+  duration: 5
   sfxAudioSource: {fileID: 8891143669924442593}
   mbgAudioSource: {fileID: 4762896790415634350}
 --- !u!1 &8994110875857698269

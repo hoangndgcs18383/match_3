@@ -10,6 +10,9 @@ namespace Match_3
 
         [ShowInInspector] public AudioClip[] audioClips;
 
+        [SerializeField] private float volume = 0.3f;
+        [SerializeField] private float duration = 10f;
+        
         [SerializeField] private AudioSource sfxAudioSource;
         [SerializeField] private AudioSource mbgAudioSource;
 
@@ -32,7 +35,12 @@ namespace Match_3
 
         public void PlayMusicBackground()
         {
-            mbgAudioSource.DOFade(0.3f, 10).OnStart(SetDefaultVolume);
+            mbgAudioSource.DOFade(volume, duration * 2).OnStart(SetDefaultVolume);
+        }
+        
+        public void StopMusicBackground()
+        {
+            mbgAudioSource.DOFade(0f, duration).OnStart(SetDefaultVolume);
         }
         
         private void SetDefaultVolume()
