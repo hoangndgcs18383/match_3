@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MEC;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization;
+//using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace Match_3
@@ -14,7 +14,7 @@ namespace Match_3
         [SerializeField] private TMP_Text levelText;
         [SerializeField] private UIPopup popup;
         [SerializeField] private Image spinAdsButton;
-        [SerializeField] private LocalizedString levelString;
+        //[SerializeField] private LocalizedString levelString;
 
         public static UIManager Current;
         
