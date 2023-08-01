@@ -119,7 +119,7 @@ public partial class SROptions : INotifyPropertyChanged
     
     private int _levelReload = 0;
     
-    [NumberRange(0, 25)]
+    [NumberRange(0, 50)]
     [Category("Level")]
     public int LevelReload {
         get => _levelReload;

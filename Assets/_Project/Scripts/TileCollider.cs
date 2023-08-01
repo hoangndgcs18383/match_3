@@ -57,6 +57,8 @@ namespace Match_3
                     {
                         _countCollision--;
                     }
+
+                    if (_countCollision <= 0) tileParent.SetTouchEnable();
                 }
             }
         }
