@@ -230,6 +230,14 @@ namespace Match_3
             SceneManager.LoadScene("Main");
             GCCollectAndClear();
         }
+        
+        public void ReloadLevelAt(int level)
+        {
+            _currentLevel = level;
+            SaveLevel();
+            SceneManager.LoadScene("Main");
+            GCCollectAndClear();
+        }
 
 
         public void RestartLevel()
