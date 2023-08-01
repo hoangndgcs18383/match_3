@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -32,14 +31,10 @@ namespace Match_3
         public void Initialized()
         {
             //slotTransform.transform.l
-        }
-
-        private void Start()
-        {
             InitDirections();
             ReadDataMap();
         }
-
+        
         private void InitDirections()
         {
             GameManager.Current.ListDirections.Clear();

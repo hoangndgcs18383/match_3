@@ -270,7 +270,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 8.65
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -837,6 +837,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowRewardedAd
       objectReference: {fileID: 0}
+    - target: {fileID: 7706984554126453357, guid: 7c06bac9e054cda48be44830112db952, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706984554126453357, guid: 7c06bac9e054cda48be44830112db952, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75
+      objectReference: {fileID: 0}
     - target: {fileID: 7706984554573552406, guid: 7c06bac9e054cda48be44830112db952, type: 3}
       propertyPath: m_Name
       value: Canvas (1)
@@ -925,5 +933,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7706984554186564638, guid: 7c06bac9e054cda48be44830112db952, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7c06bac9e054cda48be44830112db952, type: 3}

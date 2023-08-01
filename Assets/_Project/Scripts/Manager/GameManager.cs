@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -34,10 +35,17 @@ namespace Match_3
 
         private void Start()
         {
+            SetTargetFPS();
             LoadLevel();
             UpdateCoinView();
         }
 
+        private void SetTargetFPS()
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
+        }
+        
         #region Stuffs
         
         private void UpdateCoinView()
@@ -75,6 +83,7 @@ namespace Match_3
             if (boardGame != null)
             {
                 _levelObject = Instantiate(boardGame);
+                _levelObject.Initialized();
                 UIManager.Current.SetLevelText(_currentLevel);
             }
             else
@@ -231,9 +240,15 @@ namespace Match_3
 
         private void GCCollectAndClear()
         {
-            System.GC.Collect();
-            System.GC.WaitForPendingFinalizers();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             Resources.UnloadUnusedAssets();
+        }
+
+        private void OnDestroy()
+        {
+            Timing.KillCoroutines();
+            DOTween.KillAll();
         }
 
         #endregion

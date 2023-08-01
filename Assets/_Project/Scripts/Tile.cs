@@ -267,7 +267,8 @@ namespace Match_3
             _moveToSlotSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
             _moveToSlotSequence.Insert(0.1f,
                 tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
-            _moveToSlotSequence.InsertCallback(0.1f,()=> {
+            _moveToSlotSequence.InsertCallback(0.1f, () =>
+            {
                 // DO SOMETHING
                 SoundManager.Current.PlaySound();
             });
@@ -298,10 +299,8 @@ namespace Match_3
                 tileCollider.gameObject.transform.localPosition = new Vector3(0f, 0f, 0.5f);
             });
         }
-        
 
         #endregion
-
 
 
         #region WINDOW_WEB
@@ -315,9 +314,11 @@ namespace Match_3
 
         private void OnDestroy()
         {
-            /*_shuffleSequence.Kill();
+            _shuffleSequence.Kill();
             _moveToSlotSequence.Kill();
-            tileObject.transform.DOKill();*/
+            tileObject.transform.DOKill();
+            _matchSequence.Kill();
+            tileObject.transform.DOKill();
         }
     }
 }

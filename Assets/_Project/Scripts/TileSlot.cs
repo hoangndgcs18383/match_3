@@ -34,5 +34,10 @@ namespace Match_3
         {
             gameObject.SetActive(false);
         }
+
+        private void OnDestroy()
+        {
+            DOTween.Kill(transform);
+        }
     }
 }
