@@ -1336,6 +1336,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6560bc8b9d4fb4346be4c879c7b22e29, type: 2}
   - {fileID: 11400000, guid: 6712742f8b61e834db07728b8e0d3771, type: 2}
   - {fileID: 11400000, guid: 8418ffc990e4d3844aff8f1b907bd6e1, type: 2}
+  - {fileID: 11400000, guid: 8f89b30345f56ad47b93cda5d6697bb6, type: 2}
   listFloorTransform:
   - {fileID: 6352097833947637686}
   - {fileID: 8611645080997706344}
@@ -1350,7 +1351,7 @@ MonoBehaviour:
     Count: 41
   floor2:
     FloorIndex: 1
-    Count: 18
+    Count: 20
   floor3:
     FloorIndex: 2
     Count: 41
@@ -1360,10 +1361,10 @@ MonoBehaviour:
   floor5:
     FloorIndex: 4
     Count: 0
-  totalTile: 118
-  isValid: 0
-  needItem: 2
-  leftOverItem: 1
+  totalTile: 120
+  isValid: 1
+  needItem: 0
+  leftOverItem: 0
 --- !u!1 &7721852612033814471
 GameObject:
   m_ObjectHideFlags: 0
