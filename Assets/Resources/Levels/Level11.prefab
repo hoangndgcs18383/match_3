@@ -1142,11 +1142,21 @@ MonoBehaviour:
   gridObject: {fileID: 7721852611652385913}
   tilePrefab: {fileID: 6951233215892222085, guid: b47fb17a9575ed842a42981678cff0d9, type: 3}
   slotTransform: {fileID: 8677579260022245763}
-  floor1: 28
-  floor2: 33
-  floor3: 20
-  floor4: 3
-  floor5: 0
+  floor1:
+    FloorIndex: 0
+    Count: 0
+  floor2:
+    FloorIndex: 0
+    Count: 0
+  floor3:
+    FloorIndex: 0
+    Count: 0
+  floor4:
+    FloorIndex: 0
+    Count: 0
+  floor5:
+    FloorIndex: 0
+    Count: 0
   totalTile: 84
   isValid: 1
   needItem: 0

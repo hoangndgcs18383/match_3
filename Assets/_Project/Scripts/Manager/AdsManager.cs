@@ -10,10 +10,13 @@ namespace Match_3
 
         private void Awake()
         {
-            Current = this;
-            //DontDestroyOnLoad(this);
-
-            InitializedAdsHandler(new UnityAdsHandler());
+            if (Current != null) Destroy(gameObject);
+            else
+            {
+                Current = this;
+                DontDestroyOnLoad(this);
+                InitializedAdsHandler(new UnityAdsHandler());
+            }
         }
 
         private void InitializedAdsHandler(IAdsHandler adsHandler)
@@ -28,8 +31,10 @@ namespace Match_3
         private void OnLoadAdsEvent(AdsResult status)
         {
             Debug.Log("OnLoadAdsEvent " + status);
-
-            UIManager.Current.SpinAds();
+            if (status == AdsResult.Success)
+            {
+                UIManager.Current.SpinAds();
+            }
         }
 
         private void OnShowAdsEvent(AdsResult status)

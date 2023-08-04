@@ -300,6 +300,44 @@ namespace Match_3
             });
         }
 
+        Sequence _undoSequence;
+
+        public void SetUndo()
+        {
+            DOTween.Kill(gameObject.transform);
+
+            SetLayersToMoveSlot(0);
+            SetLayerDefault();
+
+            _undoSequence = DOTween.Sequence();
+            _undoSequence.Insert(0f, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.05f).SetEase(Ease.OutQuad));
+            _undoSequence.Insert(0f,
+                tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.05f));
+            _undoSequence.Insert(0.05f, tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(0.05f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.1f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(0f,
+                gameObject.transform
+                    .DOLocalMove(
+                        new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y, _z),
+                        0.2f).SetEase(Ease.OutQuad));
+            _undoSequence.OnComplete(OnUndoComplete);
+        }
+
+        public void SetUndoNow()
+        {
+            tileState = TileState.FLOOR;
+            OnUndoComplete();
+        }
+
+        private void OnUndoComplete()
+        {
+            tileState = TileState.FLOOR;
+            SetTouchAvailable(true);
+            SetOrderLayerFloor();
+            SetLayerFloor();
+            tileCollider.gameObject.SetActive(true);
+        }
+
         #endregion
 
 

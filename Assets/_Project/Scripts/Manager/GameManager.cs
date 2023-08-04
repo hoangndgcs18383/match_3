@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
+using Random = UnityEngine.Random;
 
 namespace Match_3
 {
@@ -45,9 +46,9 @@ namespace Match_3
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
         }
-        
+
         #region Stuffs
-        
+
         private void UpdateCoinView()
         {
             UIManager.Current.SetCoinText(GetCoin());
@@ -88,7 +89,7 @@ namespace Match_3
             }
             else
             {
-                _currentLevel--;
+                _currentLevel = Random.Range(0, 50);
                 _levelObject = Instantiate(Resources.Load<BoardGame>("Levels/Level" + _currentLevel));
             }
         }
@@ -104,6 +105,7 @@ namespace Match_3
 
                 tileSlot.SetTile(tile);
                 tile.TweenPlayMoveToSlot(indexAdd);
+                _levelObject.AddUndo(tileSlot);
                 ListSlots.Insert(indexAdd, tileSlot);
 
                 Timing.RunCoroutine(IEResetPosition(0.1f));
@@ -122,6 +124,7 @@ namespace Match_3
                 foreach (var slot in currentSlots)
                 {
                     ListSlots.Remove(slot);
+                    _levelObject.RemoveUndo(slot);
                     slot.SetMatchCallback();
                 }
 
@@ -183,6 +186,18 @@ namespace Match_3
 
         #region Gameplay
 
+        #region Undo
+
+        public void OnButtonUndo()
+        {
+            if (GameState == GameState.PLAYING && _levelObject.CheckUndoAvailable())
+            {
+                _levelObject.SetUndo();
+            }
+        }
+
+        #endregion
+
         #region Shuffle
 
         public void OnButtonShuffle()
@@ -230,7 +245,7 @@ namespace Match_3
             SceneManager.LoadScene("Main");
             GCCollectAndClear();
         }
-        
+
         public void ReloadLevelAt(int level)
         {
             _currentLevel = level;

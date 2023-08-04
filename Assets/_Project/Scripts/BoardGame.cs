@@ -34,7 +34,7 @@ namespace Match_3
             InitDirections();
             ReadDataMap();
         }
-        
+
         private void InitDirections()
         {
             GameManager.Current.ListDirections.Clear();
@@ -285,9 +285,12 @@ namespace Match_3
         private List<Tile> _listSuggestTiles = new List<Tile>();
         private Dictionary<TileType, List<Tile>> _availableDictionary = new Dictionary<TileType, List<Tile>>();
         private Dictionary<TileType, List<Tile>> _dictAllTile = new Dictionary<TileType, List<Tile>>();
+        private bool _isRunningSuggestions;
 
         public void Suggest()
         {
+            if (_isRunningSuggestions)
+                return;
             _listSuggestTiles.Clear();
 
             for (int i = 0; i < listFloorTransform.Count; i++)
@@ -302,10 +305,10 @@ namespace Match_3
                 }
             }
 
-            Debug.Log("Suggest: " + _listSuggestTiles.Count);
+            //Debug.Log("Suggest: " + _listSuggestTiles.Count);
             SplitListSuggestTile();
             List<Tile> listSuggest = GetListSuggest(GameManager.Current.ListSlots);
-            Debug.Log("listSuggest: " + listSuggest.Count);
+            //Debug.Log("listSuggest: " + listSuggest.Count);
 
             if (listSuggest.Count > 0)
             {
@@ -315,12 +318,15 @@ namespace Match_3
 
         private IEnumerator<float> IESetSuggest(List<Tile> listSuggest)
         {
+            _isRunningSuggestions = true;
             yield return Timing.WaitForSeconds(0.5f);
             for (int i = 0; i < listSuggest.Count; i++)
             {
                 listSuggest[i].SetSuggest();
                 yield return Timing.WaitForSeconds(0.1f);
             }
+
+            _isRunningSuggestions = false;
         }
 
         private void SplitListSuggestTile()
@@ -498,6 +504,40 @@ namespace Match_3
 
         #endregion
 
+        #region Undo
+
+        private List<TileSlot> _listUndoTileSlot = new List<TileSlot>();
+
+        public void AddUndo(TileSlot tileSlot)
+        {
+            _listUndoTileSlot.Add(tileSlot);
+        }
+        
+        public void RemoveUndo(TileSlot tileSlot)
+        {
+            _listUndoTileSlot.Remove(tileSlot);
+        }
+        
+        public bool CheckUndoAvailable()
+        {
+            return _listUndoTileSlot.Count > 0;
+        }
+
+        public void SetUndo()
+        {
+            if(_listUndoTileSlot.Count > 0)
+            {
+                TileSlot tileSlot = _listUndoTileSlot[^1];
+                tileSlot.Tile.transform.parent = listFloorTransform[tileSlot.Tile.data.FloorIndex];
+                tileSlot.Tile.SetUndo();
+                _listUndoTileSlot.Remove(tileSlot);
+                GameManager.Current.ListSlots.Remove(tileSlot);
+                Destroy(tileSlot.gameObject);
+            }
+        }
+
+        #endregion
+
 #if UNITY_EDITOR
 
         [Serializable]
@@ -559,7 +599,7 @@ namespace Match_3
             floor3.ClearFloor = () => ClearTileMap(2);
             floor4.ClearFloor = () => ClearTileMap(3);
             floor5.ClearFloor = () => ClearTileMap(4);
-            
+
             floor1.UndoFloor = UndoTileMap;
             floor2.UndoFloor = UndoTileMap;
             floor3.UndoFloor = UndoTileMap;

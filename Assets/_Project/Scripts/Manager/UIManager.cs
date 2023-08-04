@@ -31,14 +31,35 @@ namespace Match_3
         public void SetLevelText(int level)
         {
             levelText.SetText("Level " + level);
-            
         }
+
+        #region PowerUp
+        
+        public void OnSuggestClick()
+        {
+            GameManager.Current.OnButtonSuggest();
+        }
+        
+        public void OnShuffleClick()
+        {
+            GameManager.Current.OnButtonShuffle();
+        }
+        
+        public void OnUndoClick()
+        {
+            GameManager.Current.OnButtonUndo();
+        }
+
+        #endregion
+
+
+        #region Ads
 
         public void ShowPopup(string title, string content, Action onBtnOke, Action onBtnCancel)
         {
             popup.Show(title, content, onBtnOke, onBtnCancel);
         }
-        
+
         public void SpinAds()
         {
             Timing.RunCoroutine(IESpinAdsCoroutine());
@@ -49,11 +70,15 @@ namespace Match_3
             yield return Timing.WaitForOneFrame;
             spinAdsButton.Spin();
         }
-        
+
         public void StopSpinAds()
         {
             Timing.KillCoroutines();
             spinAdsButton.transform.localScale = Vector3.one;
         }
+        
+
+        #endregion
+
     }
 }
