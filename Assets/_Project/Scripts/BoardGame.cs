@@ -26,7 +26,7 @@ namespace Match_3
         public Transform slotTransform;
 
         private List<TileData> _listTileData = new List<TileData>();
-
+        private bool _isRunningPowerUp;
 
         public void Initialized()
         {
@@ -285,11 +285,10 @@ namespace Match_3
         private List<Tile> _listSuggestTiles = new List<Tile>();
         private Dictionary<TileType, List<Tile>> _availableDictionary = new Dictionary<TileType, List<Tile>>();
         private Dictionary<TileType, List<Tile>> _dictAllTile = new Dictionary<TileType, List<Tile>>();
-        private bool _isRunningSuggestions;
 
         public void Suggest()
         {
-            if (_isRunningSuggestions)
+            if (_isRunningPowerUp)
                 return;
             _listSuggestTiles.Clear();
 
@@ -318,7 +317,7 @@ namespace Match_3
 
         private IEnumerator<float> IESetSuggest(List<Tile> listSuggest)
         {
-            _isRunningSuggestions = true;
+            _isRunningPowerUp = true;
             yield return Timing.WaitForSeconds(0.5f);
             for (int i = 0; i < listSuggest.Count; i++)
             {
@@ -326,7 +325,7 @@ namespace Match_3
                 yield return Timing.WaitForSeconds(0.1f);
             }
 
-            _isRunningSuggestions = false;
+            _isRunningPowerUp = false;
         }
 
         private void SplitListSuggestTile()

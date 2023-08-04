@@ -40,6 +40,7 @@ namespace Match_3
             LoadLevel();
             UpdateCoinView();
         }
+        
 
         private void SetTargetFPS()
         {

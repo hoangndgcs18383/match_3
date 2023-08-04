@@ -348,6 +348,16 @@ namespace Match_3
             OnTouchTile();
         }
 
+        private void OnMouseEnter()
+        {
+            tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad);
+        }
+
+        private void OnMouseExit()
+        {
+            tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad);
+        }
+
         #endregion
 
         private void OnDestroy()
