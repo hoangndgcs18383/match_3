@@ -101,7 +101,7 @@ namespace Match_3
             {
                 int indexAdd = FindIndexToAdd(tile);
                 TileSlot tileSlot = Instantiate(itemTileSlotPrefab, _levelObject.slotTransform);
-                tileSlot.transform.localPosition = GameConfig.GetMoveTile(indexAdd);
+                tileSlot.transform.localPosition = GameConfig.GetAddTile(indexAdd);
                 tile.transform.SetParent(tileSlot.transform);
 
                 tileSlot.SetTile(tile);

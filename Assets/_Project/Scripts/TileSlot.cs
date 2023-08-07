@@ -23,6 +23,7 @@ namespace Match_3
             DOTween.Kill(transform);
             sequence = DOTween.Sequence();
             sequence.Insert(0f, transform.DOLocalMove(GameConfig.GetMoveTile(indexSlot), 0.2f).SetEase(Ease.OutQuad));
+            sequence.Insert(0f, transform.DOScale(new Vector3(0.6f, 0.6f, 0.6f), 0.1f).SetEase(Ease.OutQuad));
         }
 
         public void SetMatchCallback()

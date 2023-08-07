@@ -64,13 +64,19 @@ namespace Match_3
     public static class GameConfig
     {
         public static string COIN = "COIN";
-        public static float TILE_SIZE = 1.1f;
+        public static float TILE_SIZE = 1.25f;
+        public static float TILE_MOVE_SIZE = 1.1f;
         public static int DEFAULT_SHUFFLE_COUNT = PlayerPrefs.GetInt("ShuffleCount", 3);
         public static int DEFAULT_SUGGESTS_COUNT = PlayerPrefs.GetInt("SuggestsCount", 3);
         public static int DEFAULT_UNDO_COUNT = PlayerPrefs.GetInt("UndoCount", 3);
 
 
         public static Vector3 GetMoveTile(int index)
+        {
+            return new Vector3(-3 * TILE_MOVE_SIZE + index * TILE_MOVE_SIZE, 0f, 0f);
+        }
+        
+        public static Vector3 GetAddTile(int index)
         {
             return new Vector3(-3 * TILE_SIZE + index * TILE_SIZE, 0f, 0f);
         }
