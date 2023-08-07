@@ -194,6 +194,7 @@ namespace Match_3
             if (GameState == GameState.PLAYING && _levelObject.CheckUndoAvailable())
             {
                 _levelObject.SetUndo();
+                GameConfig.UsePowerUp(PowerUpType.Undo);
             }
         }
 
@@ -206,6 +207,7 @@ namespace Match_3
             if (GameState == GameState.PLAYING)
             {
                 _levelObject.Shuffle();
+                GameConfig.UsePowerUp(PowerUpType.Shuffle);
             }
         }
 
@@ -218,6 +220,7 @@ namespace Match_3
             if (GameState == GameState.PLAYING)
             {
                 _levelObject.Suggest();
+                GameConfig.UsePowerUp(PowerUpType.Suggests);
             }
         }
 

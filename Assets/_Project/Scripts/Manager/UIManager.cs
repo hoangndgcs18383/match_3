@@ -14,15 +14,57 @@ namespace Match_3
         [SerializeField] private TMP_Text levelText;
         [SerializeField] private UIPopup popup;
         [SerializeField] private Image spinAdsButton;
-        //[SerializeField] private LocalizedString levelString;
+
+        private Dictionary<PowerUpType, PowerUpItem> powerUpItems = new Dictionary<PowerUpType, PowerUpItem>();
 
         public static UIManager Current;
-        
+
         private void Awake()
         {
             Current = this;
         }
-        
+
+        #region PowerUp
+
+        private void Start()
+        {
+            InitPowerUp();
+        }
+
+        private void InitPowerUp()
+        {
+            var powerUps = FindObjectsOfType<PowerUpItem>();
+            
+            foreach (var powerUp in powerUps)
+            {
+                powerUpItems.Add(powerUp.PowerUpType, powerUp);
+                powerUpItems[powerUp.PowerUpType].Init(GetPowerUpCount(powerUp.PowerUpType), OnPowerUpClick);
+            }
+        }
+
+        private void OnPowerUpClick(PowerUpType obj)
+        {
+            switch (obj)
+            {
+                case PowerUpType.Shuffle:
+                    GameManager.Current.OnButtonShuffle();
+                    break;
+                case PowerUpType.Suggests:
+                    GameManager.Current.OnButtonSuggest();
+                    break;
+                case PowerUpType.Undo:
+                    GameManager.Current.OnButtonUndo();
+                    break;
+            }
+        }
+
+        private int GetPowerUpCount(PowerUpType powerUpPowerUpType)
+        {
+            return GameConfig.GetPowerUpCount(powerUpPowerUpType);
+        }
+
+        #endregion
+
         public void SetCoinText(int coin)
         {
             coinText.SetText(coin.ToString());
@@ -32,25 +74,6 @@ namespace Match_3
         {
             levelText.SetText("Level " + level);
         }
-
-        #region PowerUp
-        
-        public void OnSuggestClick()
-        {
-            GameManager.Current.OnButtonSuggest();
-        }
-        
-        public void OnShuffleClick()
-        {
-            GameManager.Current.OnButtonShuffle();
-        }
-        
-        public void OnUndoClick()
-        {
-            GameManager.Current.OnButtonUndo();
-        }
-
-        #endregion
 
 
         #region Ads
@@ -76,9 +99,7 @@ namespace Match_3
             Timing.KillCoroutines();
             spinAdsButton.transform.localScale = Vector3.one;
         }
-        
 
         #endregion
-
     }
 }
