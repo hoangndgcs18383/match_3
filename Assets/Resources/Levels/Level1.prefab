@@ -655,21 +655,21 @@ MonoBehaviour:
   slotTransform: {fileID: 3451182748146862007}
   floor1:
     FloorIndex: 0
-    Count: 0
+    Count: 12
   floor2:
-    FloorIndex: 0
+    FloorIndex: 1
     Count: 0
   floor3:
-    FloorIndex: 0
+    FloorIndex: 2
     Count: 0
   floor4:
-    FloorIndex: 0
+    FloorIndex: 3
     Count: 0
   floor5:
-    FloorIndex: 0
+    FloorIndex: 4
     Count: 0
-  totalTile: 0
-  isValid: 0
+  totalTile: 12
+  isValid: 1
   needItem: 0
   leftOverItem: 0
 --- !u!1 &7721852612033814471

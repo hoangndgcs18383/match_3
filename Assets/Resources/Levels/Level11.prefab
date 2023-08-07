@@ -1133,6 +1133,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0b41178ea3b20a48851a7ffb358df17, type: 2}
   - {fileID: 11400000, guid: 6560bc8b9d4fb4346be4c879c7b22e29, type: 2}
   - {fileID: 11400000, guid: 6712742f8b61e834db07728b8e0d3771, type: 2}
+  - {fileID: 11400000, guid: 8418ffc990e4d3844aff8f1b907bd6e1, type: 2}
+  - {fileID: 11400000, guid: 8f89b30345f56ad47b93cda5d6697bb6, type: 2}
   listFloorTransform:
   - {fileID: 8493721908829783803}
   - {fileID: 3594073180715472392}
@@ -1144,20 +1146,20 @@ MonoBehaviour:
   slotTransform: {fileID: 8677579260022245763}
   floor1:
     FloorIndex: 0
-    Count: 0
+    Count: 28
   floor2:
-    FloorIndex: 0
-    Count: 0
+    FloorIndex: 1
+    Count: 27
   floor3:
-    FloorIndex: 0
-    Count: 0
+    FloorIndex: 2
+    Count: 20
   floor4:
-    FloorIndex: 0
-    Count: 0
+    FloorIndex: 3
+    Count: 3
   floor5:
-    FloorIndex: 0
+    FloorIndex: 4
     Count: 0
-  totalTile: 84
+  totalTile: 78
   isValid: 1
   needItem: 0
   leftOverItem: 0

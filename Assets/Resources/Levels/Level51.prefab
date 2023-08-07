@@ -1998,6 +1998,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6712742f8b61e834db07728b8e0d3771, type: 2}
   - {fileID: 11400000, guid: 8418ffc990e4d3844aff8f1b907bd6e1, type: 2}
   - {fileID: 11400000, guid: 8f89b30345f56ad47b93cda5d6697bb6, type: 2}
+  - {fileID: 11400000, guid: be93ed7fb7c215441a40fb751865b249, type: 2}
+  - {fileID: 11400000, guid: 377c69d007b5ab44ab0bdaa44ce4f687, type: 2}
+  - {fileID: 11400000, guid: 89e141f085cff18459be359291127615, type: 2}
   listFloorTransform:
   - {fileID: 6352097833947637686}
   - {fileID: 8611645080997706344}
@@ -2014,20 +2017,20 @@ MonoBehaviour:
   slotTransform: {fileID: 3451182748146862007}
   floor1:
     FloorIndex: 0
-    Count: 0
+    Count: 4
   floor2:
     FloorIndex: 1
-    Count: 0
+    Count: 8
   floor3:
     FloorIndex: 2
-    Count: 0
+    Count: 12
   floor4:
     FloorIndex: 3
-    Count: 0
+    Count: 16
   floor5:
     FloorIndex: 4
-    Count: 0
-  totalTile: 0
+    Count: 12
+  totalTile: 52
   isValid: 1
   needItem: 0
   leftOverItem: 0

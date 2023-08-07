@@ -1344,6 +1344,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8418ffc990e4d3844aff8f1b907bd6e1, type: 2}
   - {fileID: 11400000, guid: 8f89b30345f56ad47b93cda5d6697bb6, type: 2}
   - {fileID: 11400000, guid: be93ed7fb7c215441a40fb751865b249, type: 2}
+  - {fileID: 11400000, guid: 377c69d007b5ab44ab0bdaa44ce4f687, type: 2}
+  - {fileID: 11400000, guid: 89e141f085cff18459be359291127615, type: 2}
   listFloorTransform:
   - {fileID: 6352097833947637686}
   - {fileID: 8611645080997706344}
