@@ -511,12 +511,12 @@ namespace Match_3
         {
             _listUndoTileSlot.Add(tileSlot);
         }
-        
+
         public void RemoveUndo(TileSlot tileSlot)
         {
             _listUndoTileSlot.Remove(tileSlot);
         }
-        
+
         public bool CheckUndoAvailable()
         {
             return _listUndoTileSlot.Count > 0;
@@ -524,7 +524,7 @@ namespace Match_3
 
         public void SetUndo()
         {
-            if(_listUndoTileSlot.Count > 0)
+            if (_listUndoTileSlot.Count > 0)
             {
                 TileSlot tileSlot = _listUndoTileSlot[^1];
                 tileSlot.Tile.transform.parent = listFloorTransform[tileSlot.Tile.data.FloorIndex];
@@ -569,6 +569,11 @@ namespace Match_3
         [InlineProperty] [SerializeField] private FloorEditor floor3;
         [InlineProperty] [SerializeField] private FloorEditor floor4;
         [InlineProperty] [SerializeField] private FloorEditor floor5;
+        [InlineProperty] [SerializeField] private FloorEditor floor6;
+        [InlineProperty] [SerializeField] private FloorEditor floor7;
+        [InlineProperty] [SerializeField] private FloorEditor floor8;
+        [InlineProperty] [SerializeField] private FloorEditor floor9;
+        [InlineProperty] [SerializeField] private FloorEditor floor10;
         [ReadOnly] [SerializeField] private int totalTile;
         [ReadOnly] [SerializeField] private bool isValid;
 
@@ -586,24 +591,44 @@ namespace Match_3
             floor3.FloorIndex = 2;
             floor4.FloorIndex = 3;
             floor5.FloorIndex = 4;
+            floor5.FloorIndex = 5;
+            floor5.FloorIndex = 6;
+            floor5.FloorIndex = 7;
+            floor5.FloorIndex = 8;
+            floor5.FloorIndex = 9;
 
             floor1.Count = 0;
             floor2.Count = 0;
             floor3.Count = 0;
             floor4.Count = 0;
             floor5.Count = 0;
+            floor6.Count = 0;
+            floor7.Count = 0;
+            floor8.Count = 0;
+            floor9.Count = 0;
+            floor10.Count = 0;
 
             floor1.ClearFloor = () => ClearTileMap(0);
             floor2.ClearFloor = () => ClearTileMap(1);
             floor3.ClearFloor = () => ClearTileMap(2);
             floor4.ClearFloor = () => ClearTileMap(3);
             floor5.ClearFloor = () => ClearTileMap(4);
+            floor6.ClearFloor = () => ClearTileMap(6);
+            floor7.ClearFloor = () => ClearTileMap(7);
+            floor8.ClearFloor = () => ClearTileMap(8);
+            floor9.ClearFloor = () => ClearTileMap(9);
+            floor10.ClearFloor = () => ClearTileMap(10);
 
             floor1.UndoFloor = UndoTileMap;
             floor2.UndoFloor = UndoTileMap;
             floor3.UndoFloor = UndoTileMap;
             floor4.UndoFloor = UndoTileMap;
             floor5.UndoFloor = UndoTileMap;
+            floor6.UndoFloor = UndoTileMap;
+            floor7.UndoFloor = UndoTileMap;
+            floor8.UndoFloor = UndoTileMap;
+            floor9.UndoFloor = UndoTileMap;
+            floor10.UndoFloor = UndoTileMap;
 
 
             for (int i = 0; i < listTileMap.Count; i++)
@@ -635,13 +660,29 @@ namespace Match_3
                                 case 4:
                                     floor5.Count++;
                                     break;
+                                case 5:
+                                    floor6.Count++;
+                                    break;
+                                case 6:
+                                    floor7.Count++;
+                                    break;
+                                case 7:
+                                    floor8.Count++;
+                                    break;
+                                case 8:
+                                    floor9.Count++;
+                                    break;
+                                case 9:
+                                    floor10.Count++;
+                                    break;
                             }
                         }
                     }
                 }
             }
 
-            totalTile = floor1.Count + floor2.Count + floor3.Count + floor4.Count + floor5.Count;
+            totalTile = floor1.Count + floor2.Count + floor3.Count + floor4.Count + floor5.Count + floor6.Count +
+                        floor7.Count + floor8.Count + floor9.Count + floor10.Count;
             isValid = CheckValid();
         }
 
