@@ -40,7 +40,7 @@ namespace Match_3
             LoadLevel();
             UpdateCoinView();
         }
-        
+
 
         private void SetTargetFPS()
         {
@@ -193,8 +193,7 @@ namespace Match_3
         {
             if (GameState == GameState.PLAYING && _levelObject.CheckUndoAvailable())
             {
-                _levelObject.SetUndo();
-                GameConfig.UsePowerUp(PowerUpType.Undo);
+                if (GameConfig.UsePowerUp(PowerUpType.Undo)) _levelObject.SetUndo();
             }
         }
 
@@ -206,8 +205,7 @@ namespace Match_3
         {
             if (GameState == GameState.PLAYING)
             {
-                _levelObject.Shuffle();
-                GameConfig.UsePowerUp(PowerUpType.Shuffle);
+                if (GameConfig.UsePowerUp(PowerUpType.Shuffle)) _levelObject.Shuffle();
             }
         }
 
@@ -219,8 +217,7 @@ namespace Match_3
         {
             if (GameState == GameState.PLAYING)
             {
-                _levelObject.Suggest();
-                GameConfig.UsePowerUp(PowerUpType.Suggests);
+                if (GameConfig.UsePowerUp(PowerUpType.Suggests)) _levelObject.Suggest();
             }
         }
 

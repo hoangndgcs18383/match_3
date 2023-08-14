@@ -48,9 +48,6 @@ TagManager:
   - name: BG
     uniqueID: 874766263
     locked: 0
-  - name: MOVE
-    uniqueID: 3057055491
-    locked: 0
   - name: FLOOR_1
     uniqueID: 1905422649
     locked: 0
@@ -80,4 +77,7 @@ TagManager:
     locked: 0
   - name: FLOOR_10
     uniqueID: 1062340665
+    locked: 0
+  - name: MOVE
+    uniqueID: 3057055491
     locked: 0

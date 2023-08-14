@@ -59,6 +59,7 @@ namespace Match_3
         private Collider2D _touchCollider;
         public TileData data;
         public TileState tileState;
+        private Vector3 _originalScale;
 
         private float _z;
 
@@ -66,6 +67,7 @@ namespace Match_3
         {
             _touchCollider = GetComponent<Collider2D>();
             _touchCollider.enabled = true;
+            _originalScale = transform.localScale;
 
             tileState = TileState.START;
             tileCollider.gameObject.SetActive(false);
@@ -313,13 +315,14 @@ namespace Match_3
             _undoSequence.Insert(0f, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.05f).SetEase(Ease.OutQuad));
             _undoSequence.Insert(0f,
                 tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.05f));
-            _undoSequence.Insert(0.05f, tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad));
-            _undoSequence.Insert(0.05f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.1f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(0f, transform.DOScale(_originalScale, 0.05f).SetEase(Ease.InQuad));
             _undoSequence.Insert(0f,
                 gameObject.transform
                     .DOLocalMove(
                         new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y, _z),
                         0.2f).SetEase(Ease.OutQuad));
+            _undoSequence.Insert(0.05f, tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(0.05f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.1f).SetEase(Ease.InQuad));
             _undoSequence.OnComplete(OnUndoComplete);
         }
 

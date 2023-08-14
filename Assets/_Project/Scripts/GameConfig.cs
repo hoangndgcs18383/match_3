@@ -75,7 +75,7 @@ namespace Match_3
         {
             return new Vector3(-3 * TILE_MOVE_SIZE + index * TILE_MOVE_SIZE, 0f, 0f);
         }
-        
+
         public static Vector3 GetAddTile(int index)
         {
             return new Vector3(-3 * TILE_SIZE + index * TILE_SIZE, 0f, 0f);
@@ -96,7 +96,7 @@ namespace Match_3
             return 0;
         }
 
-        public static void UsePowerUp(PowerUpType powerUpPowerUpType)
+        public static bool UsePowerUp(PowerUpType powerUpPowerUpType)
         {
             switch (powerUpPowerUpType)
             {
@@ -105,26 +105,32 @@ namespace Match_3
                     {
                         DEFAULT_SHUFFLE_COUNT--;
                         PlayerPrefs.SetInt("ShuffleCount", DEFAULT_SHUFFLE_COUNT);
+                        return true;
                     }
 
-                    break;
+                    return false;
                 case PowerUpType.Suggests:
                     if (DEFAULT_SUGGESTS_COUNT > 0)
                     {
                         DEFAULT_SUGGESTS_COUNT--;
                         PlayerPrefs.SetInt("SuggestsCount", DEFAULT_SUGGESTS_COUNT);
+                        return true;
                     }
 
-                    break;
+                    return false;
                 case PowerUpType.Undo:
                     if (DEFAULT_UNDO_COUNT > 0)
                     {
                         DEFAULT_UNDO_COUNT--;
                         PlayerPrefs.SetInt("UndoCount", DEFAULT_UNDO_COUNT);
+                        return true;
+                        
                     }
 
-                    break;
+                    return false;
             }
+            
+            return false;
         }
     }
 }
