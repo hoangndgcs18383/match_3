@@ -1,26 +1,38 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using DG.Tweening;
 using MEC;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
 namespace Match_3
 {
+    public enum LoadLevelType
+    {
+        ManualLoad,
+        JsonLoad
+    }
+    
     public class GameManager : MonoBehaviour
     {
         public static GameManager Current;
 
         [Title("Config")] public TileSlot itemTileSlotPrefab;
+         public Tile tilePrefab;
+         public SlotTransform slotTransformPrefab;
 
         //public Transform slotParentTranform;
         public int maxSlot = 7;
         public int matchTile = 3;
 
         public SpriteAtlas spriteTiles;
+        public LoadLevelType LoadLevelType = LoadLevelType.ManualLoad;
 
         private int _currentLevel = 1;
         private BoardGame _levelObject;
@@ -29,15 +41,28 @@ namespace Match_3
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
         public GameState GameState { get; set; }
 
+        public Camera mainCamera; 
+            
+        
         private void Awake()
         {
-            Current = this;
+            if (Current == null)
+            {
+                Current = this;
+                if (transform.parent == null)
+                {
+                    
+                    DontDestroyOnLoad(this);
+                }
+            }
         }
 
         private void Start()
         {
+            mainCamera = Camera.main;
+            
             SetTargetFPS();
-            LoadLevel();
+            StartLevel();
             UpdateCoinView();
         }
 
@@ -71,28 +96,62 @@ namespace Match_3
 
         #region Board
 
-        private void LoadLevel()
+        public void LoadLevel()
         {
             GameState = GameState.START;
-
-            if (PlayerPrefs.HasKey("~~level~~"))
+            
+            if (PlayerPrefs.HasKey(StringConstants.SAVE_LEVEL))
             {
-                _currentLevel = PlayerPrefs.GetInt("~~level~~");
+                _currentLevel = PlayerPrefs.GetInt(StringConstants.SAVE_LEVEL);
             }
 
-            BoardGame boardGame = Resources.Load<BoardGame>("Levels/Level" + _currentLevel);
+            string path = "Levels/Level";
+
+            switch (LoadLevelType)
+            {
+                case LoadLevelType.ManualLoad:
+                    ManualLoad(path);
+                    break;
+                case LoadLevelType.JsonLoad:
+                    JsonLoad();
+                    break;
+            }
+            
+            UIManager.Current.SetLevelText(_currentLevel);
+        }
+
+        private void ManualLoad(string path)
+        {
+            BoardGame boardGame = Resources.Load<BoardGame>(path + _currentLevel);
 
             if (boardGame != null)
             {
                 _levelObject = Instantiate(boardGame);
                 _levelObject.Initialized();
-                UIManager.Current.SetLevelText(_currentLevel);
             }
             else
             {
                 _currentLevel = Random.Range(0, 50);
-                _levelObject = Instantiate(Resources.Load<BoardGame>("Levels/Level" + _currentLevel));
+                _levelObject = Instantiate(Resources.Load<BoardGame>(path+ _currentLevel));
             }
+        }
+        
+
+        [Button]
+        private void JsonLoad()
+        {
+            string path = Application.dataPath + $"/Resources/DesignJson/Level{_currentLevel}.json";
+            string levelTxt = File.ReadAllText(path);
+            if(levelTxt.IsNullOrWhitespace()) return;
+            
+            BoardGame.TileJsonData tileJsonData = new BoardGame.TileJsonData();
+            tileJsonData = JsonUtility.FromJson<BoardGame.TileJsonData>(levelTxt);
+            
+            if(tileJsonData == null) return;
+            GameObject rootParent = new GameObject(tileJsonData.Level);
+            JsonBoardGame boardGame = rootParent.AddComponent<JsonBoardGame>();
+            _levelObject = boardGame;
+            boardGame.Initialized(tileJsonData, tilePrefab, slotTransformPrefab);
         }
 
         public void AddTileToSlot(Tile tile)
@@ -235,15 +294,20 @@ namespace Match_3
 
         private void SaveLevel()
         {
-            PlayerPrefs.SetInt("~~level~~", _currentLevel);
+            PlayerPrefs.SetInt(StringConstants.SAVE_LEVEL, _currentLevel);
             PlayerPrefs.Save();
         }
 
+        private void StartLevel()
+        {
+            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
+        }
+        
         public void LoadNextLevel()
         {
             _currentLevel++;
             SaveLevel();
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
         }
 
@@ -251,14 +315,14 @@ namespace Match_3
         {
             _currentLevel = level;
             SaveLevel();
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
         }
 
 
         public void RestartLevel()
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
         }
 

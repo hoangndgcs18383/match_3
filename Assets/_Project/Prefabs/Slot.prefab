@@ -668,6 +668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5061405175885226164}
+  - component: {fileID: 7511441776041731161}
   m_Layer: 0
   m_Name: Slot
   m_TagString: Untagged
@@ -691,6 +692,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7511441776041731161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5061405175885226163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec872a33ee9ac6e488c4d49ef4df85ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SlotItemParent: {fileID: 5061405174672982410}
 --- !u!1 &8491043552119806801
 GameObject:
   m_ObjectHideFlags: 0

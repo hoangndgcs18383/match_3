@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using MEC;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -25,7 +27,7 @@ namespace Match_3
         public Tile tilePrefab;
         public Transform slotTransform;
 
-        private List<TileData> _listTileData = new List<TileData>();
+        protected List<TileData> ListTileData = new List<TileData>();
         private bool _isRunningPowerUp;
 
         public void Initialized()
@@ -35,8 +37,12 @@ namespace Match_3
             ReadDataMap();
         }
 
-        private void InitDirections()
+        protected virtual void InitDirections(List<Transform> _listFloor = null, List<ItemData> _listItemData = null, Transform _slotTransform= null)
         {
+            if (_listFloor != null) listFloorTransform = _listFloor;
+            if (_listItemData != null) listItemData = _listItemData;
+            if (_slotTransform != null) slotTransform = _slotTransform; 
+            
             GameManager.Current.ListDirections.Clear();
             List<TileDirection> directionCached = new List<TileDirection>
             {
@@ -61,10 +67,10 @@ namespace Match_3
             }
         }
 
-        private void ReadDataMap()
+        protected virtual void ReadDataMap()
         {
             // Read data from json file
-            _listTileData.Clear();
+            ListTileData.Clear();
 
             int indexOnMap = 0;
             for (int i = 0; i < listTileMap.Count; i++) // Loop qua toan bo tile map
@@ -84,7 +90,7 @@ namespace Match_3
                             // Neu co tile thi add vao list
                             indexOnMap++;
                             TileData tileData = new TileData(i, indexOnMap, new Vector2Int(x, y));
-                            _listTileData.Add(tileData);
+                            ListTileData.Add(tileData);
                         }
                     }
                 }
@@ -94,6 +100,101 @@ namespace Match_3
             GenerateItem();
         }
 
+        protected virtual void ReadJsonData(TileJsonData tileJsonData, Tile tile)
+        {
+            if (tilePrefab == null) tilePrefab = tile;
+            GenerateItem();
+        }
+
+        #region LoadJson
+        
+        [Serializable]
+        public class TileJsonData
+        {
+            public string Level;
+            public List<FloorJsonData> Floor = new List<FloorJsonData>();
+            public string ListItemData;
+        }
+        
+        [Serializable]
+        public class FloorJsonData
+        {
+            public int Index;
+            public List<ItemJsonData> Items = new List<ItemJsonData>();
+        }
+        
+        [Serializable]
+        public class ItemJsonData
+        {
+            public int X;
+            public int Y;
+        }
+
+        public TileJsonData tileData;
+
+        private string SerializeSOList<T>(List<T> SO_List)
+        {
+            string result = "";
+            foreach (T item in SO_List)
+            {
+                result += JsonUtility.ToJson(item) + ", ";
+            }
+            
+            return result;
+        }
+        
+        [Button]
+        public void WriteToJson()
+        {
+            string path = Application.dataPath + $"/Resources/DesignJson/{name}.json";
+
+            tileData.Floor.Clear();
+            tileData.Floor ??= new List<FloorJsonData>();
+            tileData.Level = name;
+            tileData.ListItemData = SerializeSOList(listItemData);
+            
+            for (int i = 0; i < listTileMap.Count - 1; i++) // Loop qua toan bo tile map
+            {
+                List<ItemJsonData> itemJsonDatas = new List<ItemJsonData>();
+                
+                for (int y = listTileMap[i].cellBounds.yMin;
+                     y < listTileMap[i].cellBounds.yMax;
+                     y++) // loop qua toan bo y
+                {
+                    for (int x = listTileMap[i].cellBounds.xMin;
+                         x < listTileMap[i].cellBounds.yMax;
+                         x++) // loop qua toan bo x
+                    {
+                        //Debug.Log("i: " + i + " y: " + y + " x: " + x);
+
+                        if (listTileMap[i].HasTile(new Vector3Int(x, y, 0)))
+                        {
+                            //Debug.LogError(new Vector3Int(x, y, 0));
+                            ItemJsonData item = new ItemJsonData
+                            {
+                                X = x,
+                                Y = y
+                            };
+
+                            itemJsonDatas.Add(item);
+                        }
+                    }
+                }
+
+                if (itemJsonDatas.Count > 0)
+                {
+                    FloorJsonData floor = new FloorJsonData {Items = itemJsonDatas, Index = i + 1};
+                    tileData.Floor.Add(floor);
+                }
+            }
+            
+            string data = JsonUtility.ToJson(tileData);
+            File.WriteAllText(path, data);
+        }
+        
+        #endregion
+        
+
 
         private void GenerateItem()
         {
@@ -102,7 +203,7 @@ namespace Match_3
 
             List<ItemData> listItemGenerate = new List<ItemData>();
 
-            if (_listTileData.Count % 3 != 0)
+            if (ListTileData.Count % 3 != 0)
             {
                 Debug.LogError("listTileData must be more than 3"); // rule more than 3
                 return;
@@ -118,7 +219,7 @@ namespace Match_3
                 listItemCached.Remove(itemData);
             }
 
-            for (int i = 0; i < _listTileData.Count / 3; i++)
+            for (int i = 0; i < ListTileData.Count / 3; i++)
             {
                 // Get 3 phan tu [0 / 3] [3 / 6] [6 / 9] 
                 ItemData itemData = listShuffleItem[i % listShuffleItem.Count];
@@ -129,11 +230,11 @@ namespace Match_3
                 listItemGenerate.Add(itemData);
             }
 
-            for (int i = 0; i < _listTileData.Count; i++)
+            for (int i = 0; i < ListTileData.Count; i++)
             {
                 //tip tuc shuffle
                 ItemData itemData = listItemGenerate[Random.Range(0, listItemGenerate.Count)];
-                _listTileData[i].ItemData = itemData;
+                ListTileData[i].ItemData = itemData;
                 listItemGenerate.Remove(itemData);
             }
 
@@ -144,11 +245,11 @@ namespace Match_3
         {
             //Debug.Log($"GenerateFloorItem {_listTileData.Count}");
 
-            for (int i = 0; i < _listTileData.Count; i++)
+            for (int i = 0; i < ListTileData.Count; i++)
             {
-                Tile itemTile = Instantiate(tilePrefab, listFloorTransform[_listTileData[i].FloorIndex]);
-                itemTile.Initialized(_listTileData[i]);
-                itemTile.name = $"{_listTileData[i].FloorIndex} floor | {_listTileData[i].IndexOnMap} index _ " + i;
+                Tile itemTile = Instantiate(tilePrefab, listFloorTransform[ListTileData[i].FloorIndex]);
+                itemTile.Initialized(ListTileData[i]);
+                itemTile.name = $"{ListTileData[i].FloorIndex} floor | {ListTileData[i].IndexOnMap} index _ " + i;
             }
 
             GameManager.Current.GameState = GameState.PLAYING;

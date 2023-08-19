@@ -61,6 +61,12 @@ namespace Match_3
         public int count;
     }
 
+    public static class StringConstants
+    {
+        public static string LOAD_LEVEL = "Level";
+        public static string SAVE_LEVEL = "[level]";
+    }
+
     public static class GameConfig
     {
         public static string COIN = "COIN";

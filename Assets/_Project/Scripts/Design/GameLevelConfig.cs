@@ -1,6 +1,8 @@
 #if UNITY_EDITOR
 
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 namespace Match_3
@@ -8,17 +10,25 @@ namespace Match_3
     [CreateAssetMenu(menuName = "GameLevelConfig", fileName = "ScriptableObjects/GameLevelConfig")]
     public class GameLevelConfig : SerializedScriptableObject
     {
-        [BoxGroup("Level Config")]
-        [Title("Level Config")] [SerializeField]
-        [Range(1, 1000)]
-        private int startLevel;
+        private List<BoardGame> listBoardGame = new List<BoardGame>();
         
-        [BoxGroup("Level Config")]
-        [Button(ButtonSizes.Medium)]
-        [InfoBox("Load level at start")]
-        public void LoadLevel()
+        [Button]
+        [GUIColor(0.5f, 0.5f, 1f)]
+        private void ExportLevelsToJson()
         {
-            GameManager.Current.SetLevel(startLevel);
+            listBoardGame.Clear();
+
+            foreach (var boardGame in Resources.LoadAll<BoardGame>("Levels"))
+            {
+                if(!boardGame.name.Contains("Level")) continue;
+                if (boardGame != null)
+                {
+                    boardGame.WriteToJson();
+                }
+            }
+            
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
 }

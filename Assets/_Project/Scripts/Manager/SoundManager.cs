@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,13 +19,21 @@ namespace Match_3
 
         private void Awake()
         {
-            if (Current != null) Destroy(gameObject);
-            else
+            if (Current == null)
             {
                 Current = this;
-                DontDestroyOnLoad(this);
-                PlayMusicBackground();
+                
+                if (transform.parent == null)
+                {
+                    
+                    DontDestroyOnLoad(this);
+                }
             }
+        }
+
+        private void Start()
+        {
+            PlayMusicBackground();
         }
 
         public void PlaySound()

@@ -118,9 +118,10 @@ namespace Match_3
 
         private void SetLayerDefault()
         {
-            bg.sortingLayerName = "MOVE";
-            icon.sortingLayerName = "MOVE";
-            shadow.sortingLayerName = "MOVE";
+            string moveLayer = "MOVE";
+            bg.sortingLayerName = moveLayer;
+            icon.sortingLayerName = moveLayer;
+            shadow.sortingLayerName = moveLayer;
 
             tileCollider.gameObject.transform.localPosition = new Vector3(0f, 0f, 0.5f);
         }
@@ -242,12 +243,15 @@ namespace Match_3
 
         public void SetMatch(Action onActionComplete)
         {
+            float startTiming = 0;
+            float nextTiming = 0.1f;
+            
             _matchSequence = DOTween.Sequence();
-            _matchSequence.Insert(0f, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad));
-            _matchSequence.Insert(0f,
+            _matchSequence.Insert(startTiming, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad));
+            _matchSequence.Insert(startTiming,
                 tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.1f));
-            _matchSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
-            _matchSequence.Insert(0.1f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _matchSequence.Insert(nextTiming, tileObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _matchSequence.Insert(nextTiming, tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
             _matchSequence.OnComplete(() => { onActionComplete?.Invoke(); });
         }
 
@@ -257,24 +261,27 @@ namespace Match_3
         {
             DOTween.Kill(gameObject.transform);
 
+            float startTiming = 0;
+            float nextTiming = 0.1f;
+            
             //tileCollider.gameObject.SetActive(false);
             SetLayersToMoveSlot(indexSlot);
             SetLayerDefault();
 
             _moveToSlotSequence = DOTween.Sequence();
-            _moveToSlotSequence.Insert(0f,
+            _moveToSlotSequence.Insert(startTiming,
                 tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad));
-            _moveToSlotSequence.Insert(0f,
+            _moveToSlotSequence.Insert(startTiming, transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutQuad));
+            _moveToSlotSequence.Insert(startTiming,
                 tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.1f));
-            _moveToSlotSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
-            _moveToSlotSequence.Insert(0.1f,
+            _moveToSlotSequence.Insert(nextTiming, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
+            _moveToSlotSequence.Insert(nextTiming,
                 tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
-            _moveToSlotSequence.InsertCallback(0.1f, () =>
+            _moveToSlotSequence.InsertCallback(nextTiming, () =>
             {
                 // DO SOMETHING
                 SoundManager.Current.PlaySound();
             });
-            _moveToSlotSequence.Insert(0f, transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutQuad));
             _moveToSlotSequence.OnComplete(() =>
             {
                 tileState = TileState.SLOT;
@@ -288,13 +295,16 @@ namespace Match_3
         {
             data.ItemData = itemData;
 
+            float startTiming = 0f;
+            float nextTiming = 0.1f;
+
             _shuffleSequence = DOTween.Sequence();
-            _shuffleSequence.Insert(0f, tileObject.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutQuad));
-            _shuffleSequence.Insert(0f,
+            _shuffleSequence.Insert(startTiming, tileObject.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutQuad));
+            _shuffleSequence.Insert(startTiming,
                 tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.1f));
-            _shuffleSequence.InsertCallback(0.1f, SetSprite);
-            _shuffleSequence.Insert(0.1f, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
-            _shuffleSequence.Insert(0.1f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
+            _shuffleSequence.InsertCallback(nextTiming, SetSprite);
+            _shuffleSequence.Insert(nextTiming, tileObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad));
+            _shuffleSequence.Insert(nextTiming, tileObject.transform.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.InQuad));
             _shuffleSequence.OnComplete(() =>
             {
                 SetLayerFloor();
@@ -311,18 +321,21 @@ namespace Match_3
             SetLayersToMoveSlot(0);
             SetLayerDefault();
 
+            float startTiming = 0;
+            float nextTiming = 0.05f;
+
             _undoSequence = DOTween.Sequence();
-            _undoSequence.Insert(0f, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.05f).SetEase(Ease.OutQuad));
-            _undoSequence.Insert(0f,
+            _undoSequence.Insert(startTiming, tileObject.transform.DOScale(Vector3.one * 1.1f, 0.05f).SetEase(Ease.OutQuad));
+            _undoSequence.Insert(startTiming,
                 tileObject.transform.DOLocalRotate(new Vector3(0f, 0f, Random.Range(10f, 15f)), 0.05f));
-            _undoSequence.Insert(0f, transform.DOScale(_originalScale, 0.05f).SetEase(Ease.InQuad));
-            _undoSequence.Insert(0f,
+            _undoSequence.Insert(startTiming, transform.DOScale(_originalScale, 0.05f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(startTiming,
                 gameObject.transform
                     .DOLocalMove(
                         new Vector3(GameConfig.TILE_SIZE * data.PosTile.x, GameConfig.TILE_SIZE * data.PosTile.y, _z),
                         0.2f).SetEase(Ease.OutQuad));
-            _undoSequence.Insert(0.05f, tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad));
-            _undoSequence.Insert(0.05f, tileObject.transform.DOLocalRotate(Vector3.zero, 0.1f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(nextTiming, tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad));
+            _undoSequence.Insert(nextTiming, tileObject.transform.DOLocalRotate(Vector3.zero, 0.1f).SetEase(Ease.InQuad));
             _undoSequence.OnComplete(OnUndoComplete);
         }
 

@@ -674,7 +674,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1905422649
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.75, y: 0.75, z: 0}
@@ -1348,7 +1348,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1442187083
-  m_SortingLayer: 7
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.75, y: 0.75, z: 0}
@@ -2062,7 +2062,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1209331813
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.75, y: 0.75, z: 0}
@@ -2149,6 +2149,443 @@ MonoBehaviour:
   gridObject: {fileID: 7721852611652385913}
   tilePrefab: {fileID: 6951233215892222085, guid: b47fb17a9575ed842a42981678cff0d9, type: 3}
   slotTransform: {fileID: 3451182748146862007}
+  tileData:
+    Level: 0
+    Floor:
+    - Index: 0
+      Items:
+      - X: -4
+        Y: -3
+      - X: -3
+        Y: -3
+      - X: -2
+        Y: -3
+      - X: -1
+        Y: -3
+      - X: 0
+        Y: -3
+      - X: 1
+        Y: -3
+      - X: 2
+        Y: -3
+      - X: 3
+        Y: -3
+      - X: -3
+        Y: -2
+      - X: -2
+        Y: -2
+      - X: -1
+        Y: -2
+      - X: 0
+        Y: -2
+      - X: 1
+        Y: -2
+      - X: 2
+        Y: -2
+      - X: -2
+        Y: -1
+      - X: -1
+        Y: -1
+      - X: 0
+        Y: -1
+      - X: 1
+        Y: -1
+      - X: -4
+        Y: 0
+      - X: -3
+        Y: 0
+      - X: -2
+        Y: 0
+      - X: -1
+        Y: 0
+      - X: 0
+        Y: 0
+      - X: 1
+        Y: 0
+      - X: 2
+        Y: 0
+      - X: 3
+        Y: 0
+      - X: -1
+        Y: 1
+      - X: 0
+        Y: 1
+      - X: -4
+        Y: 2
+      - X: -3
+        Y: 2
+      - X: -2
+        Y: 2
+      - X: -1
+        Y: 2
+      - X: 0
+        Y: 2
+      - X: 1
+        Y: 2
+      - X: 2
+        Y: 2
+      - X: 3
+        Y: 2
+      - X: -2
+        Y: 3
+      - X: -1
+        Y: 3
+      - X: 0
+        Y: 3
+      - X: 1
+        Y: 3
+      - X: -3
+        Y: 4
+      - X: -2
+        Y: 4
+      - X: -1
+        Y: 4
+      - X: 0
+        Y: 4
+      - X: 1
+        Y: 4
+      - X: 2
+        Y: 4
+      - X: -4
+        Y: 5
+      - X: -3
+        Y: 5
+      - X: -2
+        Y: 5
+      - X: -1
+        Y: 5
+      - X: 0
+        Y: 5
+      - X: 1
+        Y: 5
+      - X: 2
+        Y: 5
+      - X: 3
+        Y: 5
+    - Index: 1
+      Items:
+      - X: -4
+        Y: -3
+      - X: -3
+        Y: -3
+      - X: -2
+        Y: -3
+      - X: -1
+        Y: -3
+      - X: 0
+        Y: -3
+      - X: 1
+        Y: -3
+      - X: 2
+        Y: -3
+      - X: -3
+        Y: -2
+      - X: -2
+        Y: -2
+      - X: -1
+        Y: -2
+      - X: 0
+        Y: -2
+      - X: 1
+        Y: -2
+      - X: -4
+        Y: -1
+      - X: -3
+        Y: -1
+      - X: -2
+        Y: -1
+      - X: -1
+        Y: -1
+      - X: 0
+        Y: -1
+      - X: 1
+        Y: -1
+      - X: 2
+        Y: -1
+      - X: -4
+        Y: 0
+      - X: -3
+        Y: 0
+      - X: -2
+        Y: 0
+      - X: -1
+        Y: 0
+      - X: 0
+        Y: 0
+      - X: 1
+        Y: 0
+      - X: 2
+        Y: 0
+      - X: -4
+        Y: 1
+      - X: -3
+        Y: 1
+      - X: -2
+        Y: 1
+      - X: -1
+        Y: 1
+      - X: 0
+        Y: 1
+      - X: 1
+        Y: 1
+      - X: 2
+        Y: 1
+      - X: -4
+        Y: 2
+      - X: -3
+        Y: 2
+      - X: -2
+        Y: 2
+      - X: -1
+        Y: 2
+      - X: 0
+        Y: 2
+      - X: 1
+        Y: 2
+      - X: 2
+        Y: 2
+      - X: -3
+        Y: 3
+      - X: -2
+        Y: 3
+      - X: -1
+        Y: 3
+      - X: 0
+        Y: 3
+      - X: 1
+        Y: 3
+      - X: -4
+        Y: 4
+      - X: -3
+        Y: 4
+      - X: -2
+        Y: 4
+      - X: -1
+        Y: 4
+      - X: 0
+        Y: 4
+      - X: 1
+        Y: 4
+      - X: 2
+        Y: 4
+    - Index: 2
+      Items:
+      - X: -4
+        Y: -3
+      - X: -3
+        Y: -3
+      - X: -2
+        Y: -3
+      - X: -1
+        Y: -3
+      - X: 0
+        Y: -3
+      - X: 1
+        Y: -3
+      - X: 2
+        Y: -3
+      - X: 3
+        Y: -3
+      - X: -3
+        Y: -2
+      - X: -2
+        Y: -2
+      - X: -1
+        Y: -2
+      - X: 0
+        Y: -2
+      - X: 1
+        Y: -2
+      - X: 2
+        Y: -2
+      - X: -2
+        Y: -1
+      - X: -1
+        Y: -1
+      - X: 0
+        Y: -1
+      - X: 1
+        Y: -1
+      - X: -4
+        Y: 0
+      - X: -3
+        Y: 0
+      - X: -2
+        Y: 0
+      - X: -1
+        Y: 0
+      - X: 0
+        Y: 0
+      - X: 1
+        Y: 0
+      - X: 2
+        Y: 0
+      - X: 3
+        Y: 0
+      - X: -1
+        Y: 1
+      - X: 0
+        Y: 1
+      - X: -4
+        Y: 2
+      - X: -3
+        Y: 2
+      - X: -2
+        Y: 2
+      - X: -1
+        Y: 2
+      - X: 0
+        Y: 2
+      - X: 1
+        Y: 2
+      - X: 2
+        Y: 2
+      - X: 3
+        Y: 2
+      - X: -2
+        Y: 3
+      - X: -1
+        Y: 3
+      - X: 0
+        Y: 3
+      - X: 1
+        Y: 3
+      - X: -3
+        Y: 4
+      - X: -2
+        Y: 4
+      - X: -1
+        Y: 4
+      - X: 0
+        Y: 4
+      - X: 1
+        Y: 4
+      - X: 2
+        Y: 4
+      - X: -4
+        Y: 5
+      - X: -3
+        Y: 5
+      - X: -2
+        Y: 5
+      - X: -1
+        Y: 5
+      - X: 0
+        Y: 5
+      - X: 1
+        Y: 5
+      - X: 2
+        Y: 5
+      - X: 3
+        Y: 5
+    - Index: 3
+      Items:
+      - X: -1
+        Y: -4
+      - X: -4
+        Y: -3
+      - X: -3
+        Y: -3
+      - X: -2
+        Y: -3
+      - X: -1
+        Y: -3
+      - X: 0
+        Y: -3
+      - X: 1
+        Y: -3
+      - X: 2
+        Y: -3
+      - X: -3
+        Y: -2
+      - X: -2
+        Y: -2
+      - X: -1
+        Y: -2
+      - X: 0
+        Y: -2
+      - X: 1
+        Y: -2
+      - X: -4
+        Y: -1
+      - X: -3
+        Y: -1
+      - X: -2
+        Y: -1
+      - X: -1
+        Y: -1
+      - X: 0
+        Y: -1
+      - X: 1
+        Y: -1
+      - X: 2
+        Y: -1
+      - X: -4
+        Y: 0
+      - X: -3
+        Y: 0
+      - X: -2
+        Y: 0
+      - X: -1
+        Y: 0
+      - X: 0
+        Y: 0
+      - X: 1
+        Y: 0
+      - X: 2
+        Y: 0
+      - X: -4
+        Y: 1
+      - X: -3
+        Y: 1
+      - X: -2
+        Y: 1
+      - X: -1
+        Y: 1
+      - X: 0
+        Y: 1
+      - X: 1
+        Y: 1
+      - X: 2
+        Y: 1
+      - X: -4
+        Y: 2
+      - X: -3
+        Y: 2
+      - X: -2
+        Y: 2
+      - X: -1
+        Y: 2
+      - X: 0
+        Y: 2
+      - X: 1
+        Y: 2
+      - X: 2
+        Y: 2
+      - X: -3
+        Y: 3
+      - X: -2
+        Y: 3
+      - X: -1
+        Y: 3
+      - X: 0
+        Y: 3
+      - X: 1
+        Y: 3
+      - X: -4
+        Y: 4
+      - X: -3
+        Y: 4
+      - X: -2
+        Y: 4
+      - X: -1
+        Y: 4
+      - X: 0
+        Y: 4
+      - X: 1
+        Y: 4
+      - X: 2
+        Y: 4
   floor1:
     FloorIndex: 0
     Count: 54
@@ -2162,7 +2599,22 @@ MonoBehaviour:
     FloorIndex: 3
     Count: 53
   floor5:
-    FloorIndex: 4
+    FloorIndex: 9
+    Count: 0
+  floor6:
+    FloorIndex: 0
+    Count: 0
+  floor7:
+    FloorIndex: 0
+    Count: 0
+  floor8:
+    FloorIndex: 0
+    Count: 0
+  floor9:
+    FloorIndex: 0
+    Count: 0
+  floor10:
+    FloorIndex: 0
     Count: 0
   totalTile: 213
   isValid: 1
@@ -3796,7 +4248,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1327100895
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.75, y: 0.75, z: 0}
@@ -3916,7 +4368,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1829080835
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.75, y: 0.75, z: 0}

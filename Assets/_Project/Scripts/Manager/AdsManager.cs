@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Match_3
@@ -10,13 +11,20 @@ namespace Match_3
 
         private void Awake()
         {
-            if (Current != null) Destroy(gameObject);
-            else
+            if (Current == null)
             {
                 Current = this;
-                DontDestroyOnLoad(this);
-                InitializedAdsHandler(new UnityAdsHandler());
+                if (transform.parent == null)
+                {
+                    
+                    DontDestroyOnLoad(this);
+                }
             }
+        }
+
+        private void Start()
+        {
+            InitializedAdsHandler(new UnityAdsHandler());
         }
 
         private void InitializedAdsHandler(IAdsHandler adsHandler)
@@ -56,6 +64,8 @@ namespace Match_3
             {
                 _adsHandler = null;
                 InitializedAdsHandler(new AdModHandler());
+
+                if (_adsHandler == null) UIManager.Current.DisableAds();
             }
         }
 

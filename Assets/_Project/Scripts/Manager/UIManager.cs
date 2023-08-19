@@ -21,7 +21,15 @@ namespace Match_3
 
         private void Awake()
         {
-            Current = this;
+            if (Current == null)
+            {
+                Current = this;
+                if (transform.parent == null)
+                {
+                    
+                    DontDestroyOnLoad(this);
+                }
+            }
         }
 
         #region PowerUp
@@ -90,6 +98,7 @@ namespace Match_3
 
         private IEnumerator<float> IESpinAdsCoroutine()
         {
+            spinAdsButton.gameObject.SetActive(true);
             yield return Timing.WaitForOneFrame;
             spinAdsButton.Spin();
         }
@@ -98,6 +107,11 @@ namespace Match_3
         {
             Timing.KillCoroutines();
             spinAdsButton.transform.localScale = Vector3.one;
+        }
+
+        public void DisableAds()
+        {
+            spinAdsButton.gameObject.SetActive(false);
         }
 
         #endregion

@@ -653,6 +653,40 @@ MonoBehaviour:
   gridObject: {fileID: 7721852611652385913}
   tilePrefab: {fileID: 6951233215892222085, guid: b47fb17a9575ed842a42981678cff0d9, type: 3}
   slotTransform: {fileID: 3451182748146862007}
+  tileData:
+    Level: Level1
+    Floor:
+    - Index: 0
+      Items:
+      - X: -2
+        Y: 0
+      - X: -1
+        Y: 0
+      - X: 0
+        Y: 0
+      - X: 1
+        Y: 0
+      - X: -2
+        Y: 1
+      - X: -1
+        Y: 1
+      - X: 0
+        Y: 1
+      - X: 1
+        Y: 1
+      - X: -2
+        Y: 2
+      - X: -1
+        Y: 2
+      - X: 0
+        Y: 2
+      - X: 1
+        Y: 2
+    ListItemData:
+    - {fileID: 11400000, guid: 4b18be137a8d5d94d99bd9db4b276637, type: 2}
+    - {fileID: 11400000, guid: eba37371641830e4c90ed8a23e2357e3, type: 2}
+    - {fileID: 11400000, guid: b0b41178ea3b20a48851a7ffb358df17, type: 2}
+    - {fileID: 11400000, guid: 6560bc8b9d4fb4346be4c879c7b22e29, type: 2}
   floor1:
     FloorIndex: 0
     Count: 12
@@ -666,7 +700,22 @@ MonoBehaviour:
     FloorIndex: 3
     Count: 0
   floor5:
-    FloorIndex: 4
+    FloorIndex: 9
+    Count: 0
+  floor6:
+    FloorIndex: 0
+    Count: 0
+  floor7:
+    FloorIndex: 0
+    Count: 0
+  floor8:
+    FloorIndex: 0
+    Count: 0
+  floor9:
+    FloorIndex: 0
+    Count: 0
+  floor10:
+    FloorIndex: 0
     Count: 0
   totalTile: 12
   isValid: 1
