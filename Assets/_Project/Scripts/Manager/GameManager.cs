@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using DG.Tweening;
 using MEC;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
@@ -40,6 +38,7 @@ namespace Match_3
         public List<TileSlot> ListSlots { get; } = new List<TileSlot>();
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
         public GameState GameState { get; set; }
+        public int Level { get => PlayerPrefs.GetInt(StringConstants.SAVE_LEVEL); set => PlayerPrefs.SetInt(StringConstants.SAVE_LEVEL, value); }
 
         public Camera mainCamera;
 
@@ -101,7 +100,7 @@ namespace Match_3
 
             if (PlayerPrefs.HasKey(StringConstants.SAVE_LEVEL))
             {
-                _currentLevel = PlayerPrefs.GetInt(StringConstants.SAVE_LEVEL);
+                _currentLevel = Level;
             }
 
             string path = "Levels/Level";
@@ -310,8 +309,7 @@ namespace Match_3
 
         private void SaveLevel()
         {
-            PlayerPrefs.SetInt(StringConstants.SAVE_LEVEL, _currentLevel);
-            PlayerPrefs.Save();
+            Level = _currentLevel;
         }
 
         private void StartLevel()
@@ -322,8 +320,6 @@ namespace Match_3
         public void LoadNextLevel()
         {
             _currentLevel++;
-            Debug.Log(_currentLevel);
-            
             ClearLevel();
             SaveLevel();
             SceneManager.LoadScene(StringConstants.LOAD_LEVEL);

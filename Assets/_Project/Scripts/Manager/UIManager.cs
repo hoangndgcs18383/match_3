@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using MEC;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 //using UnityEngine.Localization;
@@ -12,7 +13,14 @@ namespace Match_3
     {
         [SerializeField] private TMP_Text coinText;
         [SerializeField] private TMP_Text levelText;
+        
+        [Title("References")]
         [SerializeField] private UIPopup popup;
+        [SerializeField] private UIMenu menu;
+        [SerializeField] private GameObject uiGamePlay;
+        
+        [Title("Buttons")]
+        [SerializeField] private Button menuButton;
         [SerializeField] private Image spinAdsButton;
 
         private Dictionary<PowerUpType, PowerUpItem> powerUpItems = new Dictionary<PowerUpType, PowerUpItem>();
@@ -37,6 +45,31 @@ namespace Match_3
         private void Start()
         {
             InitPowerUp();
+        }
+        
+        private void OnEnable()
+        {
+            menuButton.onClick.AddListener(OnMenuClick);
+        }
+        
+        private void OnDisable()
+        {
+            menuButton.onClick.RemoveListener(OnMenuClick);
+        }
+
+        private void OnMenuClick()
+        {
+            menu.Show();
+        }
+        
+        public void ShowGamePlayUI()
+        {
+            uiGamePlay.SetActive(true);
+        }
+        
+        public void HideGamePlayUI()
+        {
+            uiGamePlay.SetActive(false);
         }
 
         private void InitPowerUp()

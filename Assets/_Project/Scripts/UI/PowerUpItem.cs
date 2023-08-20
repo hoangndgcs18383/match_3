@@ -25,7 +25,6 @@ namespace Match_3
         
         public void UpdateCount(int count)
         {
-            Debug.Log("UpdateCount " + count);
             countText.SetText(count.ToString());
         }
         

@@ -361,17 +361,26 @@ namespace Match_3
 
         private void OnMouseDown()
         {
-            OnTouchTile();
+            if (GameManager.Current.GameState == GameState.PLAYING)
+            {
+                OnTouchTile();
+            }
         }
 
         private void OnMouseEnter()
         {
-            tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad);
+            if (GameManager.Current.GameState == GameState.PLAYING)
+            {
+                tileObject.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutQuad);
+            }
         }
 
         private void OnMouseExit()
         {
-            tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad);
+            if (GameManager.Current.GameState == GameState.PLAYING)
+            {
+                tileObject.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InQuad);
+            }
         }
 
         #endregion

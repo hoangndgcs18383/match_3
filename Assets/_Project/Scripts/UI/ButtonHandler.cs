@@ -1,3 +1,5 @@
+using DG.Tweening;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -5,24 +7,45 @@ namespace Match_3
 {
     public class ButtonHandler : Button
     {
-        public bool IsMultiTouch = true;
-        public override void OnPointerClick(PointerEventData eventData)
-        {
-            if (InputStatic.TouchCount > 0 && !IsMultiTouch) return;
+        private Sequence _sequence;
+        private RectTransform _rectTransform;
 
-            base.OnPointerClick(eventData);
+        protected override void Awake()
+        {
+            base.Awake();
+            _rectTransform = GetComponent<RectTransform>();
         }
 
-        public override void OnPointerDown(PointerEventData eventData)
+        protected override void DoStateTransition(SelectionState state, bool instant)
         {
-            base.OnPointerDown(eventData);
-            InputStatic.TouchCount++;
-        }
+            switch (state)
+            {
+                case SelectionState.Normal:
+                    _sequence?.Kill();
+                    _sequence = DOTween.Sequence();
+                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
+                    _sequence.Append(_rectTransform.DOScale(1.1f, 0.1f));
+                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
+                    break;
+                case SelectionState.Highlighted:
+                case SelectionState.Pressed:
+                    _sequence?.Kill();
+                    _sequence = DOTween.Sequence();
+                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
+                    _sequence.Append(_rectTransform.DOScale(0.9f, 0.1f));
+                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
+                    break;
+                case SelectionState.Disabled:
+                    break;
+            }
 
-        public override void OnPointerUp(PointerEventData eventData)
+            base.DoStateTransition(state, instant);
+        }
+        
+        protected override void OnDisable()
         {
-            base.OnPointerUp(eventData);
-            InputStatic.TouchCount--;
+            base.OnDisable();
+            _sequence?.Kill();
         }
     }
 }
