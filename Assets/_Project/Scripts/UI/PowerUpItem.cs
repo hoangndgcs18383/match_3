@@ -20,20 +20,19 @@ namespace Match_3
         public void Init(int count, Action<PowerUpType> onClick)
         {
             _onClick = onClick;
-            UpdateText(count);
-            Debug.Log("Init: " + count);
+            UpdateCount(count);
         }
         
-        private void UpdateText(int count)
+        public void UpdateCount(int count)
         {
+            Debug.Log("UpdateCount " + count);
             countText.SetText(count.ToString());
         }
         
         public void OnClick()
         {
             _onClick?.Invoke(powerUpType);
-            UpdateText(GameConfig.GetPowerUpCount(powerUpType));
-            Debug.Log("_onClick: " + powerUpType);
+            UpdateCount(GameConfig.GetPowerUpCount(powerUpType));
         }
     }
 }

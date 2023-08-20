@@ -382,7 +382,6 @@ namespace Match_3
             _moveToSlotSequence.Kill();
             tileObject.transform.DOKill();
             _matchSequence.Kill();
-            tileObject.transform.DOKill();
         }
     }
 }

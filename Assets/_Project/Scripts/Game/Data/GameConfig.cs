@@ -64,7 +64,7 @@ namespace Match_3
     public static class StringConstants
     {
         public static string LOAD_LEVEL = "Level";
-        public static string SAVE_LEVEL = "[level]";
+        public static string SAVE_LEVEL = "[SaveLevel]";
     }
 
     public static class GameConfig
@@ -85,6 +85,42 @@ namespace Match_3
         public static Vector3 GetAddTile(int index)
         {
             return new Vector3(-3 * TILE_SIZE + index * TILE_SIZE, 0f, 0f);
+        }
+
+        public static void AddPowerUp(PowerUpType powerUpPowerUpType, int count)
+        {
+            switch (powerUpPowerUpType)
+            {
+                case PowerUpType.Shuffle:
+                    DEFAULT_SHUFFLE_COUNT += count;
+                    PlayerPrefs.SetInt("ShuffleCount", DEFAULT_SHUFFLE_COUNT);
+
+                    break;
+                case PowerUpType.Suggests:
+                    DEFAULT_SUGGESTS_COUNT += count;
+                    PlayerPrefs.SetInt("SuggestsCount", DEFAULT_SUGGESTS_COUNT);
+
+                    break;
+                case PowerUpType.Undo:
+                    DEFAULT_UNDO_COUNT += count;
+                    PlayerPrefs.SetInt("UndoCount", DEFAULT_UNDO_COUNT);
+                    break;
+            }
+        }
+
+        public static string GetPowerUpPrefKey(PowerUpType powerUpPowerUpType)
+        {
+            switch (powerUpPowerUpType)
+            {
+                case PowerUpType.Shuffle:
+                    return "ShuffleCount";
+                case PowerUpType.Suggests:
+                    return "SuggestsCount";
+                case PowerUpType.Undo:
+                    return "UndoCount";
+            }
+
+            return "";
         }
 
         public static int GetPowerUpCount(PowerUpType powerUpPowerUpType)
@@ -130,12 +166,11 @@ namespace Match_3
                         DEFAULT_UNDO_COUNT--;
                         PlayerPrefs.SetInt("UndoCount", DEFAULT_UNDO_COUNT);
                         return true;
-                        
                     }
 
                     return false;
             }
-            
+
             return false;
         }
     }

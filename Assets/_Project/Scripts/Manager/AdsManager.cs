@@ -33,7 +33,18 @@ namespace Match_3
             _adsHandler.OnInitializedAdsEvent += OnInitializedAdsEvent;
             _adsHandler.OnLoadAdsEvent += OnLoadAdsEvent;
             _adsHandler.OnShowAdsEvent += OnShowAdsEvent;
+            _adsHandler.OnRewardAdsEvent += OnRewardAdEvent;
             _adsHandler.InitializedAds();
+        }
+
+        private void OnRewardAdEvent(AdsResult status)
+        {
+            if (status == AdsResult.Success)
+            {
+                GameManager.Current.AddCoin(100);
+                UIManager.Current.StopSpinAds();
+                RewardManager.Current.AddRandomPowerUp();
+            }
         }
 
         private void OnLoadAdsEvent(AdsResult status)
@@ -43,16 +54,15 @@ namespace Match_3
             {
                 UIManager.Current.SpinAds();
             }
+            else
+            {
+                UIManager.Current.DisableAds();
+            }
         }
 
         private void OnShowAdsEvent(AdsResult status)
         {
             Debug.Log("OnShowAdsEvent " + status);
-            if (status == AdsResult.Success)
-            {
-                GameManager.Current.AddCoin(100);
-                UIManager.Current.StopSpinAds();
-            }
         }
 
         private void OnInitializedAdsEvent(AdsResult status)

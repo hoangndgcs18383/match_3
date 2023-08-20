@@ -12,7 +12,8 @@ namespace Match_3
         [MenuItem("Tools/Setup/Create Default Folders")]
         public static void CreateDefaultFolders()
         {
-            Folders.CreateDefault("_Project", "Animation", "ExcelDesign", "Art", "Materials", "Prefabs", "ScriptableObjects",
+            Folders.CreateDefault("_Project", "Editor", "Animation", "ExcelDesign", "Art", "Materials", "Prefabs",
+                "ScriptableObjects",
                 "Resources", "Scripts", "Settings");
             Refresh();
             SaveAssets();

@@ -132,17 +132,6 @@ namespace Match_3
 
         public TileJsonData tileData;
 
-        private string SerializeSOList<T>(List<T> SO_List)
-        {
-            string result = "";
-            foreach (T item in SO_List)
-            {
-                result += JsonUtility.ToJson(item) + ", ";
-            }
-            
-            return result;
-        }
-        
         [Button]
         public void WriteToJson()
         {
@@ -151,9 +140,9 @@ namespace Match_3
             tileData.Floor.Clear();
             tileData.Floor ??= new List<FloorJsonData>();
             tileData.Level = name;
-            tileData.ListItemData = SerializeSOList(listItemData);
+            tileData.ListItemData = listItemData.Serialize();
             
-            for (int i = 0; i < listTileMap.Count - 1; i++) // Loop qua toan bo tile map
+            for (int i = 0; i < listTileMap.Count; i++) // Loop qua toan bo tile map
             {
                 List<ItemJsonData> itemJsonDatas = new List<ItemJsonData>();
                 
@@ -188,7 +177,7 @@ namespace Match_3
                 }
             }
             
-            string data = JsonUtility.ToJson(tileData);
+            string data = JsonUtility.ToJson(tileData, true);
             File.WriteAllText(path, data);
         }
         
@@ -274,6 +263,8 @@ namespace Match_3
                 yield return new WaitForSeconds(0.5f);
 
                 GameManager.Current.AddCoin(10);
+                RewardManager.Current.AddRandomPowerUp();
+                
                 UIManager.Current.ShowPopup("You Win", "Next Level", () => { GameManager.Current.LoadNextLevel(); },
                     () => { GameManager.Current.RestartLevel(); });
             }

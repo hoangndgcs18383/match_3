@@ -18,14 +18,14 @@ namespace Match_3
         ManualLoad,
         JsonLoad
     }
-    
+
     public class GameManager : MonoBehaviour
     {
         public static GameManager Current;
 
         [Title("Config")] public TileSlot itemTileSlotPrefab;
-         public Tile tilePrefab;
-         public SlotTransform slotTransformPrefab;
+        public Tile tilePrefab;
+        public SlotTransform slotTransformPrefab;
 
         //public Transform slotParentTranform;
         public int maxSlot = 7;
@@ -41,9 +41,9 @@ namespace Match_3
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
         public GameState GameState { get; set; }
 
-        public Camera mainCamera; 
-            
-        
+        public Camera mainCamera;
+
+
         private void Awake()
         {
             if (Current == null)
@@ -51,7 +51,6 @@ namespace Match_3
                 Current = this;
                 if (transform.parent == null)
                 {
-                    
                     DontDestroyOnLoad(this);
                 }
             }
@@ -60,7 +59,7 @@ namespace Match_3
         private void Start()
         {
             mainCamera = Camera.main;
-            
+
             SetTargetFPS();
             StartLevel();
             UpdateCoinView();
@@ -99,7 +98,7 @@ namespace Match_3
         public void LoadLevel()
         {
             GameState = GameState.START;
-            
+
             if (PlayerPrefs.HasKey(StringConstants.SAVE_LEVEL))
             {
                 _currentLevel = PlayerPrefs.GetInt(StringConstants.SAVE_LEVEL);
@@ -116,7 +115,7 @@ namespace Match_3
                     JsonLoad();
                     break;
             }
-            
+
             UIManager.Current.SetLevelText(_currentLevel);
         }
 
@@ -132,26 +131,43 @@ namespace Match_3
             else
             {
                 _currentLevel = Random.Range(0, 50);
-                _levelObject = Instantiate(Resources.Load<BoardGame>(path+ _currentLevel));
+                _levelObject = Instantiate(Resources.Load<BoardGame>(path + _currentLevel));
             }
+            
+            Debug.LogError("[Error] Counldn't load Json, [Load Manual Success]");
         }
-        
+
 
         [Button]
         private void JsonLoad()
         {
-            string path = Application.dataPath + $"/Resources/DesignJson/Level{_currentLevel}.json";
-            string levelTxt = File.ReadAllText(path);
-            if(levelTxt.IsNullOrWhitespace()) return;
-            
-            BoardGame.TileJsonData tileJsonData = new BoardGame.TileJsonData();
-            tileJsonData = JsonUtility.FromJson<BoardGame.TileJsonData>(levelTxt);
-            
-            if(tileJsonData == null) return;
-            GameObject rootParent = new GameObject(tileJsonData.Level);
-            JsonBoardGame boardGame = rootParent.AddComponent<JsonBoardGame>();
-            _levelObject = boardGame;
-            boardGame.Initialized(tileJsonData, tilePrefab, slotTransformPrefab);
+            try
+            {
+                string path = $"Resources/DesignJson/Level{_currentLevel}.json";
+                string levelTxt = JsonHelper.TryToReadJson(path);
+                if (levelTxt.IsNullOrWhitespace())
+                {
+                    LoadLevelType = LoadLevelType.ManualLoad;
+                    LoadLevel();
+                };
+
+                BoardGame.TileJsonData tileJsonData = new BoardGame.TileJsonData();
+                tileJsonData = JsonUtility.FromJson<BoardGame.TileJsonData>(levelTxt);
+
+                if (tileJsonData == null) return;
+                GameObject rootParent = new GameObject(tileJsonData.Level);
+                JsonBoardGame boardGame = rootParent.AddComponent<JsonBoardGame>();
+                _levelObject = boardGame;
+                boardGame.Initialized(tileJsonData, tilePrefab, slotTransformPrefab);
+                
+                Debug.Log("Load Json Success");
+
+            }
+            catch (Exception e)
+            {
+                LoadLevelType = LoadLevelType.ManualLoad;
+                LoadLevel();
+            }
         }
 
         public void AddTileToSlot(Tile tile)
@@ -302,10 +318,13 @@ namespace Match_3
         {
             SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
         }
-        
+
         public void LoadNextLevel()
         {
             _currentLevel++;
+            Debug.Log(_currentLevel);
+            
+            ClearLevel();
             SaveLevel();
             SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
@@ -314,6 +333,8 @@ namespace Match_3
         public void ReloadLevelAt(int level)
         {
             _currentLevel = level;
+
+            ClearLevel();
             SaveLevel();
             SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
@@ -322,8 +343,16 @@ namespace Match_3
 
         public void RestartLevel()
         {
+            ClearLevel();
             SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
+        }
+
+        private void ClearLevel()
+        {
+            ListSlots.Clear();
+            ListDirections.Clear();
+            GameState = GameState.END;
         }
 
         private void GCCollectAndClear()

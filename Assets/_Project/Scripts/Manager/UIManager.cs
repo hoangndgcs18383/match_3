@@ -82,6 +82,11 @@ namespace Match_3
         {
             levelText.SetText("Level " + level);
         }
+        
+        public void UpdatePowerUp(PowerUpType powerUpType)
+        {
+            powerUpItems[powerUpType].UpdateCount(GetPowerUpCount(powerUpType));
+        }
 
 
         #region Ads
@@ -106,7 +111,6 @@ namespace Match_3
         public void StopSpinAds()
         {
             Timing.KillCoroutines();
-            spinAdsButton.transform.localScale = Vector3.one;
         }
 
         public void DisableAds()

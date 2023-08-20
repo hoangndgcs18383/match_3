@@ -26,6 +26,7 @@ namespace Match_3
         public IAdsHandler.OnInitializedAds OnInitializedAdsEvent { get; set; }
         public IAdsHandler.OnLoadAds OnLoadAdsEvent { get; set; }
         public IAdsHandler.OnShowAds OnShowAdsEvent { get; set; }
+        public IAdsHandler.OnShowAds OnRewardAdsEvent { get; set; }
 
         public void InitializedAds()
         {
@@ -53,17 +54,19 @@ namespace Match_3
         public void OnInitializationFailed(UnityAdsInitializationError error, string message)
         {
             OnInitializedAdsEvent?.Invoke(AdsResult.Fail);
-            Debug.LogError($"OnInitialized Ads: {error} {message}");
+            Debug.LogError($"[OnInitialized Ads]: {error} {message}");
         }
 
         public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
         {
             OnInitializedAdsEvent?.Invoke(AdsResult.Fail);
-            Debug.LogError($"OnUnityAdsShowFailure Ads: {placementId} {error} {message}");
+            Debug.LogError($"[OnUnityAdsShowFailure Ads]: {placementId} {error} {message}");
         }
 
         public void OnUnityAdsShowStart(string placementId)
         {
+            OnShowAdsEvent?.Invoke(AdsResult.Success);
+            Debug.Log($"[OnUnityAdsShowStart Ads]: {placementId}");
         }
 
         public void OnUnityAdsShowClick(string placementId)
@@ -72,20 +75,28 @@ namespace Match_3
 
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
-            OnShowAdsEvent?.Invoke(AdsResult.Success);
-            Debug.Log($"OnUnityAdsShowComplete Ads: {placementId} {showCompletionState}");
+            if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+            {
+                OnRewardAdsEvent?.Invoke(AdsResult.Success);
+                Debug.Log($"[OnUnityAdsShowComplete Ads]: {placementId} {showCompletionState}");
+            }
+            else
+            {
+                OnRewardAdsEvent?.Invoke(AdsResult.Fail);
+                Debug.LogError($"[OnUnityAdsShowComplete Ads] : {placementId} {showCompletionState}");
+            }
         }
 
         public void OnUnityAdsAdLoaded(string placementId)
         {
             OnLoadAdsEvent?.Invoke(AdsResult.Success);
-            Debug.Log($"OnUnityAdsAdLoaded Ads: {placementId}");
+            Debug.Log($"[OnUnityAdsAdLoaded Ads]: {placementId}");
         }
 
         public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
         {
             OnLoadAdsEvent?.Invoke(AdsResult.Fail);
-            Debug.LogError($"OnUnityAdsFailedToLoad Ads: {placementId} {error} {message}");
+            Debug.LogError($"pOnUnityAdsFailedToLoad Ads]: {placementId} {error} {message}");
         }
     }
 }

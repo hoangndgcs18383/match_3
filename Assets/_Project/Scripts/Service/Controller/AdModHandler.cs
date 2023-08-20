@@ -18,6 +18,7 @@ namespace Match_3
         public IAdsHandler.OnInitializedAds OnInitializedAdsEvent { get; set; }
         public IAdsHandler.OnLoadAds OnLoadAdsEvent { get; set; }
         public IAdsHandler.OnShowAds OnShowAdsEvent { get; set; }
+        public IAdsHandler.OnShowAds OnRewardAdsEvent { get; set; }
 
         public void InitializedAds()
         {
@@ -48,13 +49,13 @@ namespace Match_3
         {
             if (reward == null)
             {
-                Debug.LogError("UserRewardEarnedCallback reward is null");
-                OnShowAdsEvent?.Invoke(AdsResult.Fail);
+                Debug.LogError("[UserRewardEarnedCallback reward]: is null");
+                OnRewardAdsEvent?.Invoke(AdsResult.Fail);
                 return;
             }
 
-            Debug.Log("UserRewardEarnedCallback event received" + reward.Type + " " + reward.Amount);
-            OnShowAdsEvent?.Invoke(AdsResult.Success);
+            Debug.Log("[UserRewardEarnedCallback]: event received" + reward.Type + " " + reward.Amount);
+            OnRewardAdsEvent?.Invoke(AdsResult.Success);
         }
 
         private void OnInitialized(InitializationStatus status)
@@ -67,7 +68,7 @@ namespace Match_3
             {
                 OnInitializedAdsEvent?.Invoke(AdsResult.Fail);
 
-                Debug.LogError($"OnInitialized Ads: {e.Message}\n{e.StackTrace}");
+                Debug.LogError($"[OnInitialized Ads]: {e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -81,7 +82,7 @@ namespace Match_3
 
             _rewardedAd = ad;
             OnLoadAdsEvent?.Invoke(AdsResult.Success);
-            Debug.Log("HandleRewardedAdLoaded event received" + ad.GetResponseInfo());
+            Debug.Log("[HandleRewardedAdLoaded]: event received" + ad.GetResponseInfo());
         }
     }
 }
