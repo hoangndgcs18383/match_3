@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738c1331a327bc74696abd68f5954235, type: 3}
+  m_Name: IconConfig
+  m_EditorClassIdentifier: 
+  _iconData:
+  - id: ITEM_SHUFFLE
+    sprite: {fileID: 21300000, guid: 1c1bca7d2e76bd943a5c9aba677ef386, type: 3}
+  - id: ITEM_UNDO
+    sprite: {fileID: 21300000, guid: 0304447d6b3ef02409b73ed04d29ec71, type: 3}
+  - id: ITEM_SUGGEST
+    sprite: {fileID: 21300000, guid: f6343b16bc3dee243998b54daffde95c, type: 3}

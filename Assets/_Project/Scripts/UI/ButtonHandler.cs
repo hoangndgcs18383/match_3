@@ -18,22 +18,16 @@ namespace Match_3
 
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
+            _rectTransform.DOKill();
             switch (state)
             {
                 case SelectionState.Normal:
-                    _sequence?.Kill();
-                    _sequence = DOTween.Sequence();
-                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
-                    _sequence.Append(_rectTransform.DOScale(1.1f, 0.1f));
-                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
+                    _rectTransform.DOScale(1f, 0.1f);
                     break;
                 case SelectionState.Highlighted:
+                    _rectTransform.DOScale(0.9f, 0.1f);
+                    break;
                 case SelectionState.Pressed:
-                    _sequence?.Kill();
-                    _sequence = DOTween.Sequence();
-                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
-                    _sequence.Append(_rectTransform.DOScale(0.9f, 0.1f));
-                    _sequence.Append(_rectTransform.DOScale(1f, 0.1f));
                     break;
                 case SelectionState.Disabled:
                     break;
@@ -41,11 +35,23 @@ namespace Match_3
 
             base.DoStateTransition(state, instant);
         }
-        
+
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            _rectTransform.DOScale(0.9f, 0.1f);
+        }
+
+        public override void OnPointerUp(PointerEventData eventData)
+        {
+            base.OnPointerUp(eventData);
+            _rectTransform.DOScale(1f, 0.1f);
+        }
+
         protected override void OnDisable()
         {
             base.OnDisable();
-            _sequence?.Kill();
+            _rectTransform.DOKill();
         }
     }
 }

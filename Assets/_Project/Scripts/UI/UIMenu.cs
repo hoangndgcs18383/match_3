@@ -6,6 +6,7 @@ namespace Match_3
 {
     public class UIMenu : ScreenBase
     {
+        [SerializeField] private Button ppButton;
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button backButton;
 
@@ -39,8 +40,7 @@ namespace Match_3
 
         private void OnMainMenuClick()
         {
-            return;
-            SceneManager.LoadScene("Menu");
+            LoadingManager.Instance.LoadScene("Menu");
             Hide();
             UIManager.Current.HideGamePlayUI();
         }

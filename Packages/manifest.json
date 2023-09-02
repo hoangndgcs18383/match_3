@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.cathei.bakingsheet": "https://github.com/cathei/BakingSheet.git?path=UnityProject/Packages/com.cathei.bakingsheet#v4.1.1",
+    "com.gwiazdorrr.betterstreamingassets": "https://github.com/gwiazdorrr/BetterStreamingAssets.git",
     "com.unity.ads": "4.3.0",
     "com.unity.collab-proxy": "1.17.6",
     "com.unity.feature.2d": "1.0.0",

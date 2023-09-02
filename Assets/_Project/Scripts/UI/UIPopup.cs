@@ -2,16 +2,20 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Match_3
 {
     public class UIPopup : MonoBehaviour
     {
-        [SerializeField] private TMP_Text title;
-        [SerializeField] private TMP_Text content;
+        [SerializeField] private TMP_Text statusTxt;
+        [SerializeField] private TMP_Text goldText;
+        [SerializeField] private TMP_Text goldX3Text;
+        [SerializeField] private Button btnCollect;
+        [SerializeField] private Button btnNext;
 
-        private Action _onBtnOke;
-        private Action _onBtnCancel;
+        private Action _onBtnCollect;
+        private Action _onBtnNext;
 
         private RectTransform _rectTransform;
 
@@ -25,33 +29,48 @@ namespace Match_3
             }
         }
 
-        public void Show(string mTitle, string mContent, Action onBtnOke, Action onBtnCancel)
+        public void Show(string mTitle, int mGoldText, Action onBtnCollect, Action onBtnNext)
         {
             DOTween.Kill(RectTransform.transform);
             RectTransform.localScale = Vector3.zero;
-            TweenShow();
-            title.text = mTitle;
-            content.text = mContent;
-            _onBtnOke = onBtnOke;
-            _onBtnCancel = onBtnCancel;
             gameObject.SetActive(true);
+            
+            AnimTextCount(mGoldText);
+            TweenShow();
+            
+            statusTxt.SetText(mTitle);
+            _onBtnCollect = onBtnCollect;
+            _onBtnNext = onBtnNext;
         }
 
-        public void OnBtnOke()
+        private void OnEnable()
         {
-            _onBtnOke?.Invoke();
+            btnCollect.onClick.AddListener(OnBtnCollect);
+            btnNext.onClick.AddListener(OnBtnNext);
+        }
+        
+
+        public void OnBtnCollect()
+        {
+            _onBtnCollect?.Invoke();
             TweenHide();
         }
 
-        public void OnBtnCancel()
+        public void OnBtnNext()
         {
-            _onBtnCancel?.Invoke();
+            _onBtnNext?.Invoke();
             TweenHide();
         }
 
         private void TweenShow()
         {
             RectTransform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
+        }
+        
+        private void AnimTextCount(int count)
+        {
+            goldText.DOText(count.ToString(), 0.5f, true, ScrambleMode.Numerals, "0123456789").SetEase(Ease.Linear);
+            goldX3Text.DOText((count * 3).ToString(), 0.5f, true, ScrambleMode.Numerals, "0123456789").SetEase(Ease.Linear);
         }
 
         private void TweenHide()
@@ -62,8 +81,11 @@ namespace Match_3
 
         private void OnDisable()
         {
-            _onBtnOke = null;
-            _onBtnCancel = null;
+            btnCollect.onClick.RemoveListener(OnBtnCollect);
+            btnNext.onClick.RemoveListener(OnBtnNext);
+            
+            _onBtnCollect = null;
+            _onBtnNext = null;
         }
     }
 }

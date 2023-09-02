@@ -7,6 +7,7 @@ using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
+using Zeff.Extensions;
 using Random = UnityEngine.Random;
 
 namespace Match_3
@@ -32,13 +33,17 @@ namespace Match_3
         public SpriteAtlas spriteTiles;
         public LoadLevelType LoadLevelType = LoadLevelType.ManualLoad;
 
-        private int _currentLevel = 1;
         private BoardGame _levelObject;
 
         public List<TileSlot> ListSlots { get; } = new List<TileSlot>();
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
         public GameState GameState { get; set; }
-        public int Level { get => PlayerPrefs.GetInt(StringConstants.SAVE_LEVEL); set => PlayerPrefs.SetInt(StringConstants.SAVE_LEVEL, value); }
+
+        public int Level
+        {
+            get => ProfileDataService.Instance.ProfileData.Level;
+            private set => ProfileDataService.Instance.SetLevel(value);
+        }
 
         public Camera mainCamera;
 
@@ -61,8 +66,30 @@ namespace Match_3
 
             SetTargetFPS();
             StartLevel();
-            UpdateCoinView();
+            RewardManager.Current.UpdateCoinView();
+            
+            ProfileDataService.Instance.AutoSaveProfile();
         }
+
+
+        #region Update Method
+
+        private void Update()
+        {
+            TimingService.Instance.Update();
+        }
+
+        private void FixedUpdate()
+        {
+            TimingService.Instance.FixedUpdate();
+        }
+
+        private void LateUpdate()
+        {
+            TimingService.Instance.LateUpdate();
+        }
+
+        #endregion
 
 
         private void SetTargetFPS()
@@ -70,38 +97,12 @@ namespace Match_3
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
         }
-
-        #region Stuffs
-
-        private void UpdateCoinView()
-        {
-            UIManager.Current.SetCoinText(GetCoin());
-        }
-
-        public void AddCoin(int coin)
-        {
-            PlayerPrefs.SetInt(GameConfig.COIN, GetCoin() + coin);
-            PlayerPrefs.Save();
-            UpdateCoinView();
-        }
-
-        public int GetCoin()
-        {
-            return PlayerPrefs.GetInt(GameConfig.COIN);
-        }
-
-        #endregion
-
+        
         #region Board
 
         public void LoadLevel()
         {
             GameState = GameState.START;
-
-            if (PlayerPrefs.HasKey(StringConstants.SAVE_LEVEL))
-            {
-                _currentLevel = Level;
-            }
 
             string path = "Levels/Level";
 
@@ -115,12 +116,12 @@ namespace Match_3
                     break;
             }
 
-            UIManager.Current.SetLevelText(_currentLevel);
+            UIManager.Current.SetLevelText(Level);
         }
 
         private void ManualLoad(string path)
         {
-            BoardGame boardGame = Resources.Load<BoardGame>(path + _currentLevel);
+            BoardGame boardGame = Resources.Load<BoardGame>(path + Level);
 
             if (boardGame != null)
             {
@@ -129,10 +130,10 @@ namespace Match_3
             }
             else
             {
-                _currentLevel = Random.Range(0, 50);
-                _levelObject = Instantiate(Resources.Load<BoardGame>(path + _currentLevel));
+                Level = Random.Range(0, 50);
+                _levelObject = Instantiate(Resources.Load<BoardGame>(path + Level));
             }
-            
+
             Debug.LogError("[Error] Counldn't load Json, [Load Manual Success]");
         }
 
@@ -142,13 +143,19 @@ namespace Match_3
         {
             try
             {
-                string path = $"Resources/DesignJson/Level{_currentLevel}.json";
-                string levelTxt = JsonHelper.TryToReadJson(path);
+                //string path = $"Resources/DesignJson/Level{_currentLevel}.json";
+
+                string path = $"/LevelData/Level{Level}.bin";
+
+                string levelTxt = JsonHelper.GetFileStream(path);
+
                 if (levelTxt.IsNullOrWhitespace())
                 {
                     LoadLevelType = LoadLevelType.ManualLoad;
                     LoadLevel();
-                };
+                }
+
+                ;
 
                 BoardGame.TileJsonData tileJsonData = new BoardGame.TileJsonData();
                 tileJsonData = JsonUtility.FromJson<BoardGame.TileJsonData>(levelTxt);
@@ -158,16 +165,23 @@ namespace Match_3
                 JsonBoardGame boardGame = rootParent.AddComponent<JsonBoardGame>();
                 _levelObject = boardGame;
                 boardGame.Initialized(tileJsonData, tilePrefab, slotTransformPrefab);
-                
-                Debug.Log("Load Json Success");
-
             }
             catch (Exception e)
             {
+                Debug.LogError($"[Error] {e}");
                 LoadLevelType = LoadLevelType.ManualLoad;
                 LoadLevel();
             }
         }
+        
+        private void OnNotEnoughCoin(PowerUpType powerUpType)
+        {
+            AdsManager.Current.ShowRewardedAd(() =>
+            {
+                RewardManager.Current.AddReward(powerUpType, 1);
+            });
+        }
+       
 
         public void AddTileToSlot(Tile tile)
         {
@@ -209,10 +223,12 @@ namespace Match_3
             }
             else
             {
-                //Check lose
-                _levelObject.OnMoveComplete(ListSlots, RestartLevel, RestartLevel);
+                //Check loseOnMoveComplete
+                _levelObject.OnMoveComplete(ListSlots);
             }
         }
+
+       
 
         private IEnumerator<float> IEResetPosition(float time)
         {
@@ -265,9 +281,9 @@ namespace Match_3
 
         public void OnButtonUndo()
         {
-            if (GameState == GameState.PLAYING && _levelObject.CheckUndoAvailable())
+            if (GameState == GameState.PLAYING && _levelObject.CheckUndoAvailable() && !_levelObject.IsRunningPowerUp)
             {
-                if (GameConfig.UsePowerUp(PowerUpType.Undo)) _levelObject.SetUndo();
+                GameConfig.UsePowerUp(PowerUpType.Undo, () => { _levelObject.SetUndo(); }, OnNotEnoughCoin);
             }
         }
 
@@ -277,9 +293,9 @@ namespace Match_3
 
         public void OnButtonShuffle()
         {
-            if (GameState == GameState.PLAYING)
+            if (GameState == GameState.PLAYING && !_levelObject.IsRunningPowerUp)
             {
-                if (GameConfig.UsePowerUp(PowerUpType.Shuffle)) _levelObject.Shuffle();
+                GameConfig.UsePowerUp(PowerUpType.Shuffle, () => { _levelObject.Shuffle(); }, OnNotEnoughCoin);
             }
         }
 
@@ -289,9 +305,9 @@ namespace Match_3
 
         public void OnButtonSuggest()
         {
-            if (GameState == GameState.PLAYING)
+            if (GameState == GameState.PLAYING && !_levelObject.IsRunningPowerUp)
             {
-                if (GameConfig.UsePowerUp(PowerUpType.Suggests)) _levelObject.Suggest();
+                GameConfig.UsePowerUp(PowerUpType.Suggests, () => { _levelObject.Suggest(); }, OnNotEnoughCoin);
             }
         }
 
@@ -303,13 +319,12 @@ namespace Match_3
 
         public void SetLevel(int level)
         {
-            _currentLevel = level;
+            Level = level;
             SaveLevel();
         }
 
         private void SaveLevel()
         {
-            Level = _currentLevel;
         }
 
         private void StartLevel()
@@ -319,20 +334,19 @@ namespace Match_3
 
         public void LoadNextLevel()
         {
-            _currentLevel++;
+            ProfileDataService.Instance.UpdateNextLevel();
             ClearLevel();
-            SaveLevel();
-            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
+            LoadingManager.Instance.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
         }
 
         public void ReloadLevelAt(int level)
         {
-            _currentLevel = level;
+            Level = level;
 
             ClearLevel();
             SaveLevel();
-            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
+            LoadingManager.Instance.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
         }
 
@@ -340,7 +354,7 @@ namespace Match_3
         public void RestartLevel()
         {
             ClearLevel();
-            SceneManager.LoadScene(StringConstants.LOAD_LEVEL);
+            LoadingManager.Instance.LoadScene(StringConstants.LOAD_LEVEL);
             GCCollectAndClear();
         }
 
@@ -362,6 +376,12 @@ namespace Match_3
         {
             Timing.KillCoroutines();
             DOTween.KillAll();
+        }
+
+        private void OnApplicationQuit()
+        {
+            TimerManager.Current.StopCountDown();
+            ProfileDataService.Instance.SaveProfileData();
         }
 
         #endregion

@@ -1,0 +1,12 @@
+{
+  "ITEM_01": {
+    "Id": "ITEM_01",
+    "Price": "100",
+    "Rewards": "ITEM_SHUFFLE:1"
+  },
+  "ITEM_02": {
+    "Id": "ITEM_02",
+    "Price": "200",
+    "Rewards": "ITEM_UNDO:1,ITEM_SHUFFLE:1,ITEM_SUGGEST:1"
+  }
+}

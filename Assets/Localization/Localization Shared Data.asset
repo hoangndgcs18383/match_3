@@ -16,7 +16,11 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 56ea44034f705e74c913808a60f2db30
   m_Entries:
   - m_Id: 220844424179712
-    m_Key: levelText
+    m_Key: TITLE_LEVEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12186445451374592
+    m_Key: TITLE_SHUFFLE
     m_Metadata:
       m_Items: []
   m_Metadata:

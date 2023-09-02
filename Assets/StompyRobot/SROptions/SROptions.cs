@@ -56,6 +56,12 @@ public partial class SROptions : INotifyPropertyChanged
     
     #region SROptions
     
+    [Category("Cheats")]
+    public void AddGold()
+    {
+        RewardManager.Current.AddCoin(10000);
+    }
+    
     
     [Category("Quality Settings")]
     public void SetVeryLowQuality()

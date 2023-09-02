@@ -116,21 +116,30 @@ namespace Match_3
             levelText.SetText("Level " + level);
         }
         
-        public void UpdatePowerUp(PowerUpType powerUpType)
+        public void UpdateGUIPowerUp(PowerUpType powerUpType)
         {
             powerUpItems[powerUpType].UpdateCount(GetPowerUpCount(powerUpType));
+        }
+        
+        public void UpdateGUIAllPowerUp()
+        {
+            foreach (var powerUpItem in powerUpItems)
+            {
+                powerUpItem.Value.UpdateCount(GetPowerUpCount(powerUpItem.Key));
+            }
         }
 
 
         #region Ads
 
-        public void ShowPopup(string title, string content, Action onBtnOke, Action onBtnCancel)
+        public void ShowPopup(string title, int content, Action onBtnCollect, Action onBtnNext)
         {
-            popup.Show(title, content, onBtnOke, onBtnCancel);
+            popup.Show(title, content, onBtnCollect, onBtnNext);
         }
 
         public void SpinAds()
         {
+            return;
             Timing.RunCoroutine(IESpinAdsCoroutine());
         }
 

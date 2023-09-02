@@ -8,6 +8,8 @@ namespace Match_3
         public static AdsManager Current;
 
         private IAdsHandler _adsHandler = new NotAdsHandler();
+        
+        public Action OnRewardAdsEvent;
 
         private void Awake()
         {
@@ -41,9 +43,8 @@ namespace Match_3
         {
             if (status == AdsResult.Success)
             {
-                GameManager.Current.AddCoin(100);
-                UIManager.Current.StopSpinAds();
-                RewardManager.Current.AddRandomPowerUp();
+                OnRewardAdsEvent?.Invoke();
+                OnRewardAdsEvent = null;
             }
         }
 
@@ -80,8 +81,9 @@ namespace Match_3
         }
 
 
-        public void ShowRewardedAd()
+        public void ShowRewardedAd(Action onRewardAdsEvent = null)
         {
+            OnRewardAdsEvent = onRewardAdsEvent;
             _adsHandler.ShowRewardedAd();
         }
     }

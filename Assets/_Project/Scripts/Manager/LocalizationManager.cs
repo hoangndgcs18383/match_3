@@ -15,6 +15,8 @@ namespace Match_3
         private IEnumerator Start()
         {
             yield return LocalizationSettings.InitializationOperation;
+            
+            Debug.Log("LocalizationManager: " + LocalizationSettings.SelectedLocale.name);
 
             List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
             int selected = 0;

@@ -27,8 +27,33 @@ namespace Match_3
         private void AddPowerUp(PowerUpType powerUpType, int count)
         {
             GameConfig.AddPowerUp(powerUpType, count);
-            UIManager.Current.UpdatePowerUp(powerUpType);
+            UIManager.Current.UpdateGUIPowerUp(powerUpType);
         }
 
+        public void AddReward(PowerUpType powerUpType, int i)
+        {
+            AddPowerUp(powerUpType, i);
+        }
+        
+        public void UpdateCoinView()
+        {
+            UIManager.Current.SetCoinText(GetCoin());
+        }
+
+        public int GetRandomCoin(bool isLose = false)
+        {
+            return !isLose ? Random.Range(1000, 2000) : Random.Range(100, 500);
+        }
+
+        public void AddCoin(int coin)
+        {
+            ProfileDataService.Instance.AddGold(coin);
+            UpdateCoinView();
+        }
+
+        private int GetCoin()
+        {
+            return ProfileDataService.Instance.GetGold();
+        }
     }
 }

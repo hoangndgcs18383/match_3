@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using MEC;
 using UnityEngine;
+using Zeff.Extensions;
 using Random = UnityEngine.Random;
 
 namespace Match_3
@@ -167,10 +168,10 @@ namespace Match_3
             {
                 // move to slot
                 //Debug.Log("OnTouchTile");
-                tileState = TileState.MOVE_TO_SLOT;
                 SetTouchAvailable(false);
                 SetShadowAvailable(false);
                 GameManager.Current.AddTileToSlot(this);
+                tileState = TileState.MOVE_TO_SLOT;
             }
         }
 

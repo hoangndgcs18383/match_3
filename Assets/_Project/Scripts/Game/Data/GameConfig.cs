@@ -53,13 +53,7 @@ namespace Match_3
         LOSE,
         PAUSE,
     }
-
-    [Serializable]
-    public class PowerUpData
-    {
-        public PowerUpType powerUpType;
-        public int count;
-    }
+    
 
     public static class StringConstants
     {
@@ -69,13 +63,8 @@ namespace Match_3
 
     public static class GameConfig
     {
-        public static string COIN = "COIN";
         public static float TILE_SIZE = 1.25f;
         public static float TILE_MOVE_SIZE = 1.1f;
-        public static int DEFAULT_SHUFFLE_COUNT = PlayerPrefs.GetInt("ShuffleCount", 3);
-        public static int DEFAULT_SUGGESTS_COUNT = PlayerPrefs.GetInt("SuggestsCount", 3);
-        public static int DEFAULT_UNDO_COUNT = PlayerPrefs.GetInt("UndoCount", 3);
-
 
         public static Vector3 GetMoveTile(int index)
         {
@@ -89,89 +78,19 @@ namespace Match_3
 
         public static void AddPowerUp(PowerUpType powerUpPowerUpType, int count)
         {
-            switch (powerUpPowerUpType)
-            {
-                case PowerUpType.Shuffle:
-                    DEFAULT_SHUFFLE_COUNT += count;
-                    PlayerPrefs.SetInt("ShuffleCount", DEFAULT_SHUFFLE_COUNT);
-
-                    break;
-                case PowerUpType.Suggests:
-                    DEFAULT_SUGGESTS_COUNT += count;
-                    PlayerPrefs.SetInt("SuggestsCount", DEFAULT_SUGGESTS_COUNT);
-
-                    break;
-                case PowerUpType.Undo:
-                    DEFAULT_UNDO_COUNT += count;
-                    PlayerPrefs.SetInt("UndoCount", DEFAULT_UNDO_COUNT);
-                    break;
-            }
+            ProfileDataService.Instance.AddPowerUpData(powerUpPowerUpType, count);
         }
-
-        public static string GetPowerUpPrefKey(PowerUpType powerUpPowerUpType)
-        {
-            switch (powerUpPowerUpType)
-            {
-                case PowerUpType.Shuffle:
-                    return "ShuffleCount";
-                case PowerUpType.Suggests:
-                    return "SuggestsCount";
-                case PowerUpType.Undo:
-                    return "UndoCount";
-            }
-
-            return "";
-        }
+        
 
         public static int GetPowerUpCount(PowerUpType powerUpPowerUpType)
         {
-            switch (powerUpPowerUpType)
-            {
-                case PowerUpType.Shuffle:
-                    return DEFAULT_SHUFFLE_COUNT;
-                case PowerUpType.Suggests:
-                    return DEFAULT_SUGGESTS_COUNT;
-                case PowerUpType.Undo:
-                    return DEFAULT_UNDO_COUNT;
-            }
-
-            return 0;
+            return ProfileDataService.Instance.GetPowerUpData(powerUpPowerUpType);
         }
 
-        public static bool UsePowerUp(PowerUpType powerUpPowerUpType)
+        public static void UsePowerUp(PowerUpType powerUpPowerUpType, Action onUsePowerUp, Action<PowerUpType> onNotEnoughPowerUp)
+
         {
-            switch (powerUpPowerUpType)
-            {
-                case PowerUpType.Shuffle:
-                    if (DEFAULT_SHUFFLE_COUNT > 0)
-                    {
-                        DEFAULT_SHUFFLE_COUNT--;
-                        PlayerPrefs.SetInt("ShuffleCount", DEFAULT_SHUFFLE_COUNT);
-                        return true;
-                    }
-
-                    return false;
-                case PowerUpType.Suggests:
-                    if (DEFAULT_SUGGESTS_COUNT > 0)
-                    {
-                        DEFAULT_SUGGESTS_COUNT--;
-                        PlayerPrefs.SetInt("SuggestsCount", DEFAULT_SUGGESTS_COUNT);
-                        return true;
-                    }
-
-                    return false;
-                case PowerUpType.Undo:
-                    if (DEFAULT_UNDO_COUNT > 0)
-                    {
-                        DEFAULT_UNDO_COUNT--;
-                        PlayerPrefs.SetInt("UndoCount", DEFAULT_UNDO_COUNT);
-                        return true;
-                    }
-
-                    return false;
-            }
-
-            return false;
+            ProfileDataService.Instance.UsePowerUpData(powerUpPowerUpType, onUsePowerUp, onNotEnoughPowerUp);
         }
     }
 }

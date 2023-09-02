@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using MEC;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zeff.Extensions;
 using Random = UnityEngine.Random;
 
 namespace Match_3
@@ -29,6 +29,8 @@ namespace Match_3
 
         protected List<TileData> ListTileData = new List<TileData>();
         private bool _isRunningPowerUp;
+        
+        public bool IsRunningPowerUp => _isRunningPowerUp;
 
         public void Initialized()
         {
@@ -37,12 +39,13 @@ namespace Match_3
             ReadDataMap();
         }
 
-        protected virtual void InitDirections(List<Transform> _listFloor = null, List<ItemData> _listItemData = null, Transform _slotTransform= null)
+        protected virtual void InitDirections(List<Transform> _listFloor = null, List<ItemData> _listItemData = null,
+            Transform _slotTransform = null)
         {
             if (_listFloor != null) listFloorTransform = _listFloor;
             if (_listItemData != null) listItemData = _listItemData;
-            if (_slotTransform != null) slotTransform = _slotTransform; 
-            
+            if (_slotTransform != null) slotTransform = _slotTransform;
+
             GameManager.Current.ListDirections.Clear();
             List<TileDirection> directionCached = new List<TileDirection>
             {
@@ -107,7 +110,7 @@ namespace Match_3
         }
 
         #region LoadJson
-        
+
         [Serializable]
         public class TileJsonData
         {
@@ -115,14 +118,14 @@ namespace Match_3
             public List<FloorJsonData> Floor = new List<FloorJsonData>();
             public string ListItemData;
         }
-        
+
         [Serializable]
         public class FloorJsonData
         {
             public int Index;
             public List<ItemJsonData> Items = new List<ItemJsonData>();
         }
-        
+
         [Serializable]
         public class ItemJsonData
         {
@@ -132,20 +135,30 @@ namespace Match_3
 
         public TileJsonData tileData;
 
+
+        [Button]
+        private void ReadData()
+        {
+            BetterStreamingAssets.Initialize();
+            var data = JsonHelper.GetFileStream($"/LevelData/{name}.bin");
+            Debug.Log(data);
+        }
+
         [Button]
         public void WriteToJson()
         {
-            string path = Application.dataPath + $"/Resources/DesignJson/{name}.json";
+            //string path = Application.dataPath + $"/Resources/DesignJson/{name}.json";
+            string path = Application.streamingAssetsPath + $"/LevelData/{name}.bin";
 
             tileData.Floor.Clear();
             tileData.Floor ??= new List<FloorJsonData>();
             tileData.Level = name;
             tileData.ListItemData = listItemData.Serialize();
-            
+
             for (int i = 0; i < listTileMap.Count; i++) // Loop qua toan bo tile map
             {
                 List<ItemJsonData> itemJsonDatas = new List<ItemJsonData>();
-                
+
                 for (int y = listTileMap[i].cellBounds.yMin;
                      y < listTileMap[i].cellBounds.yMax;
                      y++) // loop qua toan bo y
@@ -172,17 +185,16 @@ namespace Match_3
 
                 if (itemJsonDatas.Count > 0)
                 {
-                    FloorJsonData floor = new FloorJsonData {Items = itemJsonDatas, Index = i + 1};
+                    FloorJsonData floor = new FloorJsonData { Items = itemJsonDatas, Index = i + 1 };
                     tileData.Floor.Add(floor);
                 }
             }
-            
+
             string data = JsonUtility.ToJson(tileData, true);
             File.WriteAllText(path, data);
         }
-        
+
         #endregion
-        
 
 
         private void GenerateItem()
@@ -243,6 +255,15 @@ namespace Match_3
 
             GameManager.Current.GameState = GameState.PLAYING;
         }
+        
+        private void OnShowAdsReward(int randomCoin, Action loadLevel = null)
+        {
+            AdsManager.Current.ShowRewardedAd(() =>
+            {
+                RewardManager.Current.AddCoin(randomCoin * 3);
+                loadLevel?.Invoke();
+            });
+        }
 
         #region WIN CONDITION
 
@@ -262,11 +283,19 @@ namespace Match_3
 
                 yield return new WaitForSeconds(0.5f);
 
-                GameManager.Current.AddCoin(10);
-                RewardManager.Current.AddRandomPowerUp();
+                int randomCoin = RewardManager.Current.GetRandomCoin();
                 
-                UIManager.Current.ShowPopup("You Win", "Next Level", () => { GameManager.Current.LoadNextLevel(); },
-                    () => { GameManager.Current.RestartLevel(); });
+                UIManager.Current.ShowPopup("YOU WIN", randomCoin, () =>
+                    {
+                        //show ads reward 3x
+                        OnShowAdsReward(randomCoin, GameManager.Current.LoadNextLevel);
+                    },
+                    () =>
+                    {
+                        GameManager.Current.LoadNextLevel();
+                        RewardManager.Current.AddCoin(randomCoin);
+                        RewardManager.Current.AddRandomPowerUp();
+                    });
             }
         }
 
@@ -287,12 +316,12 @@ namespace Match_3
 
         #region LOSE CONDITION
 
-        public void OnMoveComplete(List<TileSlot> tileSlots, Action onOke, Action onCancel)
+        public void OnMoveComplete(List<TileSlot> tileSlots)
         {
-            Timing.RunCoroutine(IECheckLose(tileSlots, onOke, onCancel));
+            Timing.RunCoroutine(IECheckLose(tileSlots));
         }
 
-        private IEnumerator<float> IECheckLose(List<TileSlot> tileSlots, Action onOke, Action onCancel)
+        private IEnumerator<float> IECheckLose(List<TileSlot> tileSlots)
         {
             yield return Timing.WaitForSeconds(0.3f);
             if (CheckLose(tileSlots))
@@ -300,10 +329,36 @@ namespace Match_3
                 if (GameManager.Current.GameState == GameState.LOSE)
                     yield break;
                 GameManager.Current.GameState = GameState.LOSE;
-                UIManager.Current.ShowPopup("You Lose", "Try again",
-                    onOke, onCancel);
+                ProfileDataService.Instance.KillLife(OnNextCallback, OnBackCallback);
+                
+                void OnNextCallback()
+                {
+                    int randomCoin = RewardManager.Current.GetRandomCoin(true);
+                    
+                    UIManager.Current.ShowPopup("You Lose", randomCoin,
+                        OnBtnCollectClick, OnBtnNextClick);
+
+                    ProfileDataService.Instance.AddLastTimeReceiveLife();
+                    TimerManager.Current.StartCountDown();
+                    
+                    void OnBtnCollectClick()
+                    {
+                        OnShowAdsReward(randomCoin, GameManager.Current.RestartLevel);
+                    }
+
+                    void OnBtnNextClick()
+                    {
+                        RewardManager.Current.AddCoin(randomCoin);
+                        GameManager.Current.RestartLevel();
+                    }
+                }
+
+                void OnBackCallback()
+                {
+                }
             }
         }
+
 
         private bool CheckLose(List<TileSlot> tileSlots)
         {
