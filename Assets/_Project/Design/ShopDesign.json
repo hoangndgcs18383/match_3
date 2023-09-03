@@ -1,0 +1,18 @@
+{
+  "PACK_01": {
+    "Price": 1000,
+    "Recived": "ITEM_SHUFFLE:1"
+  },
+  "PACK_02": {
+    "Price": 1000,
+    "Recived": "ITEM_UNDO:1"
+  },
+  "PACK_03": {
+    "Price": 1000,
+    "Recived": "ITEM_SUGGEST:1"
+  },
+  "PACK_04": {
+    "Price": 2500,
+    "Recived": "ITEM_SHUFFLE:1,ITEM_UNDO:1,ITEM_SUGGEST:1"
+  }
+}
