@@ -1,1 +1,14 @@
-{"QuestDesign":[{"ID":"QUEST_001","Name":"Login","Description":"Login one time","Collection":"LOGIN:TRUE","Rewards":"ITEM_SHUFFLE:1,ITEM_UNDO"},{"ID":"QUEST_002","Name":"Play 3 games","Description":"Play 3 game","Collection":"PLAY:3","Rewards":"ITEM_SHUFFLE:1,ITEM_SUGGEST"}]}
+{
+  "QUEST_001": {
+    "Name": "Login",
+    "Description": "Login one time",
+    "Collection": "LOGIN:TRUE",
+    "Rewards": "ITEM_SHUFFLE:1,ITEM_UNDO"
+  },
+  "QUEST_002": {
+    "Name": "Play 3 games",
+    "Description": "Play 3 game",
+    "Collection": "PLAY:3",
+    "Rewards": "ITEM_SHUFFLE:1,ITEM_SUGGEST"
+  }
+}
