@@ -34,7 +34,7 @@ namespace Zeff.Core.Service
             }
         }
 
-        public void LoadService()
+        public  void LoadService()
         {
             foreach (var service in _servicesLocators)
             {

@@ -7,7 +7,7 @@ using Zeff.Extensions;
 
 namespace Match_3
 {
-    public class UIShop : ScreenBase
+    public class UIShop : BaseScreen
     {
         public Button backButton;
         

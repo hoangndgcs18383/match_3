@@ -17,6 +17,7 @@ namespace Match_3
         [Title("References")]
         [SerializeField] private UIPopup popup;
         [SerializeField] private UIMenu menu;
+        [SerializeField] private UIReward uiReward;
         [SerializeField] private GameObject uiGamePlay;
         
         [Title("Buttons")]
@@ -70,6 +71,12 @@ namespace Match_3
         public void HideGamePlayUI()
         {
             uiGamePlay.SetActive(false);
+        }
+        
+        [Button]
+        public void ShowRewardUI()
+        {
+            uiReward.StartReward("ITEM_SHUFFLE");
         }
 
         private void InitPowerUp()

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Match_3
 {
-    public class UIMenu : ScreenBase
+    public class UIMenu : BaseScreen
     {
         [SerializeField] private Button ppButton;
         [SerializeField] private Button mainMenuButton;

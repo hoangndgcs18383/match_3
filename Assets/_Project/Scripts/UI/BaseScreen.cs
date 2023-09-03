@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace Match_3
 {
-    public class ScreenBase : MonoBehaviour
+    public class BaseScreen : MonoBehaviour
     {
         public bool isInactiveAtAwake = false;        
         public bool IsActivated

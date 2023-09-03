@@ -5,7 +5,7 @@ using Zeff.Extensions;
 
 namespace Match_3
 {
-    public class UIMainMenu : ScreenBase
+    public class UIMainMenu : BaseScreen
     {
         [SerializeField] private TMP_Text levelText;
         [SerializeField] private Button playButton;
