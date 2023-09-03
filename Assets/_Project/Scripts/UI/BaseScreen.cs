@@ -15,8 +15,8 @@ namespace Match_3
 
         protected virtual void Awake()
         {
-            if(isInactiveAtAwake)
-                IsActivated = false;
+            /*if(isInactiveAtAwake && gameObject.activeInHierarchy)
+                IsActivated = false;*/
         }
 
         protected virtual void OnEnable()
