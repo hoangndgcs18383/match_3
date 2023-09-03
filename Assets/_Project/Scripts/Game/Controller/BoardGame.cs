@@ -284,6 +284,7 @@ namespace Match_3
                 yield return new WaitForSeconds(0.5f);
 
                 int randomCoin = RewardManager.Current.GetRandomCoin();
+                ProfileDataService.Instance.SetQuestDaily("QUEST_002", 1);
                 
                 UIManager.Current.ShowPopup("YOU WIN", randomCoin, () =>
                     {
@@ -298,6 +299,8 @@ namespace Match_3
                     });
             }
         }
+        
+        
 
         public bool CheckWin()
         {

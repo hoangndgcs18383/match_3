@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using MEC;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,19 +41,32 @@ namespace Match_3
             }
         }
 
-        public void StartReward(string id)
+        public void StartReward(Dictionary<string, int> rewards, Action callback = null)
         {
-            iconReward.sprite = IconManager.Current.GetIcon(id);
-            gameObject.SetActive(true);
-            rewardPanel.SetActive(true);
-            rewardPanel.transform.localScale = Vector3.zero;
-            _rewardSequence = DOTween.Sequence();
-            _rewardSequence.Append(rewardPanel.transform.DOScale(1, 0.1f).SetEase(Ease.OutQuad));
-            _rewardSequence.AppendCallback(() => { _isClickAvaiable = true; });
+            //iconReward.sprite = IconManager.Current.GetIcon(id);
+            Timing.RunCoroutine(IEAnimReward(rewards, callback));
+        }
 
+        private IEnumerator<float> IEAnimReward(Dictionary<string, int> rewards, Action callback = null)
+        {
             continueText.color = new Color(1f, 1f, 1f, 0f);
-            continueText.DOFade(1, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
             SetRotateLight();
+            gameObject.SetActive(true);
+
+            foreach (var reward in rewards)
+            {
+                iconReward.sprite = IconManager.Current.GetIcon(reward.Key);
+                rewardPanel.SetActive(true);
+                rewardPanel.transform.localScale = Vector3.zero;
+                _rewardSequence = DOTween.Sequence();
+                _rewardSequence.Append(rewardPanel.transform.DOScale(1, 0.1f).SetEase(Ease.OutQuad));
+
+                yield return Timing.WaitForSeconds(1f);
+            }
+
+            continueText.DOFade(1, 0.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+            callback?.Invoke();
+            _isClickAvaiable = true;
         }
 
         public void StopRewardView()

@@ -41,13 +41,11 @@ namespace Zeff.Core.Parser
 		{
 			switch (key)
 			{
-				case "GachaDesign": return new GachaDesignParser();
 				case "ShopDesign": return new ShopDesignParser();
 				case "QuestDesign": return new QuestDesignParser();
 			}
 			return null;
 		}
-		public GachaDesignParser GachaDesign => Get<GachaDesignParser>("GachaDesign");
 		public ShopDesignParser ShopDesign => Get<ShopDesignParser>("ShopDesign");
 		public QuestDesignParser QuestDesign => Get<QuestDesignParser>("QuestDesign");
 	}

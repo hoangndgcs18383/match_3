@@ -10,7 +10,7 @@ namespace Zeff.Core.Parser
         {
             return new JsonSerializerSettings
             {
-                DefaultValueHandling = DefaultValueHandling.Ignore,
+                //DefaultValueHandling = DefaultValueHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
                 Formatting = format
             };

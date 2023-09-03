@@ -3,6 +3,7 @@ using Match_3;
 using SRF.Service;
 using UnityEngine;
 using UnityEngine.Scripting;
+using Zeff.Core.SaveGame;
 
 public delegate void SROptionsPropertyChanged(object sender, string propertyName);
 
@@ -141,7 +142,7 @@ public partial class SROptions : INotifyPropertyChanged
     [Category("Level")]
     public void ClearAllPlayerPrefs()
     {
-        PlayerPrefs.DeleteAll();
+        ZSaveGame.DeleteAll();
         GameManager.Current.RestartLevel();
     }
 

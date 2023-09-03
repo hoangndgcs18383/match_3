@@ -69,5 +69,18 @@ namespace Zeff.Extensions
                 return null;
             }
         }
+        
+        public static int TryToParserInt(this string str)
+        {
+            try
+            {
+                var keyValuePairs = str.Split(',').Select(x => x.Trim().Split(':'));
+                return int.Parse(keyValuePairs.First()[1]);
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
     }
 }

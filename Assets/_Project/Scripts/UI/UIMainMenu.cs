@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,12 +9,19 @@ namespace Match_3
     public class UIMainMenu : BaseScreen
     {
         [SerializeField] private TMP_Text levelText;
+        
+        [Title("Button")]
         [SerializeField] private Button playButton;
         [SerializeField] private Button shopButton;
+        [SerializeField] private Button questButton;
+        
         [SerializeField] private GameObject shopPanel;
         
         [SerializeField] private GameObject[] livesGameObjects;
         [SerializeField] private TMP_Text countDownText;
+        
+        [Title("UI Quest")]
+        [SerializeField] private UIQuest uiQuest;
         
         private bool _isShopPanelActive = false;
         
@@ -22,6 +30,8 @@ namespace Match_3
             base.OnEnable();
             playButton.onClick.AddListener(OnPlayButtonClicked);
             shopButton.onClick.AddListener(OnShopButtonClicked);
+            questButton.onClick.AddListener(OnButtonQuestClicked);
+            
             
             countDownText.SetText("");
             UpdateLives();
@@ -29,17 +39,21 @@ namespace Match_3
 
             levelText.SetText("Level " + GameManager.Current.Level);
         }
+
+
         protected override void OnDisable()
         {
             base.OnDisable();
             playButton.onClick.RemoveListener(OnPlayButtonClicked);
+            shopButton.onClick.RemoveListener(OnShopButtonClicked);
+            questButton.onClick.RemoveListener(OnButtonQuestClicked);
             
             TimerManager.Current.CountDownCallback -= OnCountDown;
         }
 
         private void OnShopButtonClicked()
         {
-            shopPanel.SetActive(!shopPanel.activeSelf);
+            shopPanel.SetActive(true);
         }
 
         
@@ -47,6 +61,10 @@ namespace Match_3
         {
             GameManager.Current.RestartLevel();
             UIManager.Current.ShowGamePlayUI();
+        }
+        private void OnButtonQuestClicked()
+        {
+            uiQuest.Show();
         }
         
         private void UpdateLives()

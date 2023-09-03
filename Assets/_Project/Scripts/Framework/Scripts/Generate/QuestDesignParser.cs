@@ -9,7 +9,6 @@ namespace Zeff.Core.Parser
 	[Serializable]
 	public struct QuestDesignData
 	{
-		public string ID;
 		public string Name;
 		public string Description;
 		public string Collection;
@@ -35,6 +34,22 @@ namespace Zeff.Core.Parser
 			{
 				Debug.LogError("Error while parsing QuestDesign: " + e.Message);
 			}
+		}
+		
+		public QuestDesignData GetQuestDesign(string id)
+		{
+			if (_questDesigns.ContainsKey(id))
+			{
+				return _questDesigns[id];
+			}
+
+			Debug.LogError("QuestDesign not found: " + id);
+			return default;
+		}
+
+		public Dictionary<string, QuestDesignData> GetAll()
+		{
+			return _questDesigns;
 		}
 	}
 }

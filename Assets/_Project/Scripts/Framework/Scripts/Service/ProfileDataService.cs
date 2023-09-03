@@ -27,12 +27,17 @@ namespace Match_3
                 Undo = 3,
                 Shuffle = 3,
                 Suggests = 3
-            }
+            },
+            QuestProcessData = new QuestProcessData[] { },
+            IsFirstTimePlay = true
         };
 
         #endregion
 
         public ProfileData ProfileData { get; private set; }
+        public Action<QuestProcessData> OnQuestDailyChanged { get; set; }
+        public Action<bool> OnQuestDailyClaimed { get; set; }
+
         public float TimeAutoSave = 60f;
         public int LastTimeReceiveLife = 900; // 15 minutes = 900 seconds
 
@@ -69,6 +74,118 @@ namespace Match_3
             {
                 ProfileData.LastTimeReceiveLife.TotalSecond = 0;
             }
+
+            SetQuestDaily();
+        }
+
+        public DateTime GetDailyResetTime()
+        {
+            return ProfileData.DailyResetTime;
+        }
+
+        public void ResetQuestDaily()
+        {
+            ProfileData.IsFirstTimePlay = true;
+            SetQuestDaily();
+        }
+        
+        
+        public void ClaimQuestDaily(string questID, Action<bool> onClaimQuestDaily)
+        {
+            foreach (var questProcessData in ProfileData.QuestProcessData)
+            {
+                if (questProcessData.ID == questID)
+                {
+                    if (questProcessData.State == QuestState.Completed)
+                    {
+                        questProcessData.State = QuestState.Claimed;
+                        onClaimQuestDaily?.Invoke(true);
+                        SaveProfileData();
+                        return;
+                    }
+                    else
+                    {
+                        onClaimQuestDaily?.Invoke(false);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void SetQuestDaily()
+        {
+            if (ProfileData.IsFirstTimePlay)
+            {
+                var questDaily = ZParserStatic.Instance.QuestDesign.GetAll();
+                ProfileData.QuestProcessData = new QuestProcessData[questDaily.Count];
+                var index = 0;
+                foreach (var questDesignData in questDaily)
+                {
+                    ProfileData.QuestProcessData[index] = new QuestProcessData
+                    {
+                        ID = questDesignData.Key,
+                        Current = 0,
+                        Total = questDesignData.Value.Collection.TryToParserInt(),
+                        State = QuestState.InProgress
+                    };
+                    index++;
+                }
+
+                ProfileData.IsFirstTimePlay = false;
+                DateTime _timeToReset = DateTime.Now;
+                var timeToReset = new DateTime(_timeToReset.Year, _timeToReset.Month, _timeToReset.Day, 23, 59, 59);
+                timeToReset = timeToReset.AddDays(1);
+                ProfileData.DailyResetTime = timeToReset;
+                SetQuestDaily("QUEST_001", 1);
+                //SaveProfileData();
+            }
+        }
+
+        public void GetQuestDaily(string questID, Action<QuestProcessData> onGetQuestDaily)
+        {
+            foreach (var questProcessData in ProfileData.QuestProcessData)
+            {
+                if (questProcessData.ID == questID)
+                {
+                    onGetQuestDaily?.Invoke(questProcessData);
+                    return;
+                }
+            }
+        }
+        
+        public void SetQuestDaily(string questID, int value)
+        {
+            foreach (var questProcessData in ProfileData.QuestProcessData)
+            {
+                if (questProcessData.ID == questID)
+                {
+                    questProcessData.Current += value;
+                    Debug.Log($"[ProfileData] Set QuestDaily {questID} {value}");
+                    
+                    if (questProcessData.Current >= questProcessData.Total)
+                    {
+                        questProcessData.State = QuestState.Completed;
+                        OnQuestDailyChanged?.Invoke(questProcessData);
+                        Debug.Log($"[ProfileData] QuestDaily {questID} is completed");
+                        SaveProfileData();
+                        return;
+                    }
+                    
+                    OnQuestDailyChanged?.Invoke(questProcessData);
+                    SaveProfileData();
+                    return;
+                }
+            }
+
+            Debug.LogError($"[ProfileData] QuestDaily {questID} not found");
+        }
+
+        public void GetQuestDailyChanged()
+        {
+            foreach (var questProcessData in ProfileData.QuestProcessData)
+            {
+                OnQuestDailyChanged?.Invoke(questProcessData);
+            }
         }
 
         private int CalculateOfflineTime()
@@ -101,12 +218,7 @@ namespace Match_3
 #endif
             Debug.Log($"[ProfileData] Save Profile {ProfileData.ToJson()}");
         }
-
-        public void SetProfileData(ProfileData profileData)
-        {
-            ProfileData = profileData;
-            SaveProfileData();
-        }
+        
 
         public void KillLife(Action onNextCallback, Action onBackCallback)
         {
@@ -194,7 +306,8 @@ namespace Match_3
             }
         }
 
-        public void UsePowerUpData(PowerUpType powerUpType, Action onUsePowerUp = null, Action<PowerUpType> onCancelPowerUp = null)
+        public void UsePowerUpData(PowerUpType powerUpType, Action onUsePowerUp = null,
+            Action<PowerUpType> onCancelPowerUp = null)
         {
             switch (powerUpType)
             {
@@ -261,7 +374,7 @@ namespace Match_3
 
             Debug.Log($"[ProfileData] Buy PowerUp {rewards.ToJson()}");
 
-            
+
             if (rewards.TryGetValue("ITEM_SHUFFLE", out var rewardShuffle))
             {
                 ProfileData.PowerUpData.Shuffle += rewardShuffle;
@@ -284,10 +397,9 @@ namespace Match_3
             SaveProfileData();
             onBuySuccess?.Invoke();
         }
-        
 
         #endregion
-        
+
 
         //Example
         public void AutoSaveProfile()

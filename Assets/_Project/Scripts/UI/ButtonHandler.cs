@@ -18,6 +18,7 @@ namespace Match_3
 
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
+            if(!interactable) return;
             _rectTransform.DOKill();
             switch (state)
             {
@@ -39,15 +40,17 @@ namespace Match_3
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
+            if(!interactable) return;
             _rectTransform.DOScale(0.9f, 0.1f);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
+            if(!interactable) return;
             _rectTransform.DOScale(1f, 0.1f);
         }
-
+        
         protected override void OnDisable()
         {
             base.OnDisable();

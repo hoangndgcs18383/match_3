@@ -106,7 +106,7 @@ namespace Zeff.Core.SaveGame
                 }
             }
         }
-        
+
         public static void SaveLocalPersistentDataPath<T>(T data, string key) where T : class
         {
             string filePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
@@ -196,6 +196,17 @@ namespace Zeff.Core.SaveGame
             {
                 return PlayerPrefs.HasKey(key);
             }
+        }
+
+        public static void DeleteAll()
+        {
+            PlayerPrefs.DeleteAll();
+#if UNITY_EDITOR
+            string filePath = Path.Combine(Application.dataPath, SAVE_FILE_NAME);
+#else
+            string filePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
+#endif
+            File.Delete(filePath);
         }
     }
 }

@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-using Zeff.Extensions;
 
 namespace Zeff.Core.Parser
 {
     [Serializable]
     public struct ShopDesign
     {
-        public int price;
-        public string rewards;
+        public int  Price;
+        public string Rewards;
     }
 
     public class ShopDesignParser : ZBaseParser

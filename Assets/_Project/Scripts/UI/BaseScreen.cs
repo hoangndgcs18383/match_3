@@ -13,7 +13,7 @@ namespace Match_3
             private set => gameObject.SetActive(value);
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             if(isInactiveAtAwake)
                 IsActivated = false;

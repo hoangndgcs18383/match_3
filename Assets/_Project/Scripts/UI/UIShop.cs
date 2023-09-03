@@ -25,8 +25,8 @@ namespace Match_3
                 shopItem.SetData(new ShopData
                 {
                     Id = data.Key,
-                    Rewards = data.Value.rewards.TryToParserDictionary(),
-                    Price = data.Value.price
+                    Rewards = data.Value.Rewards.TryToParserDictionary(),
+                    Price = data.Value.Price
                 });
             }
             

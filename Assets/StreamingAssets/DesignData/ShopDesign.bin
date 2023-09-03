@@ -1,12 +1,18 @@
 {
-  "ITEM_01": {
-    "Id": "ITEM_01",
-    "Price": "100",
+  "PACK_01": {
+    "Price": 1000,
     "Rewards": "ITEM_SHUFFLE:1"
   },
-  "ITEM_02": {
-    "Id": "ITEM_02",
-    "Price": "200",
-    "Rewards": "ITEM_UNDO:1,ITEM_SHUFFLE:1,ITEM_SUGGEST:1"
+  "PACK_02": {
+    "Price": 1000,
+    "Rewards": "ITEM_UNDO:1"
+  },
+  "PACK_03": {
+    "Price": 1000,
+    "Rewards": "ITEM_SUGGEST:1"
+  },
+  "PACK_04": {
+    "Price": 2500,
+    "Rewards": "ITEM_SHUFFLE:1,ITEM_UNDO:1,ITEM_SUGGEST:1"
   }
 }

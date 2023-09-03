@@ -16,6 +16,7 @@ namespace Match_3
     public class TimingService : Service<TimingService>, IDisposable
     {
         private UpdateType _updateType;
+        
 
         private Queue<Timer> _timers = new Queue<Timer>();
 

@@ -15,6 +15,8 @@ namespace Match_3
 
         public Action<float> CountDownCallback;
         private CoroutineHandle _countDownCoroutine;
+        private DateTime _now;
+        private DateTime _timeToReset;
 
         private void Awake()
         {
@@ -22,6 +24,16 @@ namespace Match_3
             {
                 _current = this;
                 DontDestroyOnLoad(this);
+            }
+
+            //calculate time to reset
+            _now = DateTime.Now;
+            _timeToReset = ProfileDataService.Instance.GetDailyResetTime();
+
+            if (_now > _timeToReset)
+            {
+                ProfileDataService.Instance.ResetQuestDaily();
+                Debug.Log("Reset Time");
             }
         }
 

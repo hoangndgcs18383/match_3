@@ -16,6 +16,8 @@ namespace Match_3
 
         private Action _onBtnCollect;
         private Action _onBtnNext;
+        
+        private bool _isAvailableClick = true;
 
         private RectTransform _rectTransform;
 
@@ -34,6 +36,8 @@ namespace Match_3
             DOTween.Kill(RectTransform.transform);
             RectTransform.localScale = Vector3.zero;
             gameObject.SetActive(true);
+            btnCollect.interactable = false;
+            btnNext.interactable = false;
             
             AnimTextCount(mGoldText);
             TweenShow();
@@ -69,7 +73,11 @@ namespace Match_3
         
         private void AnimTextCount(int count)
         {
-            goldText.DOText(count.ToString(), 0.5f, true, ScrambleMode.Numerals, "0123456789").SetEase(Ease.Linear);
+            goldText.DOText(count.ToString(), 0.5f, true, ScrambleMode.Numerals, "0123456789").SetEase(Ease.Linear).OnComplete(() =>
+            {
+                btnCollect.interactable = true;
+                btnNext.interactable = true;
+            });
             goldX3Text.DOText((count * 3).ToString(), 0.5f, true, ScrambleMode.Numerals, "0123456789").SetEase(Ease.Linear);
         }
 

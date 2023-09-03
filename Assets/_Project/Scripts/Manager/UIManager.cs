@@ -74,9 +74,9 @@ namespace Match_3
         }
         
         [Button]
-        public void ShowRewardUI()
+        public void ShowRewardUI(Dictionary<string, int> rewards, Action onRewardComplete = null)
         {
-            uiReward.StartReward("ITEM_SHUFFLE");
+            uiReward.StartReward(rewards , onRewardComplete);
         }
 
         private void InitPowerUp()

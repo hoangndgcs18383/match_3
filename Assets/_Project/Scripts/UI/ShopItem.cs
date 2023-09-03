@@ -63,6 +63,7 @@ namespace Match_3
 
         private void OnBuySuccess()
         {
+            UIManager.Current.ShowRewardUI(_shopData.Rewards);
             UIManager.Current.UpdateGUIAllPowerUp();
         }
         
