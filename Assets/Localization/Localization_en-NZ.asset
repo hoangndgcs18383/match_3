@@ -20,12 +20,44 @@ MonoBehaviour:
     - rid: 3595017796255744084
   m_TableData:
   - m_Id: 220844424179712
-    m_Localized: Level {level}
+    m_Localized: Level {0}
     m_Metadata:
       m_Items:
       - rid: 3595017796255744084
   - m_Id: 12186445451374592
     m_Localized: Shuffle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834411719700480
+    m_Localized: LEVEL COMPLETE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834866138984448
+    m_Localized: YOU WIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834935634407424
+    m_Localized: YOU LOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834978944790528
+    m_Localized: No Thanks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12839398877179904
+    m_Localized: "SETTINGS\t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12839620881690624
+    m_Localized: Privacy Policy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12839991549112320
+    m_Localized: Main
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12840439316230144
+    m_Localized: Click To Continue
     m_Metadata:
       m_Items: []
   references:

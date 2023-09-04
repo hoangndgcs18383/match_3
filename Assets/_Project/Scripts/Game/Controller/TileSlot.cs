@@ -33,7 +33,7 @@ namespace Match_3
 
         private void Hide()
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         private void OnDestroy()

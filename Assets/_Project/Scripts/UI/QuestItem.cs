@@ -34,8 +34,12 @@ namespace Match_3
         {
             _questData = (QuestUIData) data;
             questDescription.SetText(_questData.Description);
-            
             ProfileDataService.Instance.OnQuestDailyChanged += OnQuestDailyChanged;
+        }
+
+        private void OnDestroy()
+        {
+            ProfileDataService.Instance.OnQuestDailyChanged -= OnQuestDailyChanged;
         }
 
         private void OnQuestDailyChanged(QuestProcessData questProcessData)
@@ -58,8 +62,15 @@ namespace Match_3
                     break;
             }
 
-            questProgress.SetText($"{questProcessData.Current}/<color=#FFDF00>{questProcessData.Total}</color>");
-            progressFill.fillAmount = questProcessData.Current / (float) questProcessData.Total;
+            if (questProgress != null)
+            {
+                questProgress.SetText($"{questProcessData.Current}/<color=#FFDF00>{questProcessData.Total}</color>");
+            }
+
+            if (progressFill != null)
+            {
+                progressFill.fillAmount = questProcessData.Current / (float) questProcessData.Total;
+            }
         }
 
         public void OnClick()

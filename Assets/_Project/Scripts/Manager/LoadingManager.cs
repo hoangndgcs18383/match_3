@@ -18,7 +18,7 @@ namespace Match_3
         {
             Instance = this;
             DontDestroyOnLoad(this);
-
+            
             RegisterService();
             LoadService();
         }

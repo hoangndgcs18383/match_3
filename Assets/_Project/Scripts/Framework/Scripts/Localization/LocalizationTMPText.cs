@@ -1,51 +1,62 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 
 namespace Zeff.Core.Localization
 {
+    [RequireComponent(typeof(TMP_Text))]
     public class LocalizationTMPText : MonoBehaviour
     {
-        public string Key;
-        
-        [HideInInspector] public TMP_Text targetText;
-        
-        private string _key;
+        [SerializeField] private LocalizedString localizedString;
 
-        private void Start()
+
+        [HideInInspector] public TMP_Text targetTMPText;
+
+        private int _argument;
+
+        private void Awake()
         {
-            if (targetText == null)
-            {
-                targetText = GetComponent<TMP_Text>();
-            }
-            
-            LocalizationSettings.SelectedLocaleChanged += OnSelectedLocaleChanged;
-            
-            if (targetText == null)
-            {
-                Debug.LogError("LocalizationTMPText: targetText is null");
-            }
+            if (targetTMPText == null)
+                targetTMPText = GetComponent<TMP_Text>();
         }
 
-        private void OnSelectedLocaleChanged(Locale obj)
+        private void OnEnable()
         {
-            SetText(Key);
+            if (localizedString == null)
+            {
+                Debug.LogError("Missing LocalizedString for " + gameObject.name);
+                return;
+            }
+
+            localizedString.Arguments = new object[] {_argument};
+            localizedString.StringChanged += OnStringChanged;
         }
 
-        public void SetText(string key)
+        private void OnDisable()
         {
-            try
+            if (localizedString == null)
             {
-                string localizedText = LocalizationSettings.StringDatabase.GetLocalizedString(key);
-                
-                targetText.SetText(localizedText);
+                Debug.LogError("Missing LocalizedString for " + gameObject.name);
+                return;
             }
-            catch (Exception e)
-            {
-                Debug.LogError("LocalizationTMPText: " + e.Message);
-            }
+
+            localizedString.StringChanged -= OnStringChanged;
+        }
+
+        private void OnStringChanged(string value)
+        {
+            targetTMPText.SetText(value);
+        }
+
+        public void SetText(string value)
+        {
+            localizedString.GetLocalizedString(value);
+        }
+        
+        public void SetParams(params object[] arguments)
+        {
+            localizedString.Arguments = arguments;
+            localizedString.RefreshString();
         }
     }
 }

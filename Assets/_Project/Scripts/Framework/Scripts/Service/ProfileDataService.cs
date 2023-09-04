@@ -165,13 +165,13 @@ namespace Match_3
                     if (questProcessData.Current >= questProcessData.Total)
                     {
                         questProcessData.State = QuestState.Completed;
-                        OnQuestDailyChanged?.Invoke(questProcessData);
+                        //OnQuestDailyChanged?.Invoke(questProcessData);
                         Debug.Log($"[ProfileData] QuestDaily {questID} is completed");
                         SaveProfileData();
                         return;
                     }
                     
-                    OnQuestDailyChanged?.Invoke(questProcessData);
+                    //OnQuestDailyChanged?.Invoke(questProcessData);
                     SaveProfileData();
                     return;
                 }

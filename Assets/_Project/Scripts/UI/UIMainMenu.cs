@@ -25,6 +25,7 @@ namespace Match_3
         
         private bool _isShopPanelActive = false;
         
+
         protected override void OnEnable()
         {
             base.OnEnable();

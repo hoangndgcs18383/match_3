@@ -6,13 +6,14 @@ using TMPro;
 using UnityEngine;
 //using UnityEngine.Localization;
 using UnityEngine.UI;
+using Zeff.Core.Localization;
 
 namespace Match_3
 {
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private TMP_Text coinText;
-        [SerializeField] private TMP_Text levelText;
+        [SerializeField] private LocalizationTMPText levelText;
         
         [Title("References")]
         [SerializeField] private UIPopup popup;
@@ -120,7 +121,7 @@ namespace Match_3
 
         public void SetLevelText(int level)
         {
-            levelText.SetText("Level " + level);
+            levelText.SetParams(level);
         }
         
         public void UpdateGUIPowerUp(PowerUpType powerUpType)
@@ -154,7 +155,7 @@ namespace Match_3
         {
             spinAdsButton.gameObject.SetActive(true);
             yield return Timing.WaitForOneFrame;
-            spinAdsButton.Spin();
+            spinAdsButton.transform.Spin();
         }
 
         public void StopSpinAds()

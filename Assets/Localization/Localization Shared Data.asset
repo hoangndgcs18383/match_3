@@ -23,6 +23,38 @@ MonoBehaviour:
     m_Key: TITLE_SHUFFLE
     m_Metadata:
       m_Items: []
+  - m_Id: 12834411719700480
+    m_Key: TITLE_LEVEL_COMPLETE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834866138984448
+    m_Key: TITLE_YOU_WIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834935634407424
+    m_Key: TITLE_YOU_LOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12834978944790528
+    m_Key: TITLE_NO_THANKS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12839398877179904
+    m_Key: TITLE_SETTING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12839620881690624
+    m_Key: TITLE_PRIVACY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12839991549112320
+    m_Key: TITLE_MAIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12840439316230144
+    m_Key: TITLE_CLICK_TO_CONTINUE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
