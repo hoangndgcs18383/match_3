@@ -153,9 +153,7 @@ namespace Match_3
                 {
                     LoadLevelType = LoadLevelType.ManualLoad;
                     LoadLevel();
-                }
-
-                ;
+                };
 
                 BoardGame.TileJsonData tileJsonData = new BoardGame.TileJsonData();
                 tileJsonData = JsonUtility.FromJson<BoardGame.TileJsonData>(levelTxt);
