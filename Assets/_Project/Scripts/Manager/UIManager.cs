@@ -75,9 +75,9 @@ namespace Match_3
         }
         
         [Button]
-        public void ShowRewardUI(Dictionary<string, int> rewards, Action onRewardComplete = null)
+        public void ShowRewardUI(Dictionary<string, int> rewards)
         {
-            uiReward.StartReward(rewards , onRewardComplete);
+            uiReward.StartReward(rewards , RewardManager.Current.UpdateCoinView);
         }
 
         private void InitPowerUp()

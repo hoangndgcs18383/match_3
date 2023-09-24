@@ -30,7 +30,7 @@ namespace Match_3
         {
         }
 
-        public void SetData(IBuildData data)
+        public void SetData(IBuildData data, Action onBuySuccess = null, Action onBuyFail = null)
         {
             _questData = (QuestUIData) data;
             questDescription.SetText(_questData.Description);

@@ -51,6 +51,7 @@ namespace Zeff.Core.Localization
         public void SetText(string value)
         {
             localizedString.GetLocalizedString(value);
+            localizedString.RefreshString();
         }
         
         public void SetParams(params object[] arguments)

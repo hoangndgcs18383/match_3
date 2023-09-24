@@ -29,6 +29,7 @@ namespace Match_3
                     _rectTransform.DOScale(0.9f, 0.1f);
                     break;
                 case SelectionState.Pressed:
+                    _rectTransform.DOScale(1f, 0.1f);
                     break;
                 case SelectionState.Disabled:
                     break;

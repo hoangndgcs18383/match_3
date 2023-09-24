@@ -60,8 +60,15 @@ namespace Match_3
         
         public void OnPlayButtonClicked()
         {
-            GameManager.Current.RestartLevel();
-            UIManager.Current.ShowGamePlayUI();
+            if(ProfileDataService.Instance.IsEnoughLife())
+            {
+                GameManager.Current.RestartLevel();
+                UIManager.Current.ShowGamePlayUI();
+            }
+            else
+            {
+                FlyTextManager.Instance.SetFlyText("Not enough lives");
+            }
         }
         private void OnButtonQuestClicked()
         {

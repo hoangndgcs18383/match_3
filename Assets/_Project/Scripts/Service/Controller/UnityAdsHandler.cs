@@ -28,13 +28,42 @@ namespace Match_3
         public IAdsHandler.OnShowAds OnShowAdsEvent { get; set; }
         public IAdsHandler.OnShowAds OnRewardAdsEvent { get; set; }
 
+
+        private BannerPosition _bannerPosition = BannerPosition.BOTTOM_CENTER;
+#if UNITY_ANDROID
+        private string _bannerId = "Banner_Android";
+#elif UNITY_IPHONE
+        private string _bannerId = "Banner_iOS";
+#endif
+
+
         public void InitializedAds()
         {
             if (!Advertisement.isInitialized && Advertisement.isSupported)
             {
-                Advertisement.Initialize(_gameId, true, this);
+                Advertisement.Initialize(_gameId, false, this);
             }
         }
+
+        #region INITIALIZATION ADS CALLBACK
+
+        public void OnInitializationComplete()
+        {
+            OnInitializedAdsEvent?.Invoke(AdsResult.Success);
+            Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
+            LoadBanner();
+        }
+
+        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+        {
+            OnInitializedAdsEvent?.Invoke(AdsResult.Fail);
+            Debug.LogError($"[OnInitialized Ads]: {error} {message}");
+        }
+        
+
+        #endregion
+
+        #region LOAD && SHOW REWARDED ADS
 
         public void LoadRewardedAd()
         {
@@ -45,16 +74,57 @@ namespace Match_3
         {
             Advertisement.Show(_adUnitId, this);
         }
+        
 
-        public void OnInitializationComplete()
+        #endregion
+
+        #region LOAD && SHOW BANNER
+        private void LoadBanner()
         {
-            OnInitializedAdsEvent?.Invoke(AdsResult.Success);
+            BannerLoadOptions bannerOptions = new BannerLoadOptions
+            {
+                loadCallback = OnBannerLoadedCallback,
+                errorCallback = OnBannerFailedToLoadCallback
+            };
+            
+            Advertisement.Banner.Load(_bannerId , bannerOptions);
+        }
+        
+        private void OnBannerLoadedCallback()
+        {
+            ShowBanner();
+        }
+        
+        private void OnBannerFailedToLoadCallback(string message)
+        {
+            Debug.LogError($"[OnBannerFailedToLoadCallback Ads]: {message}");
         }
 
-        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+        private void ShowBanner()
         {
-            OnInitializedAdsEvent?.Invoke(AdsResult.Fail);
-            Debug.LogError($"[OnInitialized Ads]: {error} {message}");
+            BannerOptions bannerOptions = new BannerOptions
+            {
+                clickCallback = OnBannerClickedCallback,
+                hideCallback = OnBannerHiddenCallback,
+                showCallback = OnBannerShownCallback
+            };
+            
+            Advertisement.Banner.Show(_bannerId, bannerOptions);
+        }
+
+        private void OnBannerShownCallback() {}
+
+        private void OnBannerHiddenCallback() {}
+
+        private void OnBannerClickedCallback() {}
+
+        #endregion
+        
+        #region SHOW ADS CALLBACK
+        public void OnUnityAdsShowStart(string placementId)
+        {
+            OnShowAdsEvent?.Invoke(AdsResult.Success);
+            Debug.Log($"[OnUnityAdsShowStart Ads]: {placementId}");
         }
 
         public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
@@ -62,17 +132,6 @@ namespace Match_3
             OnInitializedAdsEvent?.Invoke(AdsResult.Fail);
             Debug.LogError($"[OnUnityAdsShowFailure Ads]: {placementId} {error} {message}");
         }
-
-        public void OnUnityAdsShowStart(string placementId)
-        {
-            OnShowAdsEvent?.Invoke(AdsResult.Success);
-            Debug.Log($"[OnUnityAdsShowStart Ads]: {placementId}");
-        }
-
-        public void OnUnityAdsShowClick(string placementId)
-        {
-        }
-
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
             if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
@@ -86,6 +145,11 @@ namespace Match_3
                 Debug.LogError($"[OnUnityAdsShowComplete Ads] : {placementId} {showCompletionState}");
             }
         }
+        
+
+        #endregion
+        
+        #region LOAD ADS CALLBACK
 
         public void OnUnityAdsAdLoaded(string placementId)
         {
@@ -98,5 +162,12 @@ namespace Match_3
             OnLoadAdsEvent?.Invoke(AdsResult.Fail);
             Debug.LogError($"pOnUnityAdsFailedToLoad Ads]: {placementId} {error} {message}");
         }
+        
+        #endregion
+        
+        public void OnUnityAdsShowClick(string placementId)
+        {
+        }
+        
     }
 }

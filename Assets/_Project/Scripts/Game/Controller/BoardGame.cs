@@ -286,7 +286,7 @@ namespace Match_3
                 int randomCoin = RewardManager.Current.GetRandomCoin();
                 ProfileDataService.Instance.SetQuestDaily("QUEST_002", 1);
                 
-                UIManager.Current.ShowPopup("YOU WIN", randomCoin, () =>
+                UIManager.Current.ShowPopup("TITLE_YOU_WIN", randomCoin, () =>
                     {
                         //show ads reward 3x
                         OnShowAdsReward(randomCoin, GameManager.Current.LoadNextLevel);
@@ -338,7 +338,7 @@ namespace Match_3
                 {
                     int randomCoin = RewardManager.Current.GetRandomCoin(true);
                     
-                    UIManager.Current.ShowPopup("You Lose", randomCoin,
+                    UIManager.Current.ShowPopup("TITLE_YOU_LOSE", randomCoin,
                         OnBtnCollectClick, OnBtnNextClick);
 
                     ProfileDataService.Instance.AddLastTimeReceiveLife();
@@ -358,6 +358,7 @@ namespace Match_3
 
                 void OnBackCallback()
                 {
+                    LoadingManager.Instance.LoadScene("Menu");
                 }
             }
         }

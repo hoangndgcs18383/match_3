@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,8 +21,9 @@ namespace Match_3
         public void Initialize()
         {
         }
+        
 
-        public void SetData(IBuildData data)
+        public void SetData(IBuildData data, Action onBuySuccess = null, Action onBuyFail = null)
         {
             if(data == null) return;
             nameText.SetText(((ShopInfoData) data).Id);

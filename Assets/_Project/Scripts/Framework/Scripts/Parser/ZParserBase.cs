@@ -10,8 +10,6 @@ namespace Zeff.Core.Parser
 
     public abstract class ZBaseParser : IBaseParser
     {
-        public string FileName { get; set; }
-
         private bool _isInitialized;
 
         public virtual void Initialize()

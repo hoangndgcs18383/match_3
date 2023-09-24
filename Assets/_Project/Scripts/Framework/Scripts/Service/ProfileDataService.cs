@@ -44,7 +44,7 @@ namespace Match_3
         private const string ProfileDataKey = "ProfileData";
 
         public override void Initialize()
-        {
+        {   
             base.Initialize();
 
 
@@ -73,6 +73,7 @@ namespace Match_3
             else
             {
                 ProfileData.LastTimeReceiveLife.TotalSecond = 0;
+                ProfileData.Lives = 5;
             }
 
             SetQuestDaily();
@@ -193,6 +194,7 @@ namespace Match_3
             //Calculate offline time
             int result = 0;
             long currentTime = DateTime.Now.Ticks;
+            DebugFormat.ToString(currentTime);
             currentTime = currentTime - ProfileData.LastTimePlay;
             TimeSpan timeSpan = new TimeSpan(currentTime);
 
@@ -232,6 +234,18 @@ namespace Match_3
             {
                 onBackCallback?.Invoke();
                 Debug.Log("Not enough lives");
+            }
+        }
+        
+        public bool IsEnoughLife()
+        {
+            if (ProfileData.Lives > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

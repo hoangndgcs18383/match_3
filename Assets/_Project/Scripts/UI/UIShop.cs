@@ -14,7 +14,8 @@ namespace Match_3
         public ShopItem shopItemPrefab;
         public Transform shopItemParent;
         
-
+        public TMP_Text goldText;
+        
         private void Start()
         {
             var shopDesign = ZParserStatic.Instance.ShopDesign.GetAll();
@@ -27,7 +28,7 @@ namespace Match_3
                     Id = data.Key,
                     Rewards = data.Value.Rewards.TryToParserDictionary(),
                     Price = data.Value.Price
-                });
+                }, UpdateGold, OnBuyFail);
             }
             
         }
@@ -36,6 +37,7 @@ namespace Match_3
         {
             base.OnEnable();
             backButton.onClick.AddListener(OnBackClick);
+            UpdateGold();
         }
 
 
@@ -50,6 +52,14 @@ namespace Match_3
             gameObject.SetActive(false);
         }
         
+        public void UpdateGold()
+        {
+            goldText.SetText($"Coin: {ProfileDataService.Instance.ProfileData.Gold}");
+        }
 
+        public void OnBuyFail()
+        {
+            FlyTextManager.Instance.SetFlyText("Not enough gold");
+        }
     }
 }

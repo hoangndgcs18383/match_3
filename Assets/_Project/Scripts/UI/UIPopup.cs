@@ -3,6 +3,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zeff.Core.Localization;
 
@@ -10,7 +11,8 @@ namespace Match_3
 {
     public class UIPopup : MonoBehaviour
     {
-        [SerializeField] private LocalizationTMPText statusTxt;
+        [SerializeField] private LocalizationTMPText statusLoseTxt;
+        [SerializeField] private LocalizationTMPText statusWinTxt;
         [SerializeField] private TMP_Text goldText;
         [SerializeField] private TMP_Text goldX3Text;
         [SerializeField] private TMP_Text noThanksText;
@@ -47,8 +49,19 @@ namespace Match_3
             AnimCollectButton();
             AnimTextCount(mGoldText);
             TweenShow();
-            
-            //statusTxt.SetText(mTitle);
+
+            switch (mTitle)
+            {
+                case "TITLE_YOU_LOSE":
+                    statusLoseTxt.gameObject.SetActive(true);
+                    statusWinTxt.gameObject.SetActive(false);
+                    break;
+                case "TITLE_YOU_WIN":
+                    statusWinTxt.gameObject.SetActive(true);
+                    statusLoseTxt.gameObject.SetActive(false);
+                    break;
+            }
+
             _onBtnCollect = onBtnCollect;
             _onBtnNext = onBtnNext;
         }

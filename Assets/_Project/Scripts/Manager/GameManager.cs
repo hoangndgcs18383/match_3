@@ -65,10 +65,17 @@ namespace Match_3
             mainCamera = Camera.main;
 
             SetTargetFPS();
-            StartLevel();
-            RewardManager.Current.UpdateCoinView();
-            
             ProfileDataService.Instance.AutoSaveProfile();
+            if (ProfileDataService.Instance.IsEnoughLife())
+            {
+                StartLevel();
+                RewardManager.Current.UpdateCoinView();
+            }
+            else
+            {
+                LoadingManager.Instance.LoadScene("Menu");
+                UIManager.Current.HideGamePlayUI();
+            }
         }
 
 

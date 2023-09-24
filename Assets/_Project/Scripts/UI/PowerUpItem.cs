@@ -14,6 +14,10 @@ namespace Match_3
     {
         [SerializeField] private TMP_Text countText;
         [SerializeField] private PowerUpType powerUpType;
+        
+        [SerializeField] private GameObject countIcon;
+        [SerializeField] private GameObject adsIcon;
+        
         private Action<PowerUpType> _onClick;
         public PowerUpType PowerUpType { get => powerUpType; set => powerUpType = value; }
 
@@ -26,12 +30,27 @@ namespace Match_3
         public void UpdateCount(int count)
         {
             countText.SetText(count.ToString());
+            if (IsEnoughPowerUp())
+            {
+                countIcon.SetActive(true);
+                adsIcon.SetActive(false);
+            }
+            else
+            {
+                countIcon.SetActive(false);
+                adsIcon.SetActive(true);
+            }
         }
         
         public void OnClick()
         {
             _onClick?.Invoke(powerUpType);
             UpdateCount(GameConfig.GetPowerUpCount(powerUpType));
+        }
+        
+        private bool IsEnoughPowerUp()
+        {
+            return GameConfig.GetPowerUpCount(powerUpType) > 0;
         }
     }
 }
