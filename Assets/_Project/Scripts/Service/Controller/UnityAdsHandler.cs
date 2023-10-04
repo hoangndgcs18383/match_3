@@ -27,9 +27,7 @@ namespace Match_3
         public IAdsHandler.OnLoadAds OnLoadAdsEvent { get; set; }
         public IAdsHandler.OnShowAds OnShowAdsEvent { get; set; }
         public IAdsHandler.OnShowAds OnRewardAdsEvent { get; set; }
-
-
-        private BannerPosition _bannerPosition = BannerPosition.BOTTOM_CENTER;
+        
 #if UNITY_ANDROID
         private string _bannerId = "Banner_Android";
 #elif UNITY_IPHONE

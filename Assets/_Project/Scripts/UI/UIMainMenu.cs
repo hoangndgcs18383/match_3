@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -8,23 +9,22 @@ namespace Match_3
 {
     public class UIMainMenu : BaseScreen
     {
+        [Title("Text")] [SerializeField] private TMP_Text coinText;
         [SerializeField] private TMP_Text levelText;
-        
-        [Title("Button")]
-        [SerializeField] private Button playButton;
+        [SerializeField] private TMP_Text countDownText;
+        [SerializeField] private TMP_Text livesText;
+
+        [Title("Button")] [SerializeField] private Button playButton;
         [SerializeField] private Button shopButton;
         [SerializeField] private Button questButton;
-        
+
         [SerializeField] private GameObject shopPanel;
-        
-        [SerializeField] private GameObject[] livesGameObjects;
-        [SerializeField] private TMP_Text countDownText;
-        
-        [Title("UI Quest")]
-        [SerializeField] private UIQuest uiQuest;
-        
+        [SerializeField] private RectTransform gameNameTransform;
+
+        [Title("UI Quest")] [SerializeField] private UIQuest uiQuest;
+
         private bool _isShopPanelActive = false;
-        
+
 
         protected override void OnEnable()
         {
@@ -32,10 +32,12 @@ namespace Match_3
             playButton.onClick.AddListener(OnPlayButtonClicked);
             shopButton.onClick.AddListener(OnShopButtonClicked);
             questButton.onClick.AddListener(OnButtonQuestClicked);
-            
-            
+
+            gameNameTransform.DOLocalMoveY(gameNameTransform.localPosition.y + 10f, 1f).SetLoops(-1, LoopType.Yoyo);
+            coinText.SetText($"{ProfileDataService.Instance.GetGold()}");
+            livesText.SetText($"{ProfileDataService.Instance.ProfileData.Lives}");
+
             countDownText.SetText("");
-            UpdateLives();
             TimerManager.Current.CountDownCallback += OnCountDown;
 
             levelText.SetText("Level " + GameManager.Current.Level);
@@ -48,7 +50,8 @@ namespace Match_3
             playButton.onClick.RemoveListener(OnPlayButtonClicked);
             shopButton.onClick.RemoveListener(OnShopButtonClicked);
             questButton.onClick.RemoveListener(OnButtonQuestClicked);
-            
+            gameNameTransform.DOKill();
+
             TimerManager.Current.CountDownCallback -= OnCountDown;
         }
 
@@ -57,10 +60,10 @@ namespace Match_3
             shopPanel.SetActive(true);
         }
 
-        
+
         public void OnPlayButtonClicked()
         {
-            if(ProfileDataService.Instance.IsEnoughLife())
+            if (ProfileDataService.Instance.IsEnoughLife())
             {
                 GameManager.Current.RestartLevel();
                 UIManager.Current.ShowGamePlayUI();
@@ -70,20 +73,13 @@ namespace Match_3
                 FlyTextManager.Instance.SetFlyText("Not enough lives");
             }
         }
+
         private void OnButtonQuestClicked()
         {
             uiQuest.Show();
         }
-        
-        private void UpdateLives()
-        {
-            for (int i = 0; i < livesGameObjects.Length; i++)
-            {
-                livesGameObjects[i].SetActive(i < ProfileDataService.Instance.ProfileData.Lives);
-            }
-            
-        }
-        
+
+
         private void OnCountDown(float time)
         {
             countDownText.SetText(time.ToTimeFormat());

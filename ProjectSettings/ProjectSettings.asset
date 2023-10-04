@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: Match 3 Zu
+  productName: Animal Matching
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -274,7 +274,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: ec3dc96149b8dd44fb38dd9e87af87c4, type: 3}
+      m_Icon: {fileID: 2800000, guid: df949a362a4f035408c1914a0acd52cf, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -871,7 +871,7 @@ PlayerSettings:
   cloudProjectId: 966dd174-fafa-4d4b-bf4d-94469eaca413
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: match 3 merge
+  projectName: Match 3 merge
   organizationId: hoangndgcs18383
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

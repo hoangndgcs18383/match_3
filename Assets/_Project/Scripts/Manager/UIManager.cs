@@ -7,6 +7,7 @@ using UnityEngine;
 //using UnityEngine.Localization;
 using UnityEngine.UI;
 using Zeff.Core.Localization;
+using Zeff.Core.Service;
 
 namespace Match_3
 {
@@ -14,15 +15,13 @@ namespace Match_3
     {
         [SerializeField] private TMP_Text coinText;
         [SerializeField] private LocalizationTMPText levelText;
-        
-        [Title("References")]
-        [SerializeField] private UIPopup popup;
+
+        [Title("References")] [SerializeField] private UIPopup popup;
         [SerializeField] private UIMenu menu;
         [SerializeField] private UIReward uiReward;
         [SerializeField] private GameObject uiGamePlay;
-        
-        [Title("Buttons")]
-        [SerializeField] private Button menuButton;
+
+        [Title("Buttons")] [SerializeField] private Button menuButton;
         [SerializeField] private Image spinAdsButton;
 
         private Dictionary<PowerUpType, PowerUpItem> powerUpItems = new Dictionary<PowerUpType, PowerUpItem>();
@@ -36,7 +35,6 @@ namespace Match_3
                 Current = this;
                 if (transform.parent == null)
                 {
-                    
                     DontDestroyOnLoad(this);
                 }
             }
@@ -47,13 +45,20 @@ namespace Match_3
         private void Start()
         {
             InitPowerUp();
+            
+            IAPService.Instance.OnPurchaseCallbackIAPEvent += OnPurchaseCallbackIAPEvent;
         }
-        
+
+        private void OnPurchaseCallbackIAPEvent(Status status)
+        {
+            Debug.Log($"[OnPurchaseCallbackIAPEvent] {status}");
+        }
+
         private void OnEnable()
         {
             menuButton.onClick.AddListener(OnMenuClick);
         }
-        
+
         private void OnDisable()
         {
             menuButton.onClick.RemoveListener(OnMenuClick);
@@ -63,27 +68,27 @@ namespace Match_3
         {
             menu.Show();
         }
-        
+
         public void ShowGamePlayUI()
         {
             uiGamePlay.SetActive(true);
         }
-        
+
         public void HideGamePlayUI()
         {
             uiGamePlay.SetActive(false);
         }
-        
+
         [Button]
         public void ShowRewardUI(Dictionary<string, int> rewards)
         {
-            uiReward.StartReward(rewards , RewardManager.Current.UpdateCoinView);
+            uiReward.StartReward(rewards, RewardManager.Current.UpdateCoinView);
         }
 
         private void InitPowerUp()
         {
             var powerUps = FindObjectsOfType<PowerUpItem>();
-            
+
             foreach (var powerUp in powerUps)
             {
                 powerUpItems.Add(powerUp.PowerUpType, powerUp);
@@ -123,12 +128,12 @@ namespace Match_3
         {
             levelText.SetParams(level);
         }
-        
+
         public void UpdateGUIPowerUp(PowerUpType powerUpType)
         {
             powerUpItems[powerUpType].UpdateCount(GetPowerUpCount(powerUpType));
         }
-        
+
         public void UpdateGUIAllPowerUp()
         {
             foreach (var powerUpItem in powerUpItems)
@@ -165,6 +170,8 @@ namespace Match_3
 
         public void DisableAds()
         {
+            IAPService.Instance.Purchase(IAPPurchaseType.RemoveAds);
+            return;
             spinAdsButton.gameObject.SetActive(false);
         }
 
