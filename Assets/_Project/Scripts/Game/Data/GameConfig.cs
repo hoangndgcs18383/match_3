@@ -58,6 +58,7 @@ namespace Match_3
     public static class StringConstants
     {
         public static string LOAD_LEVEL = "Level";
+        public static string LOAD_MENU = "Menu";
         public static string SAVE_LEVEL = "[SaveLevel]";
     }
 

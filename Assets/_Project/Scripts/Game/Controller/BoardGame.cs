@@ -293,7 +293,7 @@ namespace Match_3
                     },
                     () =>
                     {
-                        LoadingManager.Instance.LoadScene("Menu");
+                        GameManager.Current.LoadNextLevel();
                         UIManager.Current.HideGamePlayUI();
                         RewardManager.Current.AddCoin(randomCoin);
                         RewardManager.Current.AddRandomPowerUp();

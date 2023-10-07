@@ -316,7 +316,7 @@ namespace Match_3
         {
             ProfileDataService.Instance.UpdateNextLevel();
             ClearLevel();
-            LoadingManager.Instance.LoadScene(StringConstants.LOAD_LEVEL);
+            LoadingManager.Instance.LoadScene(StringConstants.LOAD_MENU);
             GCCollectAndClear();
         }
 
