@@ -490,7 +490,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 503
 --- !u!1 &8515308550002126492
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +721,10 @@ PrefabInstance:
     - target: {fileID: 2544592574298447767, guid: 7c06bac9e054cda48be44830112db952, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091823876400278143, guid: 7c06bac9e054cda48be44830112db952, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6467027293705232079, guid: 7c06bac9e054cda48be44830112db952, type: 3}
       propertyPath: m_AnchoredPosition.x
