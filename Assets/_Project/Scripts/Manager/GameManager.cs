@@ -33,21 +33,20 @@ namespace Match_3
         public SpriteAtlas spriteTiles;
         public LoadLevelType LoadLevelType = LoadLevelType.ManualLoad;
 
-        private BoardGame _levelObject;
+        public BoardGame _levelObject;
+
+        public GameState M_GameState;
 
         public List<TileSlot> ListSlots { get; } = new List<TileSlot>();
         public List<TileDirection> ListDirections { get; set; } = new List<TileDirection>();
-        public GameState GameState { get; set; }
+        public GameState GameState { get => M_GameState; set => M_GameState = value ; }
 
         public int Level
         {
             get => ProfileDataService.Instance.ProfileData.Level;
             private set => ProfileDataService.Instance.SetLevel(value);
         }
-
-        public Camera mainCamera;
-
-
+        
         private void Awake()
         {
             if (Current == null)
@@ -59,26 +58,7 @@ namespace Match_3
                 }
             }
         }
-
-        private void Start()
-        {
-            mainCamera = Camera.main;
-
-            SetTargetFPS();
-            ProfileDataService.Instance.AutoSaveProfile();
-            if (ProfileDataService.Instance.IsEnoughLife())
-            {
-                StartLevel();
-                RewardManager.Current.UpdateCoinView();
-            }
-            else
-            {
-                LoadingManager.Instance.LoadScene("Menu");
-                UIManager.Current.HideGamePlayUI();
-            }
-        }
-
-
+        
         #region Update Method
 
         private void Update()
@@ -97,13 +77,6 @@ namespace Match_3
         }
 
         #endregion
-
-
-        private void SetTargetFPS()
-        {
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = 60;
-        }
         
         #region Board
 
@@ -124,6 +97,8 @@ namespace Match_3
             }
 
             UIManager.Current.SetLevelText(Level);
+            UIManager.Current.UpdateGUIAllPowerUp();
+            RewardManager.Current.UpdateCoinView();
         }
 
         private void ManualLoad(string path)

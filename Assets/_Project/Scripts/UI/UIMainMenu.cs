@@ -66,6 +66,7 @@ namespace Match_3
             if (ProfileDataService.Instance.IsEnoughLife())
             {
                 GameManager.Current.RestartLevel();
+                gameObject.SetActive(false);
                 UIManager.Current.ShowGamePlayUI();
             }
             else

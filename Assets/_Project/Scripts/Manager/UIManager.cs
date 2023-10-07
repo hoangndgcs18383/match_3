@@ -87,7 +87,7 @@ namespace Match_3
 
         private void InitPowerUp()
         {
-            var powerUps = FindObjectsOfType<PowerUpItem>();
+            var powerUps = FindObjectsOfType<PowerUpItem>(true);
 
             foreach (var powerUp in powerUps)
             {

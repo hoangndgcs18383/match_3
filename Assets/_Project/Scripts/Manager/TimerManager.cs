@@ -25,7 +25,12 @@ namespace Match_3
                 _current = this;
                 DontDestroyOnLoad(this);
             }
-
+            
+        }
+        private float Time => ProfileDataService.Instance.GetLastTimeReceiveLife();
+        
+        public void Initialize()
+        {
             //calculate time to reset
             _now = DateTime.Now;
             _timeToReset = ProfileDataService.Instance.GetDailyResetTime();
@@ -35,15 +40,10 @@ namespace Match_3
                 ProfileDataService.Instance.ResetQuestDaily();
                 Debug.Log("Reset Time");
             }
-        }
 
-        private void Start()
-        {
             StartCountDown();
         }
-
-        private float Time => ProfileDataService.Instance.GetLastTimeReceiveLife();
-
+        
         public void StartCountDown()
         {
             Timing.KillCoroutines(_countDownCoroutine);

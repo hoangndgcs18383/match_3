@@ -31,8 +31,19 @@ namespace Match_3
                 throw;
             }
 
+            SetTargetFPS();
             RegisterService();
             LoadService();
+            
+            ProfileDataService.Instance.AutoSaveProfile();
+            TimerManager.Current.Initialize();
+            
+        }
+        
+        private void SetTargetFPS()
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
         }
 
         private void RegisterService()
@@ -47,7 +58,7 @@ namespace Match_3
         {
             ServiceLocator.Instance.LoadService();
 
-            Timing.RunCoroutine(LoadSceneAsync("Main"));
+            Timing.RunCoroutine(LoadSceneAsync("Menu"));
         }
 
         public void LoadScene(string sceneName)

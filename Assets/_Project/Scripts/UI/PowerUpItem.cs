@@ -25,6 +25,8 @@ namespace Match_3
         {
             _onClick = onClick;
             UpdateCount(count);
+            
+            Debug.Log($"[Init] {powerUpType} {count}");
         }
         
         public void UpdateCount(int count)
