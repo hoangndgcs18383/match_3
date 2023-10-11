@@ -359,12 +359,22 @@ namespace Match_3
 
 
         #region WINDOW_WEB
+        
+        private bool _isMouseDown;
 
         private void OnMouseDown()
         {
-            if (GameManager.Current.GameState == GameState.PLAYING)
+            _isMouseDown = true;
+        }
+
+        private void OnMouseUp()
+        {
+            if (GameManager.Current.GameState != GameState.PLAYING) return;
+            if (_isMouseDown)
             {
+                
                 OnTouchTile();
+                _isMouseDown = false;
             }
         }
 

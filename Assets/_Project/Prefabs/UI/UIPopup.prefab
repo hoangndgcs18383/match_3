@@ -377,11 +377,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2797b021cda22943ab3d70e8d350380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusTxt: {fileID: 0}
+  statusLoseTxt: {fileID: 0}
+  statusWinTxt: {fileID: 0}
   goldText: {fileID: 6833960729513767104}
   goldX3Text: {fileID: 0}
+  noThanksText: {fileID: 0}
   btnCollect: {fileID: 6804838725864810476}
   btnNext: {fileID: 3194472216589017449}
+  targetTransform: {fileID: 0}
 --- !u!1 &41313364725267633
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Moster1
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: ddb3c29489877b74cb2ab6df7cdf568e, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 09b3be80851047d4db99d7c1f0bf10c3, type: 3}
+  - {fileID: 21300000, guid: d81a5482c41ec8040b13229ef3d167d6, type: 3}
+  - {fileID: 21300000, guid: 3921cc1329ec31b42b9fe8619b79ec0a, type: 3}
+  - {fileID: 21300000, guid: 1ee84e1390f28634584d627d9955d58d, type: 3}
+  - {fileID: 21300000, guid: b005b553bd2a64b41b4f207350e40ac3, type: 3}
+  - {fileID: 21300000, guid: 908cce83a973e3f43a3f6b5bb750ec26, type: 3}
+  - {fileID: 21300000, guid: f5ad2684553f8d346adfbc788423d3a2, type: 3}
+  - {fileID: 21300000, guid: a66980457f2dd0045a5c0008dda2f706, type: 3}
+  - {fileID: 21300000, guid: ba81ba86bfe00cb4a8a1289889d008db, type: 3}
+  - {fileID: 21300000, guid: 4f3f8de6ee32c1945986b77ee68c661b, type: 3}
+  - {fileID: 21300000, guid: 8a0645073ecb3ee40806e95b0f7589d7, type: 3}
+  - {fileID: 21300000, guid: d4a135676a21d934589ae06cd555da3d, type: 3}
+  - {fileID: 21300000, guid: 54a03808af43ddd4ca8d79351eeef7d8, type: 3}
+  - {fileID: 21300000, guid: 912dde98577865044818ba561369e679, type: 3}
+  - {fileID: 21300000, guid: 3545d6e9ee51b1e4eb2003a212c6a450, type: 3}
+  - {fileID: 21300000, guid: 689bf72c0605c7f4886c8dcf98bc1033, type: 3}
+  - {fileID: 21300000, guid: 88476a8ca2cf4084ea4e570c0692ce15, type: 3}
+  - {fileID: 21300000, guid: c924984e51db3b34f995712b289b446b, type: 3}
+  - {fileID: 21300000, guid: 07fcf8be1920aff43afcb03fff952a0f, type: 3}
+  - {fileID: 21300000, guid: 0c7238ff969926f46b998a614ce2182b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Monster1-Idle_10
+  - Monster1-Idle_17
+  - Monster1-Idle_14
+  - Monster1-Idle_06
+  - Monster1-Idle_11
+  - Monster1-Idle_07
+  - Monster1-Idle_13
+  - Monster1-Idle_02
+  - Monster1-Idle_00
+  - Monster1-Idle_09
+  - Monster1-Idle_05
+  - Monster1-Idle_08
+  - Monster1-Idle_16
+  - Monster1-Idle_19
+  - Monster1-Idle_03
+  - Monster1-Idle_18
+  - Monster1-Idle_12
+  - Monster1-Idle_01
+  - Monster1-Idle_04
+  - Monster1-Idle_15
+  m_RenderDataMap: {}
+  m_Tag: Moster1
+  m_IsVariant: 0

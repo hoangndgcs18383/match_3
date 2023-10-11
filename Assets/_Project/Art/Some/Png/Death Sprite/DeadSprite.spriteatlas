@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DeadSprite
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: ef65ba27b8fb11f4985c03253928f3cb, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 415f8111e2271814c99883e836924ec4, type: 3}
+  - {fileID: 21300000, guid: 8c5ca372a64ab2c469745ffd956ae22e, type: 3}
+  - {fileID: 21300000, guid: da7662e23850b864aa268de94e16a658, type: 3}
+  - {fileID: 21300000, guid: 4e7a5913244e74340947a9cac67b1ed8, type: 3}
+  - {fileID: 21300000, guid: e2ea2043fc3a0e545b08652f9509106b, type: 3}
+  - {fileID: 21300000, guid: 74f7ae5441d57e242acc43c0f6b35b88, type: 3}
+  - {fileID: 21300000, guid: 26a56bc4cb6bbc7438b442040dfb55f4, type: 3}
+  - {fileID: 21300000, guid: 94ddce26bded27341b079a07248e2359, type: 3}
+  - {fileID: 21300000, guid: 306cf4b62dc86b240b18ac2c15c827d6, type: 3}
+  - {fileID: 21300000, guid: ecfaaa77dbaa7d24a9cb6fdad3ba987f, type: 3}
+  - {fileID: 21300000, guid: e6391ec7bef5dda4caf5a9b92fc9ae75, type: 3}
+  - {fileID: 21300000, guid: 5d30f268c824ed742b61c22d451640f4, type: 3}
+  - {fileID: 21300000, guid: c2f8da29a657cc249bca760700d3e1a7, type: 3}
+  - {fileID: 21300000, guid: 8d73505a35af05245a46c3cdc9f1e64b, type: 3}
+  - {fileID: 21300000, guid: 0a150f5a9499d394d843bcfc6659c496, type: 3}
+  - {fileID: 21300000, guid: b3af6b0ce31a09147a023b891831f851, type: 3}
+  - {fileID: 21300000, guid: 6cb678fca27e8914c90b266c4e9c6b2a, type: 3}
+  - {fileID: 21300000, guid: 400762ad76a01ae44b868586ed8cf5ed, type: 3}
+  - {fileID: 21300000, guid: 455dbb8fd20ee7641b6c0fe469482744, type: 3}
+  - {fileID: 21300000, guid: 9d5ecd8fe7591e3408acd8a3dc699927, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Death Sprite-EnemyDieFx_02
+  - Death Sprite-EnemyDieFx_17
+  - Death Sprite-EnemyDieFx_14
+  - Death Sprite-EnemyDieFx_10
+  - Death Sprite-EnemyDieFx_11
+  - Death Sprite-EnemyDieFx_03
+  - Death Sprite-EnemyDieFx_12
+  - Death Sprite-EnemyDieFx_16
+  - Death Sprite-EnemyDieFx_08
+  - Death Sprite-EnemyDieFx_18
+  - Death Sprite-EnemyDieFx_01
+  - Death Sprite-EnemyDieFx_19
+  - Death Sprite-EnemyDieFx_00
+  - Death Sprite-EnemyDieFx_07
+  - Death Sprite-EnemyDieFx_13
+  - Death Sprite-EnemyDieFx_04
+  - Death Sprite-EnemyDieFx_09
+  - Death Sprite-EnemyDieFx_06
+  - Death Sprite-EnemyDieFx_05
+  - Death Sprite-EnemyDieFx_15
+  m_RenderDataMap: {}
+  m_Tag: DeadSprite
+  m_IsVariant: 0

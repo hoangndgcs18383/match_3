@@ -1,0 +1,14 @@
+Monster4.png
+size:1024,512
+filter:Linear,Linear
+pma:true
+Body
+bounds:454,178,141,139
+Box
+bounds:2,57,450,450
+Head
+bounds:454,319,172,188
+Leg
+bounds:2,2,84,53
+Tails
+bounds:628,420,101,87
