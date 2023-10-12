@@ -33,18 +33,7 @@ namespace Match_3
                 }
             }
         }
-
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            if (collision.CompareTag("CheckCollider"))
-            {
-                if (tileParent.tileState == TileState.FLOOR)
-                {
-                    if (_countCollision <= 0) tileParent.SetTouchEnable();
-                }
-            }
-        }
-
+        
         private void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.CompareTag("CheckCollider"))

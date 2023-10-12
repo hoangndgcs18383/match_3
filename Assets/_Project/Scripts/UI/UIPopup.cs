@@ -52,13 +52,15 @@ namespace Match_3
 
             switch (mTitle)
             {
-                case "TITLE_YOU_LOSE":
+                case "TITLE_YOU_LOSE": 
                     statusLoseTxt.gameObject.SetActive(true);
                     statusWinTxt.gameObject.SetActive(false);
+                    goldText.color = Color.black;
                     break;
                 case "TITLE_YOU_WIN":
                     statusWinTxt.gameObject.SetActive(true);
                     statusLoseTxt.gameObject.SetActive(false);
+                    goldText.color = Color.red;
                     break;
             }
 

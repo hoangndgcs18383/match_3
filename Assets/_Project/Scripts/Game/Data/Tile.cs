@@ -174,11 +174,14 @@ namespace Match_3
                 tileState = TileState.MOVE_TO_SLOT;
             }
         }
+        
+        private CoroutineHandle _coroutineHandle;
 
         public void SetTouchEnable()
         {
-            SetTouchAvailable(true);
-            SetShadowAvailable(false);
+            /*SetTouchAvailable(true);
+            SetShadowAvailable(false);*/
+            _coroutineHandle = Timing.RunCoroutine(IESetTouchEnable());
         }
 
         private IEnumerator<float> IESetTouchEnable()
@@ -265,7 +268,7 @@ namespace Match_3
             float startTiming = 0;
             float nextTiming = 0.1f;
             
-            //tileCollider.gameObject.SetActive(false);
+            tileCollider.gameObject.SetActive(false);
             SetLayersToMoveSlot(indexSlot);
             SetLayerDefault();
 
@@ -402,6 +405,7 @@ namespace Match_3
             _moveToSlotSequence.Kill();
             tileObject.transform.DOKill();
             _matchSequence.Kill();
+            Timing.KillCoroutines(_coroutineHandle);
         }
     }
 }
