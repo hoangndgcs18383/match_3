@@ -19,9 +19,12 @@ namespace Match_3
         [Title("References")] [SerializeField] private UIPopup popup;
         [SerializeField] private UIMenu menu;
         [SerializeField] private UIReward uiReward;
+        [SerializeField] private UIPopupRemoveAds uiPopupRemoveAds;
         [SerializeField] private GameObject uiGamePlay;
 
         [Title("Buttons")] [SerializeField] private Button menuButton;
+        [SerializeField] private Button popupRemoveAdsButton;
+        [SerializeField] private Button removeAdsButton;
         [SerializeField] private Image spinAdsButton;
 
         private Dictionary<PowerUpType, PowerUpItem> powerUpItems = new Dictionary<PowerUpType, PowerUpItem>();
@@ -49,19 +52,34 @@ namespace Match_3
             IAPService.Instance.OnPurchaseCallbackIAPEvent += OnPurchaseCallbackIAPEvent;
         }
 
-        private void OnPurchaseCallbackIAPEvent(Status status)
+        private void OnPurchaseCallbackIAPEvent(string productId, Status status)
         {
-            Debug.Log($"[OnPurchaseCallbackIAPEvent] {status}");
+            Debug.Log($"[OnPurchaseCallbackIAPEvent] {productId} {status}");
         }
+        
 
         private void OnEnable()
         {
             menuButton.onClick.AddListener(OnMenuClick);
+            removeAdsButton.onClick.AddListener(RemoveAds);
+            popupRemoveAdsButton.onClick.AddListener(ShowPopupRemoveAds);
         }
 
         private void OnDisable()
         {
             menuButton.onClick.RemoveListener(OnMenuClick);
+            removeAdsButton.onClick.RemoveListener(RemoveAds);
+            popupRemoveAdsButton.onClick.AddListener(ShowPopupRemoveAds);
+        }
+        
+        private void ShowPopupRemoveAds()
+        {
+            uiPopupRemoveAds.Show();
+        }
+        
+        private void RemoveAds()
+        {
+            IAPService.Instance.Purchase(IAPPurchaseType.RemoveAds.ToString());
         }
 
         private void OnMenuClick()
@@ -170,7 +188,6 @@ namespace Match_3
 
         public void DisableAds()
         {
-            IAPService.Instance.Purchase(IAPPurchaseType.RemoveAds);
             return;
             spinAdsButton.gameObject.SetActive(false);
         }

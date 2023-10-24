@@ -24,6 +24,18 @@ namespace Match_3
         {
             MobileAds.Initialize(OnInitialized);
         }
+        
+        private BannerView _bannerView;
+
+        private void CreateBannerView()
+        {
+            if(_bannerView != null)
+                _bannerView.Destroy();
+            
+            _bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Bottom);
+        }
+        
+        
 
         public void LoadRewardedAd()
         {
@@ -33,10 +45,16 @@ namespace Match_3
                 _rewardedAd = null;
             }
 
+            if (_bannerView == null)
+            {
+                CreateBannerView();
+            }
+
             AdRequest request = new AdRequest();
             request.Keywords.Add("unity-admob-sample");
 
-            RewardedAd.Load(_adUnitId, request, HandleRewardedAdLoaded);
+            if (_bannerView != null) _bannerView.LoadAd(request);
+            RewardedAd.Load(_adUnitId, request, OnAdsLoaded);
         }
 
         public void ShowRewardedAd()
@@ -63,6 +81,7 @@ namespace Match_3
             try
             {
                 OnInitializedAdsEvent?.Invoke(AdsResult.Success);
+                LoadRewardedAd();
             }
             catch (Exception e)
             {
@@ -72,7 +91,7 @@ namespace Match_3
             }
         }
 
-        private void HandleRewardedAdLoaded(RewardedAd ad, LoadAdError error)
+        private void OnAdsLoaded(RewardedAd ad, LoadAdError error)
         {
             if (error != null || ad == null)
             {
@@ -82,7 +101,8 @@ namespace Match_3
 
             _rewardedAd = ad;
             OnLoadAdsEvent?.Invoke(AdsResult.Success);
-            Debug.Log("[HandleRewardedAdLoaded]: event received" + ad.GetResponseInfo());
+            ShowRewardedAd();
+            Debug.Log("[OnAdsLoaded]: event received" + ad.GetResponseInfo());
         }
     }
 }
