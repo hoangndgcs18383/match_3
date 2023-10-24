@@ -12,7 +12,7 @@ namespace Match_3
         [MenuItem("Tools/Setup/Create Default Folders")]
         public static void CreateDefaultFolders()
         {
-            Folders.CreateDefault("_Project", "Editor", "Animation", "Design", "ExcelDesign", "Art", "Materials",
+            Folders.CreateDefault("_Project_2", "Editor", "Animation", "Design", "ExcelDesign", "Art", "Materials",
                 "Prefabs",
                 "ScriptableObjects",
                 "Resources", "Scripts", "Settings");

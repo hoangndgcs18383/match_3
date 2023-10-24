@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 using UnityEngine.Purchasing.Security;
 using Zeff.Core.Service;
 
@@ -11,11 +12,11 @@ namespace Match_3
         RemoveAds
     }
 
-    public class IAPService : Service<IAPService>, IStoreListener
+    public class IAPService : Service<IAPService>, IDetailedStoreListener
     {
         public Action OnInitializedIAPEvent;
         public Action<Status> OnInitializedCallbackIAPEvent;
-        public Action<Status> OnPurchaseCallbackIAPEvent;
+        public Action<string, Status> OnPurchaseCallbackIAPEvent;
 
         private IStoreController _storeController;
         private IExtensionProvider _extensionProvider;
@@ -23,6 +24,8 @@ namespace Match_3
         public override void Initialize()
         {
             base.Initialize();
+
+            Debug.Log("[IAP] Initialize");
 
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
@@ -44,6 +47,11 @@ namespace Match_3
             OnInitializedIAPEvent?.Invoke();
         }
 
+        public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
+        {
+            OnPurchaseCallbackIAPEvent?.Invoke(product.definition.id, Status.Fail);
+        }
+
         public void OnInitializeFailed(InitializationFailureReason error)
         {
             OnInitializedCallbackIAPEvent?.Invoke(Status.Fail);
@@ -51,6 +59,7 @@ namespace Match_3
 
         public void OnInitializeFailed(InitializationFailureReason error, string message)
         {
+            OnInitializedCallbackIAPEvent?.Invoke(Status.Fail);
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
@@ -78,23 +87,24 @@ namespace Match_3
                 validPurchase = false;
             }
 #endif
-            OnPurchaseCallbackIAPEvent?.Invoke(validPurchase ? Status.Success : Status.Fail);
+            OnPurchaseCallbackIAPEvent?.Invoke(purchaseEvent.purchasedProduct.definition.id,
+                validPurchase ? Status.Success : Status.Fail);
             return PurchaseProcessingResult.Complete;
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            OnPurchaseCallbackIAPEvent?.Invoke(Status.Fail);
+            OnPurchaseCallbackIAPEvent?.Invoke(product.definition.id, Status.Fail);
         }
 
         #endregion
 
-        public void Purchase(IAPPurchaseType type)
+        public void Purchase(string productId)
         {
 #if UNITY_EDITOR
-            OnPurchaseCallbackIAPEvent?.Invoke(Status.Success);
+            OnPurchaseCallbackIAPEvent?.Invoke(productId, Status.Success);
 #else
-            var product = _storeController.products.WithID(type.ToString());
+            var product = _storeController.products.WithID(productId);
 
             if (product != null && product.availableToPurchase)
             {
@@ -102,7 +112,7 @@ namespace Match_3
             }
             else
             {
-                OnPurchaseCallbackIAPEvent?.Invoke(Status.Fail);
+                OnPurchaseCallbackIAPEvent?.Invoke(productId,Status.Fail);
             }
 #endif
         }

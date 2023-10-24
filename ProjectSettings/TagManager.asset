@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CheckCollider
+  - Wall
+  - Triangle
   layers:
   - Default
   - TransparentFX
@@ -12,9 +13,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Collider
-  - Tile
-  - FLOOR
+  - 
+  - 
+  - PostProcessing
   - 
   - 
   - 
@@ -41,43 +42,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: UI
-    uniqueID: 3454054069
-    locked: 0
-  - name: BG
-    uniqueID: 874766263
-    locked: 0
-  - name: FLOOR_1
-    uniqueID: 1905422649
-    locked: 0
-  - name: FLOOR_2
-    uniqueID: 3085635483
-    locked: 0
-  - name: FLOOR_3
-    uniqueID: 2967866401
-    locked: 0
-  - name: FLOOR_4
-    uniqueID: 1442187083
-    locked: 0
-  - name: FLOOR_5
-    uniqueID: 2465886461
-    locked: 0
-  - name: FLOOR_6
-    uniqueID: 3989606337
-    locked: 0
-  - name: FLOOR_7
-    uniqueID: 3695068585
-    locked: 0
-  - name: FLOOR_8
-    uniqueID: 2226152667
-    locked: 0
-  - name: FLOOR_9
-    uniqueID: 2766829015
-    locked: 0
-  - name: FLOOR_10
-    uniqueID: 1062340665
-    locked: 0
-  - name: MOVE
-    uniqueID: 3057055491
     locked: 0

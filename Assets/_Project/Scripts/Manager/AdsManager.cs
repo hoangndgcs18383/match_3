@@ -8,6 +8,7 @@ namespace Match_3
         public static AdsManager Current;
 
         private IAdsHandler _adsHandler = new NotAdsHandler();
+        private IAdsHandler _adsModHandler = new NotAdsHandler();
         
         public Action OnRewardAdsEvent;
 
@@ -37,6 +38,12 @@ namespace Match_3
             _adsHandler.OnShowAdsEvent += OnShowAdsEvent;
             _adsHandler.OnRewardAdsEvent += OnRewardAdEvent;
             _adsHandler.InitializedAds();
+        }
+
+        private void InitializeAdsModHandler()
+        {
+            _adsModHandler = new AdModHandler();
+            _adsModHandler.InitializedAds();
         }
 
         private void OnRewardAdEvent(AdsResult status)
