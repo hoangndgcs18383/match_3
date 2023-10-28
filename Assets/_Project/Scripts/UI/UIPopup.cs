@@ -3,7 +3,6 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zeff.Core.Localization;
 
@@ -19,6 +18,7 @@ namespace Match_3
         [SerializeField] private Button btnCollect;
         [SerializeField] private Button btnNext;
         [SerializeField] private RectTransform targetTransform;
+        [SerializeField] private GameObject lightObj;
 
         private Action _onBtnCollect;
         private Action _onBtnNext;
@@ -55,11 +55,15 @@ namespace Match_3
                 case "TITLE_YOU_LOSE": 
                     statusLoseTxt.gameObject.SetActive(true);
                     statusWinTxt.gameObject.SetActive(false);
+                    lightObj.SetActive(false);
                     goldText.color = Color.black;
                     break;
                 case "TITLE_YOU_WIN":
                     statusWinTxt.gameObject.SetActive(true);
                     statusLoseTxt.gameObject.SetActive(false);
+                    lightObj.SetActive(true);
+                    lightObj.transform.DORotate(new Vector3(0f, 0f, -90f), 1f).SetRelative(true).SetEase(Ease.Linear)
+                        .SetLoops(-1, LoopType.Incremental);
                     goldText.color = Color.red;
                     break;
             }
@@ -118,6 +122,10 @@ namespace Match_3
 
         private void OnDisable()
         {
+            lightObj.SetActive(false);
+            TargetTransform.DOKill();
+            lightObj.transform.DOKill();
+            
             btnCollect.onClick.RemoveListener(OnBtnCollect);
             btnNext.onClick.RemoveListener(OnBtnNext);
             

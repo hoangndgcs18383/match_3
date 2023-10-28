@@ -285,6 +285,7 @@ namespace Match_3
 
                 int randomCoin = RewardManager.Current.GetRandomCoin();
                 ProfileDataService.Instance.SetQuestDaily("QUEST_002", 1);
+                ProfileDataService.Instance.UpdateNextLevel();
                 
                 UIManager.Current.ShowPopup("TITLE_YOU_WIN", randomCoin, () =>
                     {

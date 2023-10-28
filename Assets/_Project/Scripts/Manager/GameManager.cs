@@ -314,7 +314,6 @@ namespace Match_3
 
         public void LoadNextLevel()
         {
-            ProfileDataService.Instance.UpdateNextLevel();
             ClearLevel();
             LoadingManager.Instance.LoadScene(StringConstants.LOAD_MENU);
             GCCollectAndClear();

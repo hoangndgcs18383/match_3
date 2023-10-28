@@ -23,7 +23,6 @@ namespace Match_3
         [SerializeField] private GameObject uiGamePlay;
 
         [Title("Buttons")] [SerializeField] private Button menuButton;
-        [SerializeField] private Button popupRemoveAdsButton;
         [SerializeField] private Button removeAdsButton;
         [SerializeField] private Image spinAdsButton;
 
@@ -48,35 +47,44 @@ namespace Match_3
         private void Start()
         {
             InitPowerUp();
-            
-            IAPService.Instance.OnPurchaseCallbackIAPEvent += OnPurchaseCallbackIAPEvent;
+
+            if (!ProfileDataService.Instance.IsRemoveAds())
+            {
+                IAPService.Instance.OnPurchaseCallbackIAPEvent += OnPurchaseCallbackIAPEvent;
+            }
         }
 
         private void OnPurchaseCallbackIAPEvent(string productId, Status status)
         {
             Debug.Log($"[OnPurchaseCallbackIAPEvent] {productId} {status}");
+
+            if (status == Status.Success)
+            {
+                FlyTextManager.Instance.SetFlyText("Remove Ads Success");
+                ProfileDataService.Instance.SetRemoveAds(true);
+                uiPopupRemoveAds.Hide();
+                IAPService.Instance.OnPurchaseCallbackIAPEvent -= OnPurchaseCallbackIAPEvent;
+            }
         }
-        
+
 
         private void OnEnable()
         {
             menuButton.onClick.AddListener(OnMenuClick);
             removeAdsButton.onClick.AddListener(RemoveAds);
-            popupRemoveAdsButton.onClick.AddListener(ShowPopupRemoveAds);
         }
 
         private void OnDisable()
         {
             menuButton.onClick.RemoveListener(OnMenuClick);
             removeAdsButton.onClick.RemoveListener(RemoveAds);
-            popupRemoveAdsButton.onClick.AddListener(ShowPopupRemoveAds);
         }
-        
-        private void ShowPopupRemoveAds()
+
+        public void ShowPopupRemoveAds()
         {
             uiPopupRemoveAds.Show();
         }
-        
+
         private void RemoveAds()
         {
             IAPService.Instance.Purchase(IAPPurchaseType.RemoveAds.ToString());

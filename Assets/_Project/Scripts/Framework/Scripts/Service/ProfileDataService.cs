@@ -29,7 +29,8 @@ namespace Match_3
                 Suggests = 3
             },
             QuestProcessData = new QuestProcessData[] { },
-            IsFirstTimePlay = true
+            IsFirstTimePlay = true,
+            IsRemoveAds = false
         };
 
         #endregion
@@ -78,6 +79,17 @@ namespace Match_3
 
             SetQuestDaily();
         }
+        
+        public bool IsRemoveAds()
+        {
+            return ProfileData.IsRemoveAds;
+        }
+        
+        public void SetRemoveAds(bool value)
+        {
+            ProfileData.IsRemoveAds = value;
+            SaveProfileData();
+        }
 
         public DateTime GetDailyResetTime()
         {
@@ -89,7 +101,6 @@ namespace Match_3
             ProfileData.IsFirstTimePlay = true;
             SetQuestDaily();
         }
-        
         
         public void ClaimQuestDaily(string questID, Action<bool> onClaimQuestDaily)
         {
@@ -166,13 +177,8 @@ namespace Match_3
                     if (questProcessData.Current >= questProcessData.Total)
                     {
                         questProcessData.State = QuestState.Completed;
-                        //OnQuestDailyChanged?.Invoke(questProcessData);
-                        Debug.Log($"[ProfileData] QuestDaily {questID} is completed");
-                        SaveProfileData();
-                        return;
                     }
                     
-                    //OnQuestDailyChanged?.Invoke(questProcessData);
                     SaveProfileData();
                     return;
                 }

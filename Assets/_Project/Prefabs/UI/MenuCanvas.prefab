@@ -2175,6 +2175,7 @@ MonoBehaviour:
   playButton: {fileID: 4694465333252167228}
   shopButton: {fileID: 4694465333597575733}
   questButton: {fileID: 5060783573636327796}
+  removeAdsButton: {fileID: 1145773331045451726}
   shopPanel: {fileID: 4694465333807137280}
   gameNameTransform: {fileID: 351931676784839646}
   uiQuest: {fileID: 15828714765888368}

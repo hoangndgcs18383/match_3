@@ -13,8 +13,8 @@ namespace Match_3
         public PowerUpData PowerUpData { get; set; }
         public LastTimeReceiveLife LastTimeReceiveLife { get; set; }
         public QuestProcessData[] QuestProcessData { get; set; }
-        
         public bool IsFirstTimePlay { get; set; }
+        public bool IsRemoveAds { get; set; }
     }
 
     [Serializable]
